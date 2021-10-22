@@ -8,6 +8,7 @@ from method.resources.Payment import PaymentResource
 from method.resources.Report import ReportResource
 from method.resources.RoutingNumber import RoutingNumberResource
 from method.resources.Webhook import WebhookResource
+from method.resources.HealthCheck import PingResponse, HealthCheckResource
 
 
 class Method:
@@ -20,6 +21,7 @@ class Method:
     reports: ReportResource
     routing_numbers: RoutingNumberResource
     webhooks: WebhookResource
+    healthcheck: HealthCheckResource
 
     def __init__(self, opts: ConfigurationOpts = None, **kwargs: ConfigurationOpts):
         _opts: ConfigurationOpts = {**(opts or {}), **kwargs}  # type: ignore
@@ -34,3 +36,7 @@ class Method:
         self.reports = ReportResource(config)
         self.routing_numbers = RoutingNumberResource(config)
         self.webhooks = WebhookResource(config)
+        self.healthcheck = HealthCheckResource(config)
+
+    def ping(self) -> PingResponse:
+        return self.healthcheck.get()

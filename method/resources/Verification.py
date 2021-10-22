@@ -57,6 +57,10 @@ class VerificationCreateOpts(TypedDict):
     mx: Optional[VerificationMXCreate]
 
 
+class VerificationTestAmountsResponse(TypedDict):
+    amounts: List[int]
+
+
 class VerificationResource(Resource):
     def __init__(self, config: Configuration):
         super(VerificationResource, self).__init__(config.add_path('verification'))
@@ -69,3 +73,6 @@ class VerificationResource(Resource):
 
     def create(self, opts: VerificationCreateOpts) -> Verification:
         return super(VerificationResource, self)._create(opts)
+
+    def get_test_amounts(self) -> VerificationTestAmountsResponse:
+        return super(VerificationResource, self)._get_with_sub_path('/amounts')
