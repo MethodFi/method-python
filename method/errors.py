@@ -43,11 +43,11 @@ class MethodError(BaseException):
         error_type = opts.get('type')
 
         if error_type == 'INVALID_AUTHORIZATION':
-            return MethodInternalError(opts)
+            return MethodAuthorizationError(opts)
         if error_type == 'INVALID_REQUEST':
             return MethodInvalidRequestError(opts)
         if error_type == 'API_ERROR':
-            return MethodAuthorizationError(opts)
+            return MethodInternalError(opts)
 
 
 class MethodInternalError(MethodError):
