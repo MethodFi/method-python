@@ -70,4 +70,4 @@ class Resource:
 
     @MethodError.catch
     def _download(self, _id: str) -> str:
-        return self.client(_id).download.GET()
+        return self.client(_id).download.GET().text

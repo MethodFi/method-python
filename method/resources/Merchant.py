@@ -59,5 +59,5 @@ class MerchantResource(Resource):
     def get(self, _id: str) -> Merchant:
         return super(MerchantResource, self)._get_with_id(_id)
 
-    def list(self, opts: MerchantListOpts) -> List[Merchant]:
+    def list(self, opts: Optional[MerchantListOpts] = None) -> List[Merchant]:
         return super(MerchantResource, self)._list(opts)

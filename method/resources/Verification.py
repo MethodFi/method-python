@@ -75,4 +75,4 @@ class VerificationResource(Resource):
         return super(VerificationResource, self)._create(opts)
 
     def get_test_amounts(self) -> VerificationTestAmountsResponse:
-        return super(VerificationResource, self)._get_with_sub_path('/amounts')
+        return super(VerificationResource, self)._get_with_sub_path('amounts')
