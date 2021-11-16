@@ -7,7 +7,14 @@ from method.configuration import Configuration
 WebhookTypesLiterals = Literal[
     'payment.create',
     'payment.update',
-    'account_verification.sent'
+    'account.create',
+    'account.update',
+    'entity.update',
+    'entity.create',
+    'account_verification.create',
+    'account_verification.update',
+    'account_verification.sent',
+    'account_verification.returned'
 ]
 
 
