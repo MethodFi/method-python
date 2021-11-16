@@ -6,10 +6,11 @@ from method.configuration import Configuration
 
 PaymentStatusesLiterals = Literal[
     'pending',
-    'sent',
     'canceled',
-    'returned',
-    'error'
+    'processing',
+    'failed',
+    'sent',
+    'reversed'
 ]
 
 

@@ -25,9 +25,7 @@ EntityCapabilitiesLiterals = Literal[
 EntityStatusesLiterals = Literal[
     'active',
     'incomplete',
-    'pending',
-    'blocked',
-    'error'
+    'disabled'
 ]
 
 

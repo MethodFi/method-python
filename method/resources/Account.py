@@ -23,6 +23,12 @@ AccountCapabilitiesLiterals = Literal[
 ]
 
 
+AccountStatusesLiterals = Literal[
+    'active',
+    'disabled'
+]
+
+
 class AccountACH(TypedDict):
     routing: int
     number: int
@@ -42,6 +48,7 @@ class AccountLiabilityCreateOpts(TypedDict):
 class Account(TypedDict):
     id: str
     holder_id: str
+    status: AccountStatusesLiterals
     type: AccountTypesLiterals
     ach: Optional[AccountACH]
     liability: Optional[AccountLiability]
