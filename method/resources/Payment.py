@@ -23,6 +23,11 @@ PaymentFundStatusesLiterals = Literal[
     'unknown'
 ]
 
+PaymentTypesLiterals = Literal[
+    'standard',
+    'clearing'
+]
+
 
 class Payment(TypedDict):
     id: str
@@ -34,6 +39,8 @@ class Payment(TypedDict):
     fund_status: PaymentFundStatusesLiterals
     error: Optional[str]
     metadata: Optional[Dict[str, Any]]
+    estimated_completion_date: Optional[str]
+    type: PaymentTypesLiterals
     created_at: str
     updated_at: str
 
