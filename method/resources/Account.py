@@ -7,7 +7,8 @@ from method.resources.Verification import VerificationResource
 
 AccountTypesLiterals = Literal[
     'ach',
-    'liability'
+    'liability',
+    'clearing'
 ]
 
 
@@ -40,6 +41,11 @@ class AccountLiability(TypedDict):
     mask: str
 
 
+class AccountClearing(TypedDict):
+    routing: int
+    number: int
+
+
 class AccountLiabilityCreateOpts(TypedDict):
     mch_id: str
     account_number: str
@@ -52,6 +58,7 @@ class Account(TypedDict):
     type: AccountTypesLiterals
     ach: Optional[AccountACH]
     liability: Optional[AccountLiability]
+    clearing: Optional[AccountClearing]
     capabilities: List[AccountCapabilitiesLiterals]
     created_at: str
     updated_at: str
