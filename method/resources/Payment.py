@@ -2,6 +2,7 @@ from typing import TypedDict, Optional, List, Dict, Any, Literal
 
 from method.resource import Resource, RequestOpts
 from method.configuration import Configuration
+from method.errors import ResourceError
 
 
 PaymentStatusesLiterals = Literal[
@@ -18,7 +19,8 @@ PaymentFundStatusesLiterals = Literal[
     'hold',
     'pending',
     'requested',
-    'received',
+    'clearing',
+    'failed',
     'sent',
     'unknown'
 ]
@@ -37,7 +39,7 @@ class Payment(TypedDict):
     description: str
     status: PaymentStatusesLiterals
     fund_status: PaymentFundStatusesLiterals
-    error: Optional[str]
+    error: Optional[ResourceError]
     metadata: Optional[Dict[str, Any]]
     estimated_completion_date: Optional[str]
     type: PaymentTypesLiterals

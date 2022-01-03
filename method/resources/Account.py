@@ -2,6 +2,7 @@ from typing import TypedDict, Optional, Dict, List, Any, Literal
 
 from method.resource import Resource, RequestOpts
 from method.configuration import Configuration
+from method.errors import ResourceError
 from method.resources.Verification import VerificationResource
 
 
@@ -60,6 +61,7 @@ class Account(TypedDict):
     liability: Optional[AccountLiability]
     clearing: Optional[AccountClearing]
     capabilities: List[AccountCapabilitiesLiterals]
+    error: Optional[ResourceError]
     created_at: str
     updated_at: str
     metadata: Optional[Dict[str, Any]]

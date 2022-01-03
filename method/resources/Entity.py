@@ -2,6 +2,7 @@ from typing import TypedDict, Optional, List, Dict, Any, Literal
 
 from method.resource import Resource, RequestOpts
 from method.configuration import Configuration
+from method.errors import ResourceError
 
 
 EntityTypesLiterals = Literal[
@@ -76,6 +77,7 @@ class Entity(TypedDict):
     capabilities: List[EntityCapabilitiesLiterals]
     address: EntityAddress
     status: EntityStatusesLiterals
+    error: Optional[ResourceError]
     metadata: Optional[Dict[str, Any]]
     created_at: str
     updated_at: str
