@@ -2,6 +2,7 @@ from typing import TypedDict, List, Literal, Dict, Any, Optional
 
 from method.resource import Resource
 from method.configuration import Configuration
+from method.errors import ResourceError
 
 
 VerificationStatusesLiterals = Literal[
@@ -25,6 +26,7 @@ class Verification(TypedDict):
     id: str
     status: VerificationStatusesLiterals
     type: VerificationTypesLiterals
+    error: Optional[ResourceError]
     initiated_at: str
     pending_at: str
     verified_at: str

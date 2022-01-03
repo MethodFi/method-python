@@ -60,3 +60,10 @@ class MethodInvalidRequestError(MethodError):
 
 class MethodAuthorizationError(MethodError):
     pass
+
+
+class ResourceError(TypedDict):
+    type: str
+    sub_type: str
+    message: str
+    code: str
