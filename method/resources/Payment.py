@@ -3,6 +3,7 @@ from typing import TypedDict, Optional, List, Dict, Any, Literal
 from method.resource import Resource, RequestOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
+from method.resources.Reversal import ReversalResource
 
 
 PaymentStatusesLiterals = Literal[
@@ -11,7 +12,9 @@ PaymentStatusesLiterals = Literal[
     'processing',
     'failed',
     'sent',
-    'reversed'
+    'reversed',
+    'reversal_required',
+    'reversal_processing'
 ]
 
 
@@ -33,6 +36,9 @@ PaymentTypesLiterals = Literal[
 
 class Payment(TypedDict):
     id: str
+    reversal_id: Optional[str]
+    source_trace_id: Optional[str]
+    destination_trace_id: Optional[str]
     source: str
     destination: str
     amount: int
@@ -55,9 +61,19 @@ class PaymentCreateOpts(TypedDict):
     metadata: Optional[Dict[str, Any]]
 
 
+class PaymentSubResources:
+    reversals: ReversalResource
+
+    def __init__(self, _id: str, config: Configuration):
+        self.reversals = ReversalResource(config.add_path(_id))
+
+
 class PaymentResource(Resource):
     def __init__(self, config: Configuration):
         super(PaymentResource, self).__init__(config.add_path('payments'))
+
+    def __call__(self, _id: str) -> PaymentSubResources:
+        return PaymentSubResources(_id, self.config)
 
     def get(self, _id: str) -> Payment:
         return super(PaymentResource, self)._get_with_id(_id)
