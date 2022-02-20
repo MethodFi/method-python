@@ -33,7 +33,7 @@ class MethodError(BaseException):
     def catch(fn):
         def wrapper(*args, **kwargs):
             res = fn(*args, **kwargs)
-            if (res is not None) and ('error' in res):
+            if (res is not None) and ('error' in res) and ('id' not in res):
                 raise MethodError.generate(res['error'])
             return res
         return wrapper
