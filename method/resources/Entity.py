@@ -98,6 +98,15 @@ class EntityUpdateOpts(TypedDict):
     address: Optional[EntityAddress]
 
 
+class EntityListOpts(TypedDict):
+    to_date: Optional[str]
+    from_date: Optional[str]
+    page: Optional[str | int]
+    page_limit: Optional[str | int]
+    status: Optional[str]
+    type: Optional[str]
+
+
 class EntityResource(Resource):
     def __init__(self, config: Configuration):
         super(EntityResource, self).__init__(config.add_path('entities'))
@@ -111,5 +120,5 @@ class EntityResource(Resource):
     def get(self, _id: str) -> Entity:
         return super(EntityResource, self)._get_with_id(_id)
 
-    def list(self) -> List[Entity]:
-        return super(EntityResource, self)._list(None)
+    def list(self, params: EntityListOpts = None) -> List[Entity]:
+        return super(EntityResource, self)._list(params)

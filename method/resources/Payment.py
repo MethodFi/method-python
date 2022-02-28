@@ -61,6 +61,18 @@ class PaymentCreateOpts(TypedDict):
     metadata: Optional[Dict[str, Any]]
 
 
+class PaymentListOpts(TypedDict):
+    to_date: Optional[str]
+    from_date: Optional[str]
+    page: Optional[str | int]
+    page_limit: Optional[str | int]
+    status: Optional[str]
+    type: Optional[str]
+    source: Optional[str]
+    destination: Optional[str]
+    reversal_id: Optional[str]
+
+
 class PaymentSubResources:
     reversals: ReversalResource
 
@@ -78,8 +90,8 @@ class PaymentResource(Resource):
     def get(self, _id: str) -> Payment:
         return super(PaymentResource, self)._get_with_id(_id)
 
-    def list(self) -> List[Payment]:
-        return super(PaymentResource, self)._list(None)
+    def list(self, params: Optional[PaymentListOpts] = None) -> List[Payment]:
+        return super(PaymentResource, self)._list(params)
 
     def create(self, opts: PaymentCreateOpts, request_opts: Optional[RequestOpts] = None) -> Payment:
         return super(PaymentResource, self)._create(opts, request_opts)
