@@ -10,3 +10,5 @@ from method.resources.RoutingNumber import RoutingNumber, RoutingNumberResource
 from method.resources.Verification import Verification, VerificationResource
 from method.resources.Webhook import Webhook, WebhookResource
 from method.resources.HealthCheck import HealthCheckResource
+from method.resources.Connection import ConnectionResource
+from method.resources.Simulate import SimulatePaymentResource

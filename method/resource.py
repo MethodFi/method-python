@@ -71,3 +71,7 @@ class Resource:
     @MethodError.catch
     def _download(self, _id: str) -> str:
         return self.client(_id).download.GET().text
+
+    @MethodError.catch
+    def _post_with_id(self, _id: str, data: Dict) -> Any:
+        return self.client(_id).POST(data=json.dumps(data)).json().get('data')
