@@ -145,6 +145,12 @@ class AccountTransaction(TypedDict):
 
 
 class AccountListOpts(TypedDict):
+    to_date: Optional[str]
+    from_date: Optional[str]
+    page: Optional[str | int]
+    page_limit: Optional[str | int]
+    status: Optional[str]
+    type: Optional[str]
     holder_id: Optional[str]
 
 
