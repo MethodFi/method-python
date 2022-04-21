@@ -65,6 +65,10 @@ class Resource:
         return self.client.PUT(data=json.dumps(data)).json().get('data')
 
     @MethodError.catch
+    def _update_with_sub_path(self, path: str, data: Dict) -> Any:
+        return self.client(path).PUT(data=json.dumps(data)).json().get('data')
+
+    @MethodError.catch
     def _delete(self, _id: str) -> Any:
         return self.client(_id).DELETE().json().get('data')
 

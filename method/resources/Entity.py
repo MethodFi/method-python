@@ -19,7 +19,8 @@ EntityTypesLiterals = Literal[
 EntityCapabilitiesLiterals = Literal[
     'payments:send',
     'payments:receive',
-    'payments:limited-send'
+    'payments:limited-send',
+    'data:retrieve'
 ]
 
 
@@ -75,6 +76,8 @@ class Entity(TypedDict):
     corporation: Optional[EntityCorporation]
     receive_only: Optional[EntityReceiveOnly]
     capabilities: List[EntityCapabilitiesLiterals]
+    available_capabilities: List[EntityCapabilitiesLiterals]
+    pending_capabilities: List[EntityCapabilitiesLiterals]
     address: EntityAddress
     status: EntityStatusesLiterals
     error: Optional[ResourceError]
@@ -103,8 +106,32 @@ class EntityListOpts(TypedDict):
     from_date: Optional[str]
     page: Optional[str | int]
     page_limit: Optional[str | int]
+    page_cursor: Optional[str]
     status: Optional[str]
     type: Optional[str]
+
+class EntityAnswer(TypedDict):
+    id: str
+    text: str
+
+class EntityQuestion(TypedDict):
+    id: str
+    text: Optional[str]
+    answers: List[EntityAnswer]
+
+class EntityQuestionResponse(TypedDict):
+    questions: List[EntityQuestion]
+
+class AnswerOpts(TypedDict):
+    question_id: str
+    answer_id: str
+
+class EntityUpdateAuthOpts(TypedDict):
+  answers: List[AnswerOpts]
+
+class EntityUpdateAuthResponse(TypedDict):
+  questions: List[EntityQuestion]
+  cxn_id: Optional[str]
 
 
 class EntityResource(Resource):
@@ -122,3 +149,12 @@ class EntityResource(Resource):
 
     def list(self, params: EntityListOpts = None) -> List[Entity]:
         return super(EntityResource, self)._list(params)
+    
+    def create_auth_session(self, _id: str) -> EntityQuestionResponse:
+        return super(EntityResource, self)._create_with_sub_path('{_id}/auth_session'.format(_id=_id), {})
+
+    def update_auth_session(self, _id: str, opts: EntityUpdateAuthOpts) -> EntityUpdateAuthResponse:
+        return super(EntityResource, self)._update_with_sub_path('{_id}/auth_session'.format(_id=_id), opts)
+
+    def refresh_capabilities(self, _id: str) -> Entity:
+        return super(EntityResource, self)._create_with_sub_path('{_id}/refresh_capabilities'.format(_id=_id), {})
