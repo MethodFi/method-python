@@ -66,6 +66,7 @@ class PaymentListOpts(TypedDict):
     from_date: Optional[str]
     page: Optional[str | int]
     page_limit: Optional[str | int]
+    page_cursor: Optional[str]
     status: Optional[str]
     type: Optional[str]
     source: Optional[str]
