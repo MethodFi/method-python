@@ -28,10 +28,22 @@ PaymentFundStatusesLiterals = Literal[
     'unknown'
 ]
 
+
 PaymentTypesLiterals = Literal[
     'standard',
     'clearing'
 ]
+
+
+PaymentFeeTypesLiterals = Literal[
+    'total',
+    'markup'
+]
+
+
+class PaymentFee(TypedDict):
+    type: PaymentFeeTypesLiterals
+    amount: int
 
 
 class Payment(TypedDict):
@@ -48,6 +60,9 @@ class Payment(TypedDict):
     error: Optional[ResourceError]
     metadata: Optional[Dict[str, Any]]
     estimated_completion_date: Optional[str]
+    source_settlement_date: Optional[str]
+    destination_settlement_date: Optional[str]
+    fee: Optional[PaymentFee]
     type: PaymentTypesLiterals
     created_at: str
     updated_at: str
@@ -59,6 +74,7 @@ class PaymentCreateOpts(TypedDict):
     destination: str
     description: str
     metadata: Optional[Dict[str, Any]]
+    fee: Optional[PaymentFee]
 
 
 class PaymentListOpts(TypedDict):
