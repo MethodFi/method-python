@@ -149,8 +149,8 @@ class AccountTransaction(TypedDict):
 class AccountListOpts(TypedDict):
     to_date: Optional[str]
     from_date: Optional[str]
-    page: Optional[str | int]
-    page_limit: Optional[str | int]
+    page: Optional[int]
+    page_limit: Optional[int]
     page_cursor: Optional[str]
     status: Optional[str]
     type: Optional[str]
