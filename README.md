@@ -12,11 +12,11 @@ pip install method-python
 ```python
 from method import Method
 
-client = Method(env='production', api_key='{API_KEY}')
+method = Method(env='production', api_key='{API_KEY}')
 
 # or 
 
-client = Method({'env': 'production', 'api_key': '{API_KEY}'})
+method = Method({'env': 'production', 'api_key': '{API_KEY}'})
 ```
 
 ## Entities
