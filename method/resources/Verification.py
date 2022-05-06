@@ -17,6 +17,7 @@ VerificationTypesLiterals = Literal[
     'micro_deposits',
     'plaid',
     'mx',
+    'teller',
     'auto_verify',
     'trusted_provisioner'
 ]
@@ -52,11 +53,16 @@ class VerificationMXCreate(TypedDict):
     account: Dict[str, Any]
     transactions: List[Dict[str, Any]]
 
+class VerificationTellerCreate(TypedDict):
+    balances: Dict[str, Any]
+    transactions: List[Dict[str, Any]]
+
 
 class VerificationCreateOpts(TypedDict):
     type: VerificationTypesLiterals
     plaid: Optional[VerificationPlaidCreate]
     mx: Optional[VerificationMXCreate]
+    teller: Optional[VerificationTellerCreate]
 
 
 class VerificationTestAmountsResponse(TypedDict):
