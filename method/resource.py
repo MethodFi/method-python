@@ -1,3 +1,4 @@
+from importlib.metadata import version
 import json
 from typing import Optional, List, Dict, Any, TypedDict
 from hammock import Hammock as Client  # type: ignore
@@ -17,7 +18,8 @@ class Resource:
         self.config = config
         self.client = Client(config.url, headers={
             'Authorization': 'Bearer {token}'.format(token=config.api_key),
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'User-Agent': 'Method-Python/v{version}'.format(version=version('method-python')),
         })
 
     @MethodError.catch
