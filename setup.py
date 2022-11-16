@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='method-python',
-    version='0.0.24',
+    version='0.0.25',
     description='Python library for the Method API',
     author='Marco del Carmen',
     author_email='marco@mdelcarmen.me',
