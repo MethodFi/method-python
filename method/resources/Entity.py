@@ -122,6 +122,10 @@ class EntityQuestion(TypedDict):
 class EntityQuestionResponse(TypedDict):
     questions: List[EntityQuestion]
 
+class EntityGetCreditScoreResponse(TypedDict):
+    score: int
+    updated_at: str
+
 class AnswerOpts(TypedDict):
     question_id: str
     answer_id: str
@@ -149,9 +153,12 @@ class EntityResource(Resource):
 
     def list(self, params: EntityListOpts = None) -> List[Entity]:
         return super(EntityResource, self)._list(params)
-    
+
     def create_auth_session(self, _id: str) -> EntityQuestionResponse:
         return super(EntityResource, self)._create_with_sub_path('{_id}/auth_session'.format(_id=_id), {})
+
+    def get_credit_score(self, _id: str) -> EntityQuestionResponse:
+        return super(EntityResource, self)._get_with_sub_path('{_id}/credit_score'.format(_id=_id))
 
     def update_auth_session(self, _id: str, opts: EntityUpdateAuthOpts) -> EntityUpdateAuthResponse:
         return super(EntityResource, self)._update_with_sub_path('{_id}/auth_session'.format(_id=_id), opts)
