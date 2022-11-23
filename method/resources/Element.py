@@ -34,10 +34,10 @@ class ElementResource(Resource):
         super(ElementResource, self).__init__(config.add_path('elements'))
 
     def create_token(self, opts: ElementTokenCreateOpts) -> Element:
-        return super(ElementResource, self)._create_with_sub_path('/token', opts)
+        return super(ElementResource, self)._create_with_sub_path('token', opts)
 
     def exchange_public_account_token(self, opts: ElementExchangePublicAccountOpts) -> Account:
-        return super(ElementResource, self)._create_with_sub_path('/accounts/exchange', opts)
+        return super(ElementResource, self)._create_with_sub_path('accounts/exchange', opts)
 
     def exchange_public_account_tokens(self, opts: ElementExchangePublicAccountOpts) -> Account:
-        return super(ElementResource, self)._create_with_sub_path('/accounts/exchange', opts)
+        return super(ElementResource, self)._create_with_sub_path('accounts/exchange', opts)
