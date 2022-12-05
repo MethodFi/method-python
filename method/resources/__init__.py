@@ -1,5 +1,6 @@
 # type: ignore
 from method.resources.Account import Account, AccountResource
+from method.resources.AccountSync import AccountSyncResource
 from method.resources.Bin import Bin, BinResource
 from method.resources.Element import Element, ElementResource
 from method.resources.Entity import Entity, EntityResource

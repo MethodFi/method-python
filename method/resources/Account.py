@@ -4,6 +4,7 @@ from method.resource import Resource, RequestOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Verification import VerificationResource
+from method.resources.AccountSync import AccountSyncResource
 
 
 AccountTypesLiterals = Literal[
@@ -162,7 +163,7 @@ class AccountSubResources:
 
     def __init__(self, _id: str, config: Configuration):
         self.verification = VerificationResource(config.add_path(_id))
-
+        self.syncs = AccountSyncResource(config.add_path(_id))
 
 class AccountResource(Resource):
     def __init__(self, config: Configuration):
