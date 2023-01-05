@@ -47,6 +47,7 @@ class Merchant(TypedDict):
 
 class MerchantListOpts(TypedDict):
     name: Optional[str]
+    limit: Optional[int]
     # 'provider_id.plaid': Optional[str]
     # 'provider_id.mx': Optional[str]
     # 'provider_id.finicity': Optional[str]
