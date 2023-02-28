@@ -73,6 +73,10 @@ class Resource:
     @MethodError.catch
     def _delete(self, _id: str) -> Any:
         return self.client(_id).DELETE().json().get('data')
+   
+    @MethodError.catch
+    def _delete_with_sub_path(self, path: str) -> Any:
+        return self.client(path).DELETE().json().get('data')
 
     @MethodError.catch
     def _download(self, _id: str) -> str:

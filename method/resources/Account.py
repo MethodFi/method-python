@@ -181,8 +181,11 @@ class AccountResource(Resource):
     def create(self, opts: AccountCreateOpts, request_opts: Optional[RequestOpts] = None) -> Account:
         return super(AccountResource, self)._create(opts, request_opts)
 
-    def get_detail(self, _id: str) -> AccountDetail:
-        return super(AccountResource, self)._get_with_sub_path('{_id}/detail'.format(_id=_id))
+    def get_details(self, _id: str) -> AccountDetail:
+        return super(AccountResource, self)._get_with_sub_path('{_id}/details'.format(_id=_id))
+    
+    def enroll_auto_syncs(self, _id: str) -> Account:
+        return super(AccountResource, self)._create_with_sub_path('{_id}/sync_enrollment'.format(_id=_id), {})
 
-    def get_transactions(self, _id: str) -> List[AccountTransaction]:
-        return super(AccountResource, self)._get_with_sub_path('{_id}/transactions'.format(_id=_id))
+    def unenroll_auto_syncs(self, _id: str) -> Account:
+        return super(AccountResource, self)._delete_with_sub_path('{_id}/sync_enrollment'.format(_id=_id))
