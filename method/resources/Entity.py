@@ -165,3 +165,9 @@ class EntityResource(Resource):
 
     def refresh_capabilities(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path('{_id}/refresh_capabilities'.format(_id=_id), {})
+
+    def withdraw_consent(self, _id: str) -> Entity:
+        return super(EntityResource, self)._create_with_sub_path(
+            '{_id}/consent'.format(_id=_id),
+            { 'type': 'withdraw', 'reason': 'entity_withdrew_consent' }
+        )
