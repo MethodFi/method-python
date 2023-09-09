@@ -277,7 +277,7 @@ class AccountCreateOpts(TypedDict):
     metadata: Optional[Dict[str, Any]]
 
 
-class ACHCreateOpts(AccountCreateOpts):
+class AccountACHCreateOpts(AccountCreateOpts):
     ach: AccountACH
 
 
@@ -285,12 +285,17 @@ class LiabilityCreateOpts(TypedDict):
     mch_id: str
     account_number: str
 
+
 class AccountLiabilityCreateOpts(AccountCreateOpts):
-    liability: Dict[LiabilityCreateOpts]
+    liability: LiabilityCreateOpts
 
 
-class ClearingCreateOpts(AccountCreateOpts):
-  clearing: Dict[type, AccountClearingSubTypesLiterals]
+class ClearingCreateOpts(TypedDict):
+    type: AccountClearingSubTypesLiterals
+
+
+class AccountClearingCreateOpts(AccountCreateOpts):
+    clearing: ClearingCreateOpts
 
 
 class Account(TypedDict):
@@ -422,7 +427,7 @@ class AccountResource(Resource):
     def list(self, params: Optional[AccountListOpts] = None) -> List[Account]:
         return super(AccountResource, self)._list(params)
 
-    def create(self, opts: Union[ACHCreateOpts, LiabilityCreateOpts, ClearingCreateOpts], request_opts: Optional[RequestOpts] = None) -> Account:
+    def create(self, opts: Union[AccountACHCreateOpts, AccountLiabilityCreateOpts, AccountClearingCreateOpts], request_opts: Optional[RequestOpts] = None) -> Account:
         return super(AccountResource, self)._create(opts, request_opts)
 
     def get_payment_history(self, _id: str) -> AccountPaymentHistory:
