@@ -13,3 +13,4 @@ from method.resources.Webhook import Webhook, WebhookResource
 from method.resources.HealthCheck import HealthCheckResource
 from method.resources.Connection import ConnectionResource
 from method.resources.Simulate import SimulatePaymentResource
+from method.resources.Transaction import TransactionResource
