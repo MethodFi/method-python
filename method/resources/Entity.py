@@ -184,6 +184,28 @@ class EntityCreditScoresResponse(TypedDict):
     updated_at: str
     
 
+class EntityCreditScoresFactorsType(TypedDict):
+    code: str
+    description: str
+
+
+class EntityCreditScoresType(TypedDict):
+    score: int
+    source: CreditReportBureausLiterals
+    model: str
+    factors: List[EntityCreditScoresFactorsType]
+    created_at: str
+
+
+class EntityCreditScoresResponse(TypedDict):
+    id: str
+    status: EntityStatusesLiterals
+    credit_scores: Optional[List[EntityCreditScoresType]]
+    error: Optional[ResourceError]
+    created_at: str
+    updated_at: str
+    
+
 class AnswerOpts(TypedDict):
     question_id: str
     answer_id: str
@@ -298,6 +320,7 @@ class EntityResource(Resource):
 
     def update_manual_auth_session(self, _id: str, opts: EntityManualAuthOpts) -> EntityManualAuthResponse:
         return super(EntityResource, self)._update_with_sub_path('{_id}/manual_auth_session'.format(_id=_id), opts)
+    # TODO: Add create and update manual auth session
 
     def refresh_capabilities(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path('{_id}/refresh_capabilities'.format(_id=_id), {})
@@ -307,6 +330,7 @@ class EntityResource(Resource):
 
     def get_sensitive_fields(self, _id: str) -> EntitySensitiveResponse:
         return super(EntityResource, self)._get_with_sub_path('{_id}/sensitive'.format(_id=_id))
+    # TODO: get sensitive fields
 
     def withdraw_consent(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path(
