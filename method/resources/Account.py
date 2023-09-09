@@ -433,21 +433,21 @@ class AccountResource(Resource):
 
     def bulk_sync(self, acc_ids: AccountCreateBulkSyncOpts) -> AccountCreateBulkSyncResponse:
         return super(AccountResource, self)._create_with_subpath(
-        '/bulk_sync',
+        'bulk_sync',
         { acc_ids }
         )
 
     def sync(self, _id: str) -> AccountSync:
-        return super(AccountResource, self)._create_with_sub_path('/{_id}/syncs'.format(_id=_id), {})
+        return super(AccountResource, self)._create_with_sub_path('{_id}/syncs'.format(_id=_id), {})
 
     def bulkSensitive(self, acc_ids: AccountCreateBulkSensitiveOpts) -> AccountCreateBulkSensitiveResponse:
         return super(AccountResource, self)._create_with_sub_path(
-        '/bulk_sensitive',
+        'bulk_sensitive',
         { acc_ids }
         )
 
     def sensitive(self, _id: str) -> AccountSensitive:
-        return super(AccountResource, self)._get_with_sub_path('/{_id}/sensitive'.format(_id=_id))
+        return super(AccountResource, self)._get_with_sub_path('{_id}/sensitive'.format(_id=_id))
 
     def enroll_auto_syncs(self, _id: str) -> Account:
         return super(AccountResource, self)._create_with_sub_path('{_id}/sync_enrollment'.format(_id=_id), {})
