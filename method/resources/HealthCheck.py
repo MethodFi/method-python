@@ -1,4 +1,4 @@
-from typing import Any, TypedDict, Literal
+from typing import TypedDict, Literal
 
 from method.resource import Resource
 from method.configuration import Configuration
