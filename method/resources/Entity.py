@@ -191,6 +191,7 @@ class EntityResource(Resource):
     def create_auth_session(self, _id: str) -> EntityQuestionResponse:
         return super(EntityResource, self)._create_with_sub_path('{_id}/auth_session'.format(_id=_id), {})
 
+<<<<<<< HEAD
     def get_credit_score(self, _id: str) -> EntityQuestionResponse:
         return super(EntityResource, self)._get_with_sub_path('{_id}/credit_score'.format(_id=_id))
     
@@ -200,11 +201,20 @@ class EntityResource(Resource):
     def create_credit_scores(self, _id: str) -> EntityCreditScoresResponse:
         return super(EntityResource, self)._create_with_sub_path('{_id}/credit_scores'.format(_id=_id), {})
 
+=======
+>>>>>>> 6276590 (update merchants)
     def update_auth_session(self, _id: str, opts: EntityUpdateAuthOpts) -> EntityUpdateAuthResponse:
         return super(EntityResource, self)._update_with_sub_path('{_id}/auth_session'.format(_id=_id), opts)
 
+    # TODO: Add create and update manual auth session
+
     def refresh_capabilities(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path('{_id}/refresh_capabilities'.format(_id=_id), {})
+
+    def get_credit_score(self, _id: str) -> EntityQuestionResponse:
+        return super(EntityResource, self)._get_with_sub_path('{_id}/credit_score'.format(_id=_id))
+
+    # TODO: get sensitive fields
 
     def withdraw_consent(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path(
