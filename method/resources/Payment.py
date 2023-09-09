@@ -14,18 +14,8 @@ PaymentStatusesLiterals = Literal[
     'sent',
     'reversed',
     'reversal_required',
-    'reversal_processing'
-]
-
-
-PaymentFundStatusesLiterals = Literal[
-    'hold',
-    'pending',
-    'requested',
-    'clearing',
-    'failed',
-    'sent',
-    'unknown'
+    'reversal_processing',
+    'settled'
 ]
 
 
@@ -56,12 +46,13 @@ class Payment(TypedDict):
     amount: int
     description: str
     status: PaymentStatusesLiterals
-    fund_status: PaymentFundStatusesLiterals
     error: Optional[ResourceError]
     metadata: Optional[Dict[str, Any]]
     estimated_completion_date: Optional[str]
     source_settlement_date: Optional[str]
     destination_settlement_date: Optional[str]
+    source_status: PaymentStatusesLiterals
+    destination_status: PaymentStatusesLiterals
     fee: Optional[PaymentFee]
     type: PaymentTypesLiterals
     created_at: str
@@ -88,6 +79,10 @@ class PaymentListOpts(TypedDict):
     source: Optional[str]
     destination: Optional[str]
     reversal_id: Optional[str]
+    source_holder_id: Optional[str]
+    destination_holder_id: Optional[str]
+    acc_id: Optional[str]
+    holder_id: Optional[str]
 
 
 class PaymentSubResources:
