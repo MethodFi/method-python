@@ -19,6 +19,21 @@ PaymentStatusesLiterals = Literal[
 ]
 
 
+PaymentFundStatusesLiterals = Literal[
+   'transmitting',
+   'transmitted',
+   'hold',
+   'pending',
+   'requested',
+   'clearing',
+   'failed',
+   'sent',
+   'unknown',
+   'pending_consolidation',
+   'pending_clearing'
+]
+
+
 PaymentTypesLiterals = Literal[
     'standard',
     'clearing'
@@ -46,6 +61,7 @@ class Payment(TypedDict):
     amount: int
     description: str
     status: PaymentStatusesLiterals
+    fund_status: Optional[PaymentFundStatusesLiterals]
     error: Optional[ResourceError]
     metadata: Optional[Dict[str, Any]]
     estimated_completion_date: Optional[str]
