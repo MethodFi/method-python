@@ -31,6 +31,21 @@ EntityStatusesLiterals = Literal[
 ]
 
 
+EntityIndividualPhoneVerificationTypesLiterals = Literal[
+    'method_sms',
+    'method_verified',
+    'sms',
+    'tos'
+]
+
+
+CreditReportBureausLiterals = Literal[
+    'experian',
+    'equifax',
+    'transunion'
+]
+
+
 class EntityIndividual(TypedDict):
     first_name: Optional[str]
     last_name: Optional[str]
@@ -110,32 +125,69 @@ class EntityListOpts(TypedDict):
     status: Optional[str]
     type: Optional[str]
 
+
 class EntityAnswer(TypedDict):
     id: str
     text: str
+
 
 class EntityQuestion(TypedDict):
     id: str
     text: Optional[str]
     answers: List[EntityAnswer]
 
+
 class EntityQuestionResponse(TypedDict):
     questions: List[EntityQuestion]
+    authenticated: bool
+    cxn_id: List[str]
+    accounts: List[str]
 
-class EntityGetCreditScoreResponse(TypedDict):
-    score: int
-    updated_at: str
 
 class AnswerOpts(TypedDict):
     question_id: str
     answer_id: str
 
+
 class EntityUpdateAuthOpts(TypedDict):
-  answers: List[AnswerOpts]
+    answers: List[AnswerOpts]
+
 
 class EntityUpdateAuthResponse(TypedDict):
-  questions: List[EntityQuestion]
-  cxn_id: Optional[str]
+    questions: List[EntityQuestion]
+    authenticated: bool
+    cxn_id: Optional[str]
+    accounts: List[str]
+
+
+class EntityManualAuthOpts(TypedDict):
+    format: str
+    bureau: CreditReportBureausLiterals
+    raw_report: Dict[str, Any]
+
+
+class EntityManualAuthResponse(TypedDict):
+    authenticated: bool
+    accounts: List[str]
+
+
+class EntityGetCreditScoreResponse(TypedDict):
+    score: int
+    updated_at: str
+
+
+class AnswerOpts(TypedDict):
+    question_id: str
+    answer_id: str
+
+
+class EntityUpdateAuthOpts(TypedDict):
+    answers: List[AnswerOpts]
+
+
+class EntityUpdateAuthResponse(TypedDict):
+    questions: List[EntityQuestion]
+    cxn_id: Optional[str]
 
 
 class EntityResource(Resource):
@@ -173,5 +225,5 @@ class EntityResource(Resource):
     def withdraw_consent(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path(
             '{_id}/consent'.format(_id=_id),
-            { 'type': 'withdraw', 'reason': 'entity_withdrew_consent' }
+            {'type': 'withdraw', 'reason': 'entity_withdrew_consent'}
         )
