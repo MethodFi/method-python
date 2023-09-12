@@ -217,6 +217,38 @@ class EntityUpdateAuthResponse(TypedDict):
     cxn_id: Optional[str]
 
 
+class EntityKYCAddressRecordData(TypedDict):
+    address: str
+    city: str
+    postal_code: str
+    state: str
+    address_term: int
+
+
+class EntityIdentity(TypedDict):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    phone: Optional[str]
+    dob: Optional[str]
+    address: Optional[EntityKYCAddressRecordData]
+    ssn: Optional[str]
+
+
+class EntitySensitiveResponse(TypedDict):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    phone: Optional[str]
+    phone_history: Optional[List[str]]
+    email: Optional[str]
+    dob: Optional[str]
+    address: Optional[EntityKYCAddressRecordData]
+    address_history: List[EntityKYCAddressRecordData]
+    ssn_4: Optional[str]
+    ssn_6: Optional[str]
+    ssn_9: Optional[str]
+    identities: List[EntityIdentity]
+
+
 class EntityResource(Resource):
     def __init__(self, config: Configuration):
         super(EntityResource, self).__init__(config.add_path('entities'))
@@ -248,7 +280,11 @@ class EntityResource(Resource):
     def update_auth_session(self, _id: str, opts: EntityUpdateAuthOpts) -> EntityUpdateAuthResponse:
         return super(EntityResource, self)._update_with_sub_path('{_id}/auth_session'.format(_id=_id), opts)
 
-    # TODO: Add create and update manual auth session
+    def create_manual_auth_session(self, _id: str, opts: EntityManualAuthOpts) -> EntityManualAuthResponse:
+        return super(EntityResource, self)._create_with_sub_path('{_id}/manual_auth_session'.format(_id=_id), opts)
+
+    def update_manual_auth_session(self, _id: str, opts: EntityManualAuthOpts) -> EntityManualAuthResponse:
+        return super(EntityResource, self)._update_with_sub_path('{_id}/manual_auth_session'.format(_id=_id), opts)
 
     def refresh_capabilities(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path('{_id}/refresh_capabilities'.format(_id=_id), {})
@@ -256,7 +292,8 @@ class EntityResource(Resource):
     def get_credit_score(self, _id: str) -> EntityQuestionResponse:
         return super(EntityResource, self)._get_with_sub_path('{_id}/credit_score'.format(_id=_id))
 
-    # TODO: get sensitive fields
+    def get_sensitive_fields(self, _id: str) -> EntitySensitiveResponse:
+        return super(EntityResource, self)._get_with_sub_path('{_id}/sensitive'.format(_id=_id))
 
     def withdraw_consent(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path(
