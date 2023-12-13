@@ -182,10 +182,7 @@ class EntityCreditScoresResponse(TypedDict):
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
-<<<<<<< HEAD
-=======
     
->>>>>>> d3c13a0 (removed deprecated connections.  Added credit_scores endpoint)
 
 class AnswerOpts(TypedDict):
     question_id: str
