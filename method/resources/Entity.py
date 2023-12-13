@@ -47,6 +47,14 @@ EntityIndividualPhoneVerificationTypesLiterals = Literal[
 ]
 
 
+CreditScoreStatusesLiterals = Literal[
+    'completed',
+    'in_progress',
+    'pending',
+    'failed'
+]
+
+
 CreditReportBureausLiterals = Literal[
     'experian',
     'equifax',
@@ -156,12 +164,16 @@ class EntityCreditScoresFactorsType(TypedDict):
     code: str
     description: str
 
+
 class EntityCreditScoresType(TypedDict):
     score: int
     source: CreditReportBureausLiterals
     model: str
     factors: List[EntityCreditScoresFactorsType]
     created_at: str
+    factors: EntityCreditScoresFactorsType
+    created_at: str
+
 
 class EntityCreditScoresResponse(TypedDict):
     id: str
@@ -170,6 +182,10 @@ class EntityCreditScoresResponse(TypedDict):
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
+<<<<<<< HEAD
+=======
+    
+>>>>>>> d3c13a0 (removed deprecated connections.  Added credit_scores endpoint)
 
 class AnswerOpts(TypedDict):
     question_id: str
