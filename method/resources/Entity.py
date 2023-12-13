@@ -149,7 +149,7 @@ class EntityCreditScoresType(TypedDict):
     score: int
     source: CreditReportBureausLiterals
     model: str
-    factors: EntityCreditScoresFactorsType
+    factors: List[EntityCreditScoresFactorsType]
     created_at: str
 
 class EntityCreditScoresResponse(TypedDict):
