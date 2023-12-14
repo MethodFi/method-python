@@ -419,22 +419,3 @@ report = method.reports.get('rpt_cj2mkA3hFyHT5')
 report_csv = method.reports.download('rpt_cj2mkA3hFyHT5')
 ```
 
-## Connections
-
-### List Connections
-
-```python
-connections = method.connections.list()
-```
-
-### Retrieve Connection
-
-```python
-connection = method.connections.get('cxn_iENwAPKnNqA5j')
-```
-
-### Update Connection
-
-```python
-connection = method.connections.update('cxn_iENwAPKnNqA5j', { 'status': 'syncing' })
-```
