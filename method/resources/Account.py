@@ -52,6 +52,7 @@ AccountLiabilitySyncTypesLiterals = Literal[
 
 AccountLiabilityTypesLiterals = Literal[
     'student_loan',
+    'student_loans',
     'credit_card',
     'mortgage',
     'auto_loan',
@@ -106,6 +107,24 @@ PastDueStatusesLiterals = Literal[
     'unknown',
     'overdue',
     'on_time'
+]
+
+
+DelinquencyStatusLiterals = Literal[
+   'good_standing',
+   'past_due',
+   'major_delinquency'
+   'unavailable'
+]
+
+
+DelinquencyPeriodLiterals = Literal[
+   'less_than_30',
+   '30',
+   '60',
+   '90',
+   '120',
+   'over_120'
 ]
 
 
@@ -172,6 +191,52 @@ class AccountLiabilityStudentLoan(AccountLiabilityLoan):
   payoff_amount: Optional[int]
   payoff_amount_term: Optional[int]
   principal_balance: Optional[int]
+  
+
+class DelinquencyHistoryItem(TypedDict):
+  start_date: str
+  end_date: str
+  status: DelinquencyStatusLiterals
+  period: Optional[DelinquencyPeriodLiterals]
+  
+
+class TrendedDataItem(TypedDict):
+  month: Optional[int]
+  year: Optional[int]
+  balance: Optional[int]
+  available_credit: Optional[int]
+  scheduled_payment: Optional[int]
+  actual_payment: Optional[int]
+  high_credit: Optional[int]
+  credit_limit: Optional[int]
+  amount_past_due: Optional[int]
+  last_payment_date: Optional[str]
+  account_status: str
+  payment_status:str
+    
+
+class AccountLiabilityStudentLoansDisbursement(AccountLiabilityLoan):
+	sequence: int
+	disbursed_at: Optional[str]
+	expected_payoff_date: Optional[str]
+	delinquent_status: Optional[str]
+	delinquent_amount: Optional[int]
+	delinquent_period: Optional[int]
+	delinquent_action: Optional[str]
+	delinquent_start_date: Optional[str]
+	delinquent_major_start_date: Optional[str]
+	delinquent_status_updated_at: Optional[str]
+	delinquent_history: Optional[List[DelinquencyHistoryItem]]
+	delinquent_action: Optional[List[TrendedDataItem]]
+
+
+class AccountLiabilityStudentLoans(AccountLiabilityLoan):
+  sub_type: Optional[Literal['federal', 'private']]
+  disbursed_at: Optional[str]
+  expected_payoff_date: Optional[str]
+  interest_rate_type: Optional[Literal['fixed', 'variable']]
+  expected_payoff_date: Optional[str]
+  disbursements: Optional[AccountLiabilityStudentLoansDisbursement]
 
 
 class AccountLiabilityMortgage(AccountLiabilityLoan):
@@ -254,6 +319,7 @@ class AccountLiability(TypedDict):
     type: AccountLiabilityTypesLiterals
     loan: Optional[AccountLiabilityLoan]
     student_loan: Optional[AccountLiabilityStudentLoan]
+    student_loans: Optional[AccountLiabilityStudentLoans]
     credit_card: Optional[AccountLiabilityCreditCard]
     mortgage: Optional[AccountLiabilityMortgage]
     auto_loan: Optional[AccountLiabilityAutoLoan]
