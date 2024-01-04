@@ -253,7 +253,6 @@ class EntityUpdateAuthOpts(TypedDict):
 class EntityUpdateAuthResponse(TypedDict):
     questions: List[EntityQuestion]
     cxn_id: Optional[str]
-<<<<<<< HEAD
 
 
 class EntityKYCAddressRecordData(TypedDict):
@@ -286,8 +285,6 @@ class EntitySensitiveResponse(TypedDict):
     ssn_6: Optional[str]
     ssn_9: Optional[str]
     identities: List[EntityIdentity]
-=======
->>>>>>> d934838 (update entities)
 
 
 class EntityResource(Resource):
