@@ -20,17 +20,13 @@ PaymentStatusesLiterals = Literal[
 
 
 PaymentFundStatusesLiterals = Literal[
-   'transmitting',
-   'transmitted',
-   'hold',
-   'pending',
-   'requested',
-   'clearing',
-   'failed',
-   'sent',
-   'unknown',
-   'pending_consolidation',
-   'pending_clearing'
+    'hold',
+    'pending',
+    'requested',
+    'clearing',
+    'failed',
+    'sent',
+    'unknown'
 ]
 
 
