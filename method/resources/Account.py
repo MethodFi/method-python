@@ -216,18 +216,18 @@ class TrendedDataItem(TypedDict):
     
 
 class AccountLiabilityStudentLoansDisbursement(AccountLiabilityLoan):
-    sequence: int
-    disbursed_at: Optional[str]
-    expected_payoff_date: Optional[str]
-    delinquent_status: Optional[str]
-    delinquent_amount: Optional[int]
-    delinquent_period: Optional[int]
-    delinquent_action: Optional[str]
-    delinquent_start_date: Optional[str]
-    delinquent_major_start_date: Optional[str]
-    delinquent_status_updated_at: Optional[str]
-    delinquent_history: Optional[List[DelinquencyHistoryItem]]
-    delinquent_action: Optional[List[TrendedDataItem]]
+	sequence: int
+	disbursed_at: Optional[str]
+	expected_payoff_date: Optional[str]
+	delinquent_status: Optional[str]
+	delinquent_amount: Optional[int]
+	delinquent_period: Optional[int]
+	delinquent_action: Optional[str]
+	delinquent_start_date: Optional[str]
+	delinquent_major_start_date: Optional[str]
+	delinquent_status_updated_at: Optional[str]
+	delinquent_history: Optional[List[DelinquencyHistoryItem]]
+	delinquent_action: Optional[List[TrendedDataItem]]
 
 
 class AccountLiabilityStudentLoans(AccountLiabilityLoan):
