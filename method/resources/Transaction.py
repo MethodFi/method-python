@@ -21,7 +21,7 @@ class Transaction(TypedDict):
 
 class TransactionResource(Resource):
     def __init__(self, config: Configuration):
-        super(TransactionResource, self).__init__(config.add_path('resource'))
+        super(TransactionResource, self).__init__(config.add_path('transactions'))
 
     def list(self) -> List[Transaction]:
         return super(TransactionResource, self)._list(None)
