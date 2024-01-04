@@ -47,7 +47,6 @@ EntityIndividualPhoneVerificationTypesLiterals = Literal[
 ]
 
 
-<<<<<<< HEAD
 CreditScoreStatusesLiterals = Literal[
     'completed',
     'in_progress',
@@ -56,8 +55,6 @@ CreditScoreStatusesLiterals = Literal[
 ]
 
 
-=======
->>>>>>> 5753f79 (update entities)
 CreditReportBureausLiterals = Literal[
     'experian',
     'equifax',
