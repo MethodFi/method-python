@@ -5,18 +5,18 @@ from method.configuration import Configuration
 
 
 class Transaction(TypedDict):
-  id: str
-  acc_id: str
-  mcc: str
-  description: str
-  presentable_description: str
-  amount: str
-  currency: str
-  billing_amount: str
-  billing_currency: str
-  status: str
-  created_at: str
-  updated_at: str
+    id: str
+    acc_id: str
+    mcc: str
+    description: str
+    presentable_description: str
+    amount: str
+    currency: str
+    billing_amount: str
+    billing_currency: str
+    status: str
+    created_at: str
+    updated_at: str
 
 
 class TransactionResource(Resource):

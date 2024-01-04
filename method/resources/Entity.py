@@ -320,7 +320,6 @@ class EntityResource(Resource):
 
     def update_manual_auth_session(self, _id: str, opts: EntityManualAuthOpts) -> EntityManualAuthResponse:
         return super(EntityResource, self)._update_with_sub_path('{_id}/manual_auth_session'.format(_id=_id), opts)
-    # TODO: Add create and update manual auth session
 
     def refresh_capabilities(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path('{_id}/refresh_capabilities'.format(_id=_id), {})
@@ -330,7 +329,6 @@ class EntityResource(Resource):
 
     def get_sensitive_fields(self, _id: str) -> EntitySensitiveResponse:
         return super(EntityResource, self)._get_with_sub_path('{_id}/sensitive'.format(_id=_id))
-    # TODO: get sensitive fields
 
     def withdraw_consent(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path(

@@ -128,7 +128,6 @@ DelinquencyPeriodLiterals = Literal[
 ]
 
 
-# Typed Classes
 class AccountACH(TypedDict):
     routing: int
     number: int
@@ -216,18 +215,18 @@ class TrendedDataItem(TypedDict):
     
 
 class AccountLiabilityStudentLoansDisbursement(AccountLiabilityLoan):
-	sequence: int
-	disbursed_at: Optional[str]
-	expected_payoff_date: Optional[str]
-	delinquent_status: Optional[str]
-	delinquent_amount: Optional[int]
-	delinquent_period: Optional[int]
-	delinquent_action: Optional[str]
-	delinquent_start_date: Optional[str]
-	delinquent_major_start_date: Optional[str]
-	delinquent_status_updated_at: Optional[str]
-	delinquent_history: Optional[List[DelinquencyHistoryItem]]
-	delinquent_action: Optional[List[TrendedDataItem]]
+    sequence: int
+    disbursed_at: Optional[str]
+    expected_payoff_date: Optional[str]
+    delinquent_status: Optional[str]
+    delinquent_amount: Optional[int]
+    delinquent_period: Optional[int]
+    delinquent_action: Optional[str]
+    delinquent_start_date: Optional[str]
+    delinquent_major_start_date: Optional[str]
+    delinquent_status_updated_at: Optional[str]
+    delinquent_history: Optional[List[DelinquencyHistoryItem]]
+    delinquent_action: Optional[List[TrendedDataItem]]
 
 
 class AccountLiabilityStudentLoans(AccountLiabilityLoan):
@@ -503,19 +502,13 @@ class AccountResource(Resource):
         return super(AccountResource, self)._get_with_sub_path('{_id}/details'.format(_id=_id))
 
     def bulk_sync(self, acc_ids: AccountCreateBulkSyncOpts) -> AccountCreateBulkSyncResponse:
-        return super(AccountResource, self)._create_with_subpath(
-        'bulk_sync',
-        { acc_ids }
-        )
+        return super(AccountResource, self)._create_with_subpath('bulk_sync',{ acc_ids })
 
     def sync(self, _id: str) -> AccountSync:
         return super(AccountResource, self)._create_with_sub_path('{_id}/syncs'.format(_id=_id), {})
 
     def bulk_sensitive(self, acc_ids: AccountCreateBulkSensitiveOpts) -> AccountCreateBulkSensitiveResponse:
-        return super(AccountResource, self)._create_with_sub_path(
-        'bulk_sensitive',
-        { acc_ids }
-        )
+        return super(AccountResource, self)._create_with_sub_path('bulk_sensitive',{ acc_ids })
 
     def sensitive(self, _id: str) -> AccountSensitive:
         return super(AccountResource, self)._get_with_sub_path('{_id}/sensitive'.format(_id=_id))
@@ -527,7 +520,4 @@ class AccountResource(Resource):
         return super(AccountResource, self)._delete_with_sub_path('{_id}/sync_enrollment'.format(_id=_id))
 
     def withdraw_consent(self, _id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> Account:
-        return super(AccountResource, self)._create_with_sub_path(
-            '{_id}/consent'.format(_id=_id),
-            data
-        )
+        return super(AccountResource, self)._create_with_sub_path('{_id}/consent'.format(_id=_id), data)

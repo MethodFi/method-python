@@ -5,7 +5,9 @@ from method.configuration import Configuration
 from method.resources.Account import Account
 
 
-ElementTypesLiterals = Literal['link']
+ElementTypesLiterals = Literal[
+    'link'
+]
 
 
 UserEventTypeLiterals = Literal[
@@ -64,16 +66,16 @@ class Element(TypedDict):
 
 
 class ElementUserEvent(TypedDict):
-  type: UserEventTypeLiterals
-  timestamp: str
-  metadata: Optional[Dict[str, any]]
+    type: UserEventTypeLiterals
+    timestamp: str
+    metadata: Optional[Dict[str, any]]
 
 class TokenSessionResult(TypedDict):
-  authenticated: bool
-  cxn_id: Optional[str]
-  accounts: List[str]
-  entity_id: Optional[str]
-  events: List[ElementUserEvent]
+    authenticated: bool
+    cxn_id: Optional[str]
+    accounts: List[str]
+    entity_id: Optional[str]
+    events: List[ElementUserEvent]
 
 
 class ElementExchangePublicAccountOpts(TypedDict):

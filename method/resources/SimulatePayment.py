@@ -11,7 +11,6 @@ class SimulatePaymentUpdateOpts(TypedDict):
 
 
 class SimulatePaymentResource(Resource):
-
     def __init__(self, config: Configuration):
         super(SimulatePaymentResource, self).__init__(config.add_path('payments'))
 

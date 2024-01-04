@@ -9,14 +9,16 @@ ReportTypesLiterals = Literal[
     'payments.created.previous',
     'payments.updated.current',
     'payments.updated.previous',
-     'ach.pull.upcoming',
-     'ach.pull.previous',
-     'ach.pull.nightly',
-     'ach.reversals.nightly'
+    'ach.pull.upcoming',
+    'ach.pull.previous',
+    'ach.pull.nightly',
+    'ach.reversals.nightly'
 ]
 
 
-ReportStatusesLiterals = Literal['completed']
+ReportStatusesLiterals = Literal[
+    'completed'
+]
 
 
 class Report(TypedDict):

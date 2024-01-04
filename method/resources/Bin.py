@@ -12,7 +12,10 @@ BinBrandsLiterals = Literal[
     'diners_club'
 ]
 
-BinTypesLiterals = Literal['debit', 'credit']
+BinTypesLiterals = Literal[
+    'debit',
+    'credit'
+]
 
 
 class Bin(TypedDict):
