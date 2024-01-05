@@ -39,6 +39,22 @@ CreditScoreStatusesLiterals = Literal[
 ]
 
 
+EntityIndividualPhoneVerificationTypesLiterals = Literal[
+    'method_sms',
+    'method_verified',
+    'sms',
+    'tos'
+]
+
+
+CreditScoreStatusesLiterals = Literal[
+    'completed',
+    'in_progress',
+    'pending',
+    'failed'
+]
+
+
 CreditReportBureausLiterals = Literal[
     'experian',
     'equifax',
@@ -125,25 +141,29 @@ class EntityListOpts(TypedDict):
     status: Optional[str]
     type: Optional[str]
 
+
 class EntityAnswer(TypedDict):
     id: str
     text: str
+
 
 class EntityQuestion(TypedDict):
     id: str
     text: Optional[str]
     answers: List[EntityAnswer]
 
+
 class EntityQuestionResponse(TypedDict):
     questions: List[EntityQuestion]
+    authenticated: bool
+    cxn_id: List[str]
+    accounts: List[str]
 
-class EntityGetCreditScoreResponse(TypedDict):
-    score: int
-    updated_at: str
 
 class EntityCreditScoresFactorsType(TypedDict):
     code: str
     description: str
+
 
 class EntityCreditScoresType(TypedDict):
     score: int
@@ -151,6 +171,9 @@ class EntityCreditScoresType(TypedDict):
     model: str
     factors: List[EntityCreditScoresFactorsType]
     created_at: str
+    factors: EntityCreditScoresFactorsType
+    created_at: str
+
 
 class EntityCreditScoresResponse(TypedDict):
     id: str
@@ -159,17 +182,106 @@ class EntityCreditScoresResponse(TypedDict):
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
+    
+
+class EntityCreditScoresFactorsType(TypedDict):
+    code: str
+    description: str
+
+
+class EntityCreditScoresType(TypedDict):
+    score: int
+    source: CreditReportBureausLiterals
+    model: str
+    factors: List[EntityCreditScoresFactorsType]
+    created_at: str
+
+
+class EntityCreditScoresResponse(TypedDict):
+    id: str
+    status: EntityStatusesLiterals
+    credit_scores: Optional[List[EntityCreditScoresType]]
+    error: Optional[ResourceError]
+    created_at: str
+    updated_at: str
+    
 
 class AnswerOpts(TypedDict):
     question_id: str
     answer_id: str
 
+
 class EntityUpdateAuthOpts(TypedDict):
-  answers: List[AnswerOpts]
+    answers: List[AnswerOpts]
+
 
 class EntityUpdateAuthResponse(TypedDict):
-  questions: List[EntityQuestion]
-  cxn_id: Optional[str]
+    questions: List[EntityQuestion]
+    authenticated: bool
+    cxn_id: Optional[str]
+    accounts: List[str]
+
+
+class EntityManualAuthOpts(TypedDict):
+    format: str
+    bureau: CreditReportBureausLiterals
+    raw_report: Dict[str, Any]
+
+
+class EntityManualAuthResponse(TypedDict):
+    authenticated: bool
+    accounts: List[str]
+
+
+class EntityGetCreditScoreResponse(TypedDict):
+    score: int
+    updated_at: str
+
+
+class AnswerOpts(TypedDict):
+    question_id: str
+    answer_id: str
+
+
+class EntityUpdateAuthOpts(TypedDict):
+    answers: List[AnswerOpts]
+
+
+class EntityUpdateAuthResponse(TypedDict):
+    questions: List[EntityQuestion]
+    cxn_id: Optional[str]
+
+
+class EntityKYCAddressRecordData(TypedDict):
+    address: str
+    city: str
+    postal_code: str
+    state: str
+    address_term: int
+
+
+class EntityIdentity(TypedDict):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    phone: Optional[str]
+    dob: Optional[str]
+    address: Optional[EntityKYCAddressRecordData]
+    ssn: Optional[str]
+
+
+class EntitySensitiveResponse(TypedDict):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    phone: Optional[str]
+    phone_history: Optional[List[str]]
+    email: Optional[str]
+    dob: Optional[str]
+    address: Optional[EntityKYCAddressRecordData]
+    address_history: List[EntityKYCAddressRecordData]
+    ssn_4: Optional[str]
+    ssn_6: Optional[str]
+    ssn_9: Optional[str]
+    identities: List[EntityIdentity]
 
 
 class EntityResource(Resource):
@@ -203,11 +315,23 @@ class EntityResource(Resource):
     def update_auth_session(self, _id: str, opts: EntityUpdateAuthOpts) -> EntityUpdateAuthResponse:
         return super(EntityResource, self)._update_with_sub_path('{_id}/auth_session'.format(_id=_id), opts)
 
+    def create_manual_auth_session(self, _id: str, opts: EntityManualAuthOpts) -> EntityManualAuthResponse:
+        return super(EntityResource, self)._create_with_sub_path('{_id}/manual_auth_session'.format(_id=_id), opts)
+
+    def update_manual_auth_session(self, _id: str, opts: EntityManualAuthOpts) -> EntityManualAuthResponse:
+        return super(EntityResource, self)._update_with_sub_path('{_id}/manual_auth_session'.format(_id=_id), opts)
+
     def refresh_capabilities(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path('{_id}/refresh_capabilities'.format(_id=_id), {})
+
+    def get_credit_score(self, _id: str) -> EntityQuestionResponse:
+        return super(EntityResource, self)._get_with_sub_path('{_id}/credit_score'.format(_id=_id))
+
+    def get_sensitive_fields(self, _id: str) -> EntitySensitiveResponse:
+        return super(EntityResource, self)._get_with_sub_path('{_id}/sensitive'.format(_id=_id))
 
     def withdraw_consent(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path(
             '{_id}/consent'.format(_id=_id),
-            { 'type': 'withdraw', 'reason': 'entity_withdrew_consent' }
+            {'type': 'withdraw', 'reason': 'entity_withdrew_consent'}
         )

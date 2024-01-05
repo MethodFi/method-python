@@ -8,12 +8,15 @@ ReportTypesLiterals = Literal[
     'payments.created.current',
     'payments.created.previous',
     'payments.updated.current',
-    'payments.updated.previous'
+    'payments.updated.previous',
+    'ach.pull.upcoming',
+    'ach.pull.previous',
+    'ach.pull.nightly',
+    'ach.reversals.nightly'
 ]
 
 
 ReportStatusesLiterals = Literal[
-    'processing',
     'completed'
 ]
 

@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, Dict, List, Any, Literal
+from typing import TypedDict, Optional
 
 from method.resource import Resource, RequestOpts
 from method.configuration import Configuration
@@ -7,12 +7,12 @@ from method.resources.Verification import VerificationResource
 
 
 class AccountSync(TypedDict):
-      id: str
-      acc_id: str
-      status: str
-      error: Optional[ResourceError]
-      created_at: str
-      updated_at: str
+    id: str
+    acc_id: str
+    status: str
+    error: Optional[ResourceError]
+    created_at: str
+    updated_at: str
 
 class AccountSyncCreateOpts(TypedDict):
     pass

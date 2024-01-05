@@ -23,7 +23,9 @@ MerchantTypesLiterals = Literal[
     'home_equity_loan',
     'mortgage',
     'utility',
-    'waste_utility'
+    'waste_utility',
+    'collection'
+    'credit_builder',
 ]
 
 
@@ -43,14 +45,14 @@ class Merchant(TypedDict):
     types: List[MerchantTypesLiterals]
     account_prefixes: List[str]
     provider_ids: MerchantProviderIds
-
+    customized_auth: bool
+    is_temp: bool
 
 class MerchantListOpts(TypedDict):
     name: Optional[str]
-    limit: Optional[int]
-    # 'provider_id.plaid': Optional[str]
-    # 'provider_id.mx': Optional[str]
-    # 'provider_id.finicity': Optional[str]
+    'provider_id.plaid': Optional[str]
+    'provider_id.mx': Optional[str]
+    'provider_id.finicity': Optional[str]
 
 
 class MerchantResource(Resource):

@@ -418,4 +418,3 @@ report = method.reports.get('rpt_cj2mkA3hFyHT5')
 ```python
 report_csv = method.reports.download('rpt_cj2mkA3hFyHT5')
 ```
-

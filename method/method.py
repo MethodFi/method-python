@@ -10,6 +10,7 @@ from method.resources.RoutingNumber import RoutingNumberResource
 from method.resources.Webhook import WebhookResource
 from method.resources.HealthCheck import PingResponse, HealthCheckResource
 from method.resources.Simulate import SimulateResource
+from method.resources.Transaction import TransactionResource
 
 
 class Method:
@@ -24,6 +25,7 @@ class Method:
     webhooks: WebhookResource
     healthcheck: HealthCheckResource
     simulate: SimulateResource
+    transaction: TransactionResource
 
     def __init__(self, opts: ConfigurationOpts = None, **kwargs: ConfigurationOpts):
         _opts: ConfigurationOpts = {**(opts or {}), **kwargs}  # type: ignore
@@ -40,6 +42,7 @@ class Method:
         self.webhooks = WebhookResource(config)
         self.healthcheck = HealthCheckResource(config)
         self.simulate = SimulateResource(config)
+        self.transaction = TransactionResource(config)
 
     def ping(self) -> PingResponse:
         return self.healthcheck.get()
