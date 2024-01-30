@@ -392,17 +392,18 @@ class AccountDetail(TypedDict):
     metadata: Optional[Dict[str, Any]]
 
 
-class AccountListOpts(TypedDict):
-    to_date: Optional[str]
-    from_date: Optional[str]
-    page: Optional[int]
-    page_limit: Optional[int]
-    page_cursor: Optional[str]
-    status: Optional[str]
-    type: Optional[str]
-    holder_id: Optional[str]
-    'liability.mch_id': Optional[str]
+AccountListOpts = TypedDict('AccountListOpts', {
+    'to_date': Optional[str],
+    'from_date': Optional[str],
+    'page': Optional[int],
+    'page_limit': Optional[int],
+    'page_cursor': Optional[str],
+    'status': Optional[str],
+    'type': Optional[str],
+    'holder_id': Optional[str],
+    'liability.mch_id': Optional[str],
     'liability.type': Optional[str]
+})
 
 
 class AccountCreateBulkSyncOpts(TypedDict):
@@ -412,7 +413,7 @@ class AccountCreateBulkSyncOpts(TypedDict):
 class AccountCreateBulkSyncResponse(TypedDict):
     success: List[str]
     failed: List[str]
-    results: [AccountSync]
+    results: List[AccountSync]
 
 
 class AccountSensitive(TypedDict):
@@ -426,7 +427,7 @@ class AccountSensitive(TypedDict):
 class AccountCreateBulkSensitiveResponse(TypedDict):
     success: List[str]
     failed: List[str]
-    results: [AccountSensitive]
+    results: List[AccountSensitive]
 
 
 class AccountCreateBulkSensitiveOpts(TypedDict):
@@ -502,7 +503,7 @@ class AccountResource(Resource):
         return super(AccountResource, self)._get_with_sub_path('{_id}/details'.format(_id=_id))
 
     def bulk_sync(self, acc_ids: AccountCreateBulkSyncOpts) -> AccountCreateBulkSyncResponse:
-        return super(AccountResource, self)._create_with_subpath('bulk_sync',{ acc_ids })
+        return super(AccountResource, self)._create_with_sub_path('bulk_sync',{ acc_ids })
 
     def sync(self, _id: str) -> AccountSync:
         return super(AccountResource, self)._create_with_sub_path('{_id}/syncs'.format(_id=_id), {})
