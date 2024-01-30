@@ -48,11 +48,12 @@ class Merchant(TypedDict):
     customized_auth: bool
     is_temp: bool
 
-class MerchantListOpts(TypedDict):
-    name: Optional[str]
-    'provider_id.plaid': Optional[str]
-    'provider_id.mx': Optional[str]
+MerchantListOpts = TypedDict('MerchantListOpts', {
+    'name': Optional[str],
+    'provider_id.plaid': Optional[str],
+    'provider_id.mx': Optional[str],
     'provider_id.finicity': Optional[str]
+})
 
 
 class MerchantResource(Resource):
