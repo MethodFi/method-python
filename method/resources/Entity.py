@@ -61,6 +61,21 @@ CreditReportBureausLiterals = Literal[
     'transunion'
 ]
 
+EntitySensitiveFieldsLiterals = Literal[
+    'first_name',
+    'last_name',
+    'phone',
+    'phone_history',
+    'email',
+    'dob',
+    'address',
+    'address_history',
+    'ssn_4',
+    'ssn_6',
+    'ssn_9',
+    'identities'
+]
+
 
 class EntityIndividual(TypedDict):
     first_name: Optional[str]
@@ -182,7 +197,7 @@ class EntityCreditScoresResponse(TypedDict):
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
-    
+
 
 class EntityCreditScoresFactorsType(TypedDict):
     code: str
@@ -204,7 +219,7 @@ class EntityCreditScoresResponse(TypedDict):
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
-    
+
 
 class AnswerOpts(TypedDict):
     question_id: str
@@ -305,7 +320,7 @@ class EntityResource(Resource):
 
     def get_credit_score(self, _id: str) -> EntityQuestionResponse:
         return super(EntityResource, self)._get_with_sub_path('{_id}/credit_score'.format(_id=_id))
-    
+
     def get_credit_scores(self, _id: str, crs_id: str) -> EntityCreditScoresResponse:
         return super(EntityResource, self)._get_with_sub_path('{_id}/credit_scores/{crs_id}'.format(_id=_id, crs_id=crs_id))
 
@@ -327,8 +342,11 @@ class EntityResource(Resource):
     def get_credit_score(self, _id: str) -> EntityQuestionResponse:
         return super(EntityResource, self)._get_with_sub_path('{_id}/credit_score'.format(_id=_id))
 
-    def get_sensitive_fields(self, _id: str) -> EntitySensitiveResponse:
-        return super(EntityResource, self)._get_with_sub_path('{_id}/sensitive'.format(_id=_id))
+    def get_sensitive_fields(self, _id: str, fields: List[EntitySensitiveFieldsLiterals]) -> EntitySensitiveResponse:
+        return super(EntityResource, self)._get_with_sub_path_and_params(
+            '{_id}/sensitive'.format(_id=_id),
+            {'fields[]': fields},
+        )
 
     def withdraw_consent(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path(
