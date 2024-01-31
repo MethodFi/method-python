@@ -43,6 +43,10 @@ class Resource:
         return self.client(path).GET().json().get('data')
 
     @MethodError.catch
+    def _get_with_sub_path_and_params(self, path: str, params: Dict) -> Any:
+        return self.client(path).GET(params=params).json().get('data')
+
+    @MethodError.catch
     def _list(self, params: Optional[Dict] = None) -> List[Any]:
         return self.client.GET(params=params).json().get('data')
 
