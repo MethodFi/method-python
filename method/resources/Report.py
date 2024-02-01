@@ -9,6 +9,7 @@ ReportTypesLiterals = Literal[
     'payments.created.previous',
     'payments.updated.current',
     'payments.updated.previous',
+    'payments.created.previous_day',
     'payments.failed.previous_day',
     'ach.pull.upcoming',
     'ach.pull.previous',

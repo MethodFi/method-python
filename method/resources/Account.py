@@ -479,9 +479,9 @@ class AccountPaymentHistory(TypedDict):
 class AccountPayoff(TypedDict):
     id: str
     status: AccountPayoffStatusesLiterals
-    amount: int
-    term: int
-    per_diem_amount: int
+    amount: Optional[int]
+    term: Optional[int]
+    per_diem_amount: Optional[int]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
