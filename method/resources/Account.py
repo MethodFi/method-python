@@ -113,7 +113,7 @@ PastDueStatusesLiterals = Literal[
 DelinquencyStatusLiterals = Literal[
     'good_standing',
     'past_due',
-    'major_delinquency'
+    'major_delinquency',
     'unavailable'
 ]
 
@@ -127,6 +127,12 @@ DelinquencyPeriodLiterals = Literal[
     'over_120'
 ]
 
+AccountPayoffStatusesLiterals = Literal[
+    'completed',
+    'in_progress',
+    'pending',
+    'failed'
+]
 
 class AccountACH(TypedDict):
     routing: int
@@ -348,7 +354,8 @@ class AccountACHCreateOpts(AccountCreateOpts):
 
 class LiabilityCreateOpts(TypedDict):
     mch_id: str
-    account_number: str
+    account_number: Optional[str]
+    number: Optional[str]
 
 
 class AccountLiabilityCreateOpts(AccountCreateOpts):
@@ -469,6 +476,17 @@ class AccountPaymentHistory(TypedDict):
     payment_history: List[CreditReportTradelinePaymentHistoryItem]
 
 
+class AccountPayoff(TypedDict):
+    id: str
+    status: AccountPayoffStatusesLiterals
+    amount: Optional[int]
+    term: Optional[int]
+    per_diem_amount: Optional[int]
+    error: Optional[ResourceError]
+    created_at: str
+    updated_at: str
+
+
 class AccountSubResources:
     verification: VerificationResource
     sync: AccountSyncResource
@@ -522,3 +540,9 @@ class AccountResource(Resource):
 
     def withdraw_consent(self, _id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> Account:
         return super(AccountResource, self)._create_with_sub_path('{_id}/consent'.format(_id=_id), data)
+    
+    def get_payoff(self, _id: str, pyf_id: str) -> AccountPayoff:
+        return super(AccountResource, self)._get_with_sub_path('{_id}/payoffs/{pyf_id}'.format(_id=_id, pyf_id=pyf_id))
+    
+    def create_payoff(self, _id: str) -> AccountPayoff:
+        return super(AccountResource, self)._create_with_sub_path('{_id}/payoffs'.format(_id=_id), {})
