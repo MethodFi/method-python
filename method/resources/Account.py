@@ -321,7 +321,7 @@ class AccountLiability(TypedDict):
     data_sync_type: AccountLiabilitySyncTypesLiterals
     ownership: TradelineAccountOwnershipLiterals
     hash: str
-    fingerprint:str
+    fingerprint: str
     type: AccountLiabilityTypesLiterals
     loan: Optional[AccountLiabilityLoan]
     student_loan: Optional[AccountLiabilityStudentLoan]
