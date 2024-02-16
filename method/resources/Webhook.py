@@ -21,6 +21,8 @@ WebhookTypesLiterals = Literal[
     'transaction.update',
     'report.create',
     'report.update',
+    'credit_score.create',
+    'credit_score.update',
 
     # Deprecated
     'account_verification.sent',
