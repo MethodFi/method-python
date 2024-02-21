@@ -193,7 +193,7 @@ class EntityCreditScoresType(TypedDict):
 class EntityCreditScoresResponse(TypedDict):
     id: str
     status: EntityStatusesLiterals
-    credit_scores: Optional[List[EntityCreditScoresType]]
+    scores: Optional[List[EntityCreditScoresType]]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
