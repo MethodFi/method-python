@@ -158,6 +158,7 @@ class AccountLiabilityLoan(TypedDict):
 
 
 class AccountLiabilityCreditCard(AccountLiabilityLoan):
+    sub_type: Optional[Literal['flexible_spending', 'charge', 'secured', 'unsecured', 'purchase', 'business']]
     last_statement_balance: Optional[int]
     remaining_statement_balance: Optional[int]
     available_credit: Optional[int]
@@ -265,6 +266,7 @@ class AccountLiabilityMortgage(AccountLiabilityLoan):
 
 
 class AccountLiabilityPersonalLoan(AccountLiabilityLoan):
+    sub_type: Optional[Literal['line_of_credit', 'heloc', 'secured', 'unsecured', 'note']]
     expected_payoff_date: Optional[str]
     available_credit: Optional[int]
     principal_balance: Optional[int]
