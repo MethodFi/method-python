@@ -55,6 +55,12 @@ CreditScoreStatusesLiterals = Literal[
 ]
 
 
+CreditScoresModelLiterals = Literal[
+    'vantage_4',
+    'vantage_3'
+]
+
+
 CreditReportBureausLiterals = Literal[
     'experian',
     'equifax',
@@ -183,7 +189,7 @@ class EntityCreditScoresFactorsType(TypedDict):
 class EntityCreditScoresType(TypedDict):
     score: int
     source: CreditReportBureausLiterals
-    model: str
+    model: CreditScoresModelLiterals
     factors: List[EntityCreditScoresFactorsType]
     created_at: str
     factors: EntityCreditScoresFactorsType
