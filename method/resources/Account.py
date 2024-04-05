@@ -549,9 +549,3 @@ class AccountResource(Resource):
     
     def create_payoff(self, _id: str) -> AccountPayoff:
         return super(AccountResource, self)._create_with_sub_path('{_id}/payoffs'.format(_id=_id), {})
-    
-    def withdraw_consent(self, _id: str) -> Account:
-        return super(AccountResource, self)._create_with_sub_path(
-            '{_id}/consent'.format(_id=_id),
-            {'type': 'withdraw', 'reason': 'holder_withdrew_consent'}
-        )
