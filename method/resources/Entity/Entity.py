@@ -311,7 +311,7 @@ class EntityResource(Resource):
     def refresh_capabilities(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path('{_id}/refresh_capabilities'.format(_id=_id), {})
 
-    def get_sensitive_fields(self, _id: str, fields: List[EntitySensitiveFieldsLiterals]) -> EntitySensitiveResponse:
+    def retrieve_sensitive_fields(self, _id: str, fields: List[EntitySensitiveFieldsLiterals]) -> EntitySensitiveResponse:
         return super(EntityResource, self)._get_with_sub_path_and_params(
             '{_id}/sensitive'.format(_id=_id),
             {'fields[]': fields},

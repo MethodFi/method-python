@@ -33,5 +33,5 @@ class BinResource(Resource):
     def __init__(self, config: Configuration):
         super(BinResource, self).__init__(config.add_path('bins'))
 
-    def get(self, _id: str) -> Bin:
+    def retrieve(self, _id: str) -> Bin:
         return super(BinResource, self)._get_with_params({'bin': _id})
