@@ -1,9 +1,10 @@
 # type: ignore
-from method.resources.Account import Account, AccountResource
-from method.resources.AccountSync import AccountSyncResource
+from method.resources.Account import Account, AccountResource, AccountPayoffsResource, \
+  AccountSyncResource, AccountVerificationSessionResource
 from method.resources.Bin import Bin, BinResource
 from method.resources.Element import Element, ElementResource
-from method.resources.Entity import Entity, EntityResource
+from method.resources.Entity import Entity, EntityResource, EntityConnectResource, \
+  EntityCreditScoresResource, EntityIdentityResource, EntitySyncResource, EntityVerificationSessionResource
 from method.resources.Merchant import Merchant, MerchantResource
 from method.resources.Payment import Payment, PaymentResource
 from method.resources.Report import Report, ReportResource

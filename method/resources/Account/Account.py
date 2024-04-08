@@ -4,7 +4,7 @@ from method.resource import Resource, RequestOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Verification import VerificationResource
-from method.resources.AccountSync import AccountSyncResource, AccountSync
+from method.resources.Account import AccountSyncResource, AccountSync, AccountVerificationSessionResource, AccountPayoffsResource
 
 
 # Literals, keep ordered alphabetically
@@ -127,12 +127,6 @@ DelinquencyPeriodLiterals = Literal[
     'over_120'
 ]
 
-AccountPayoffStatusesLiterals = Literal[
-    'completed',
-    'in_progress',
-    'pending',
-    'failed'
-]
 
 class AccountACH(TypedDict):
     routing: int
@@ -479,24 +473,19 @@ class AccountPaymentHistory(TypedDict):
     payment_history: List[CreditReportTradelinePaymentHistoryItem]
 
 
-class AccountPayoff(TypedDict):
-    id: str
-    status: AccountPayoffStatusesLiterals
-    amount: Optional[int]
-    term: Optional[int]
-    per_diem_amount: Optional[int]
-    error: Optional[ResourceError]
-    created_at: str
-    updated_at: str
-
-
 class AccountSubResources:
     verification: VerificationResource
-    sync: AccountSyncResource
+    syncs: AccountSyncResource
+    payoffs: AccountPayoffsResource
+    verification_sessions: AccountVerificationSessionResource
+
 
     def __init__(self, _id: str, config: Configuration):
         self.verification = VerificationResource(config.add_path(_id))
         self.syncs = AccountSyncResource(config.add_path(_id))
+        self.payoffs = AccountPayoffsResource(config.add_path(_id))
+        self.verification_sessions = AccountVerificationSessionResource(config.add_path(_id))
+
 
 class AccountResource(Resource):
     def __init__(self, config: Configuration):
@@ -505,7 +494,7 @@ class AccountResource(Resource):
     def __call__(self, _id: str) -> AccountSubResources:
         return AccountSubResources(_id, self.config)
 
-    def get(self, _id: str) -> Account:
+    def retrieve(self, _id: str) -> Account:
         return super(AccountResource, self)._get_with_id(_id)
 
     def update(self, _id: str, opts: LiabilityUpdateOpts) -> Account:
@@ -517,10 +506,10 @@ class AccountResource(Resource):
     def create(self, opts: Union[AccountACHCreateOpts, AccountLiabilityCreateOpts, AccountClearingCreateOpts], request_opts: Optional[RequestOpts] = None) -> Account:
         return super(AccountResource, self)._create(opts, request_opts)
 
-    def get_payment_history(self, _id: str) -> AccountPaymentHistory:
+    def retrieve_payment_history(self, _id: str) -> AccountPaymentHistory:
         return super(AccountResource, self)._get_with_sub_path('{_id}/payment_history'.format(_id=_id))
 
-    def get_details(self, _id: str) -> AccountDetail:
+    def retrieve_details(self, _id: str) -> AccountDetail:
         return super(AccountResource, self)._get_with_sub_path('{_id}/details'.format(_id=_id))
 
     def bulk_sync(self, acc_ids: AccountCreateBulkSyncOpts) -> AccountCreateBulkSyncResponse:
@@ -543,9 +532,4 @@ class AccountResource(Resource):
 
     def withdraw_consent(self, _id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> Account:
         return super(AccountResource, self)._create_with_sub_path('{_id}/consent'.format(_id=_id), data)
-    
-    def get_payoff(self, _id: str, pyf_id: str) -> AccountPayoff:
-        return super(AccountResource, self)._get_with_sub_path('{_id}/payoffs/{pyf_id}'.format(_id=_id, pyf_id=pyf_id))
-    
-    def create_payoff(self, _id: str) -> AccountPayoff:
-        return super(AccountResource, self)._create_with_sub_path('{_id}/payoffs'.format(_id=_id), {})
+
