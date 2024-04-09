@@ -4,7 +4,8 @@ from method.resource import Resource, RequestOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Verification import VerificationResource
-from method.resources.Account import AccountSyncResource, AccountSync, AccountVerificationSessionResource, AccountPayoffsResource
+from method.resources.Account import AccountSyncResource, AccountSync, \
+    AccountVerificationSessionResource, AccountPayoffsResource, AccountBalancesResource
 
 
 # Literals, keep ordered alphabetically
@@ -478,6 +479,7 @@ class AccountSubResources:
     syncs: AccountSyncResource
     payoffs: AccountPayoffsResource
     verification_sessions: AccountVerificationSessionResource
+    balances: AccountBalancesResource
 
 
     def __init__(self, _id: str, config: Configuration):
@@ -485,6 +487,7 @@ class AccountSubResources:
         self.syncs = AccountSyncResource(config.add_path(_id))
         self.payoffs = AccountPayoffsResource(config.add_path(_id))
         self.verification_sessions = AccountVerificationSessionResource(config.add_path(_id))
+        self.balances = AccountBalancesResource(config.add_path(_id))
 
 
 class AccountResource(Resource):
