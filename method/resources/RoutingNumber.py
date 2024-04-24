@@ -33,5 +33,5 @@ class RoutingNumberResource(Resource):
     def __init__(self, config: Configuration):
         super(RoutingNumberResource, self).__init__(config.add_path('routing_numbers'))
 
-    def get(self, routing_number: str) -> RoutingNumber:
+    def retrieve(self, routing_number: str) -> RoutingNumber:
         return super(RoutingNumberResource, self)._get_with_params({'routing_number': routing_number})

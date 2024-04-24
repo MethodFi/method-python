@@ -111,7 +111,7 @@ class PaymentResource(Resource):
     def __call__(self, _id: str) -> PaymentSubResources:
         return PaymentSubResources(_id, self.config)
 
-    def get(self, _id: str) -> Payment:
+    def retrieve(self, _id: str) -> Payment:
         return super(PaymentResource, self)._get_with_id(_id)
 
     def list(self, params: Optional[PaymentListOpts] = None) -> List[Payment]:

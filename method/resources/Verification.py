@@ -73,7 +73,7 @@ class VerificationResource(Resource):
     def __init__(self, config: Configuration):
         super(VerificationResource, self).__init__(config.add_path('verification'))
 
-    def get(self) -> Verification:
+    def retrieve(self) -> Verification:
         return super(VerificationResource, self)._get()
 
     def update(self, opts: VerificationUpdateOpts) -> Verification:
@@ -82,5 +82,5 @@ class VerificationResource(Resource):
     def create(self, opts: VerificationCreateOpts) -> Verification:
         return super(VerificationResource, self)._create(opts)
 
-    def get_test_amounts(self) -> VerificationTestAmountsResponse:
+    def retrieve_test_amounts(self) -> VerificationTestAmountsResponse:
         return super(VerificationResource, self)._get_with_sub_path('amounts')

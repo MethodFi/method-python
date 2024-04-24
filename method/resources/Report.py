@@ -44,7 +44,7 @@ class ReportResource(Resource):
     def __init__(self, config: Configuration):
         super(ReportResource, self).__init__(config.add_path('reports'))
 
-    def get(self, _id: str) -> Report:
+    def retrieve(self, _id: str) -> Report:
         return super(ReportResource, self)._get_with_id(_id)
 
     def create(self, opts: ReportCreateOpts, request_opts: Optional[RequestOpts] = None) -> Report:

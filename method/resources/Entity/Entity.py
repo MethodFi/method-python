@@ -3,6 +3,7 @@ from typing import TypedDict, Optional, List, Dict, Any, Literal
 from method.resource import Resource, RequestOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
+from method.resources.Entity import EntityConnectResource, EntityCreditScoresResource, EntityIdentityResource, EntitySyncResource, EntityVerificationSessionResource
 
 
 EntityTypesLiterals = Literal[
@@ -52,12 +53,6 @@ CreditScoreStatusesLiterals = Literal[
     'in_progress',
     'pending',
     'failed'
-]
-
-
-CreditScoresModelLiterals = Literal[
-    'vantage_4',
-    'vantage_3'
 ]
 
 
@@ -186,47 +181,6 @@ class EntityCreditScoresFactorsType(TypedDict):
     description: str
 
 
-class EntityCreditScoresType(TypedDict):
-    score: int
-    source: CreditReportBureausLiterals
-    model: CreditScoresModelLiterals
-    factors: List[EntityCreditScoresFactorsType]
-    created_at: str
-    factors: EntityCreditScoresFactorsType
-    created_at: str
-
-
-class EntityCreditScoresResponse(TypedDict):
-    id: str
-    status: EntityStatusesLiterals
-    scores: Optional[List[EntityCreditScoresType]]
-    error: Optional[ResourceError]
-    created_at: str
-    updated_at: str
-
-
-class EntityCreditScoresFactorsType(TypedDict):
-    code: str
-    description: str
-
-
-class EntityCreditScoresType(TypedDict):
-    score: int
-    source: CreditReportBureausLiterals
-    model: str
-    factors: List[EntityCreditScoresFactorsType]
-    created_at: str
-
-
-class EntityCreditScoresResponse(TypedDict):
-    id: str
-    status: EntityStatusesLiterals
-    credit_scores: Optional[List[EntityCreditScoresType]]
-    error: Optional[ResourceError]
-    created_at: str
-    updated_at: str
-
-
 class AnswerOpts(TypedDict):
     question_id: str
     answer_id: str
@@ -305,9 +259,27 @@ class EntitySensitiveResponse(TypedDict):
     identities: List[EntityIdentity]
 
 
+class EntitySubResources:
+    connect: EntityConnectResource
+    credit_scores: EntityCreditScoresResource
+    identities: EntityIdentityResource
+    syncs: EntitySyncResource
+    verification_sessions: EntityVerificationSessionResource
+
+    def __init__(self, _id: str, config: Configuration):
+        self.connect = EntityConnectResource(config.add_path(_id))
+        self.credit_scores = EntityCreditScoresResource(config.add_path(_id))
+        self.identities = EntityIdentityResource(config.add_path(_id))
+        self.syncs = EntitySyncResource(config.add_path(_id))
+        self.verification_sessions = EntityVerificationSessionResource(config.add_path(_id))
+
+
 class EntityResource(Resource):
     def __init__(self, config: Configuration):
         super(EntityResource, self).__init__(config.add_path('entities'))
+
+    def __call__(self, _id: str) -> EntitySubResources:
+        return EntitySubResources(_id, self.config)
 
     def create(self, opts: EntityCreateOpts, request_opts: Optional[RequestOpts] = None) -> Entity:
         return super(EntityResource, self)._create(opts, request_opts)
@@ -315,7 +287,7 @@ class EntityResource(Resource):
     def update(self, _id: str, opts: EntityCreateOpts) -> Entity:
         return super(EntityResource, self)._update_with_id(_id, opts)
 
-    def get(self, _id: str) -> Entity:
+    def retrieve(self, _id: str) -> Entity:
         return super(EntityResource, self)._get_with_id(_id)
 
     def list(self, params: EntityListOpts = None) -> List[Entity]:
@@ -324,14 +296,8 @@ class EntityResource(Resource):
     def create_auth_session(self, _id: str) -> EntityQuestionResponse:
         return super(EntityResource, self)._create_with_sub_path('{_id}/auth_session'.format(_id=_id), {})
 
-    def get_credit_score(self, _id: str) -> EntityQuestionResponse:
+    def retrieve_credit_score(self, _id: str) -> EntityQuestionResponse:
         return super(EntityResource, self)._get_with_sub_path('{_id}/credit_score'.format(_id=_id))
-
-    def get_credit_scores(self, _id: str, crs_id: str) -> EntityCreditScoresResponse:
-        return super(EntityResource, self)._get_with_sub_path('{_id}/credit_scores/{crs_id}'.format(_id=_id, crs_id=crs_id))
-
-    def create_credit_scores(self, _id: str) -> EntityCreditScoresResponse:
-        return super(EntityResource, self)._create_with_sub_path('{_id}/credit_scores'.format(_id=_id), {})
 
     def update_auth_session(self, _id: str, opts: EntityUpdateAuthOpts) -> EntityUpdateAuthResponse:
         return super(EntityResource, self)._update_with_sub_path('{_id}/auth_session'.format(_id=_id), opts)
@@ -345,10 +311,7 @@ class EntityResource(Resource):
     def refresh_capabilities(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path('{_id}/refresh_capabilities'.format(_id=_id), {})
 
-    def get_credit_score(self, _id: str) -> EntityQuestionResponse:
-        return super(EntityResource, self)._get_with_sub_path('{_id}/credit_score'.format(_id=_id))
-
-    def get_sensitive_fields(self, _id: str, fields: List[EntitySensitiveFieldsLiterals]) -> EntitySensitiveResponse:
+    def retrieve_sensitive_fields(self, _id: str, fields: List[EntitySensitiveFieldsLiterals]) -> EntitySensitiveResponse:
         return super(EntityResource, self)._get_with_sub_path_and_params(
             '{_id}/sensitive'.format(_id=_id),
             {'fields[]': fields},

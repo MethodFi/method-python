@@ -26,5 +26,5 @@ class TransactionResource(Resource):
     def list(self) -> List[Transaction]:
         return super(TransactionResource, self)._list(None)
 
-    def get(self, _id: str) -> Transaction:
+    def retrieve(self, _id: str) -> Transaction:
         return super(TransactionResource, self)._get_with_id(_id)
