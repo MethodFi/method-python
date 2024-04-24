@@ -1,0 +1,8 @@
+from method.resources.Entities.Entity import Entity, EntityResource
+from method.resources.Entities.Connect import EntityConnect, EntityConnectResource
+from method.resources.Entities.CreditScores import EntityCreditScores, EntityCreditScoresResource
+from method.resources.Entities.Identities import EntityIdentity, EntityIdentityResource
+from method.resources.Entities.Products import EntityProduct, EntityProductResource
+from method.resources.Entities.Sensitive import EntitySensitive, EntitySensitiveResource
+from method.resources.Entities.Subscriptions import EntitySubscription, EntitySubscriptionsResource
+from method.resources.Entities.VerificationSessions import EntityVerificationSession, EntityVerificationSessionResource

@@ -3,9 +3,9 @@ from typing import TypedDict, Optional, Dict, List, Any, Literal, Union
 from method.resource import Resource, RequestOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Verification import VerificationResource
-from method.resources.Account import AccountSyncResource, AccountSync, \
-    AccountVerificationSessionResource, AccountPayoffsResource, AccountBalancesResource
+from method.resources.Accounts import AccountBalancesResource, AccountCardsResource, AccountPayoffsResource, \
+    AccountSensitiveResource, AccountSubscriptionsResource, AccountTransactionsResource, AccountUpdatesResource, \
+    AccountVerificationSessionResource
 
 
 # Literals, keep ordered alphabetically
@@ -384,19 +384,6 @@ class Account(TypedDict):
     metadata: Optional[Dict[str, Any]]
 
 
-class AccountDetail(TypedDict):
-    id: str
-    type: AccountTypesLiterals
-    aggregator: Optional[str]
-    name: str
-    institution_name: str
-    institution_logo: str
-    mask: str
-    created_at: str
-    updated_at: str
-    metadata: Optional[Dict[str, Any]]
-
-
 AccountListOpts = TypedDict('AccountListOpts', {
     'to_date': Optional[str],
     'from_date': Optional[str],
@@ -409,34 +396,6 @@ AccountListOpts = TypedDict('AccountListOpts', {
     'liability.mch_id': Optional[str],
     'liability.type': Optional[str]
 })
-
-
-class AccountCreateBulkSyncOpts(TypedDict):
-    acc_ids: List[str]
-
-
-class AccountCreateBulkSyncResponse(TypedDict):
-    success: List[str]
-    failed: List[str]
-    results: List[AccountSync]
-
-
-class AccountSensitive(TypedDict):
-    number: Optional[str]
-    encrypted_number: Optional[str]
-    bin_4: Optional[str]
-    bin_6: Optional[str]
-    payment_address: Optional[Any]
-
-
-class AccountCreateBulkSensitiveResponse(TypedDict):
-    success: List[str]
-    failed: List[str]
-    results: List[AccountSensitive]
-
-
-class AccountCreateBulkSensitiveOpts(TypedDict):
-    acc_ids: List[str]
 
 
 class AccountWithdrawConsentOpts(TypedDict):
@@ -475,19 +434,25 @@ class AccountPaymentHistory(TypedDict):
 
 
 class AccountSubResources:
-    verification: VerificationResource
-    syncs: AccountSyncResource
-    payoffs: AccountPayoffsResource
-    verification_sessions: AccountVerificationSessionResource
     balances: AccountBalancesResource
+    cards: AccountCardsResource
+    payoffs: AccountPayoffsResource
+    sensitive: AccountSensitiveResource
+    subscriptions: AccountSubscriptionsResource
+    transactions: AccountTransactionsResource
+    updates: AccountUpdatesResource
+    verification_sessions: AccountVerificationSessionResource
 
 
     def __init__(self, _id: str, config: Configuration):
-        self.verification = VerificationResource(config.add_path(_id))
-        self.syncs = AccountSyncResource(config.add_path(_id))
-        self.payoffs = AccountPayoffsResource(config.add_path(_id))
-        self.verification_sessions = AccountVerificationSessionResource(config.add_path(_id))
         self.balances = AccountBalancesResource(config.add_path(_id))
+        self.cards = AccountCardsResource(config.add_path(_id))
+        self.payoffs = AccountPayoffsResource(config.add_path(_id))
+        self.sensitive = AccountSensitiveResource(config.add_path(_id))
+        self.subscriptions = AccountSubscriptionsResource(config.add_path(_id))
+        self.transactions = AccountTransactionsResource(config.add_path(_id))
+        self.updates = AccountUpdatesResource(config.add_path(_id))
+        self.verification_sessions = AccountVerificationSessionResource(config.add_path(_id))
 
 
 class AccountResource(Resource):
@@ -508,30 +473,6 @@ class AccountResource(Resource):
 
     def create(self, opts: Union[AccountACHCreateOpts, AccountLiabilityCreateOpts, AccountClearingCreateOpts], request_opts: Optional[RequestOpts] = None) -> Account:
         return super(AccountResource, self)._create(opts, request_opts)
-
-    def retrieve_payment_history(self, _id: str) -> AccountPaymentHistory:
-        return super(AccountResource, self)._get_with_sub_path('{_id}/payment_history'.format(_id=_id))
-
-    def retrieve_details(self, _id: str) -> AccountDetail:
-        return super(AccountResource, self)._get_with_sub_path('{_id}/details'.format(_id=_id))
-
-    def bulk_sync(self, acc_ids: AccountCreateBulkSyncOpts) -> AccountCreateBulkSyncResponse:
-        return super(AccountResource, self)._create_with_sub_path('bulk_sync',{ acc_ids })
-
-    def sync(self, _id: str) -> AccountSync:
-        return super(AccountResource, self)._create_with_sub_path('{_id}/syncs'.format(_id=_id), {})
-
-    def bulk_sensitive(self, acc_ids: AccountCreateBulkSensitiveOpts) -> AccountCreateBulkSensitiveResponse:
-        return super(AccountResource, self)._create_with_sub_path('bulk_sensitive',{ acc_ids })
-
-    def sensitive(self, _id: str) -> AccountSensitive:
-        return super(AccountResource, self)._get_with_sub_path('{_id}/sensitive'.format(_id=_id))
-
-    def enroll_auto_syncs(self, _id: str) -> Account:
-        return super(AccountResource, self)._create_with_sub_path('{_id}/sync_enrollment'.format(_id=_id), {})
-
-    def unenroll_auto_syncs(self, _id: str) -> Account:
-        return super(AccountResource, self)._delete_with_sub_path('{_id}/sync_enrollment'.format(_id=_id))
 
     def withdraw_consent(self, _id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> Account:
         return super(AccountResource, self)._create_with_sub_path('{_id}/consent'.format(_id=_id), data)

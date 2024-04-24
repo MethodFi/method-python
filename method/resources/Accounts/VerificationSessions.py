@@ -3,7 +3,7 @@ from typing import TypedDict, Optional, List, Literal, Union
 from method.resource import Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Account.ExternalTypes import PlaidBalance, PlaidTransaction, MXAccount, MXTransaction, TellerBalance, TellerTransaction
+from method.resources.Accounts.ExternalTypes import PlaidBalance, PlaidTransaction, MXAccount, MXTransaction, TellerBalance, TellerTransaction
 
 
 AccountVerificationSessionStatusesLiterals = Literal[

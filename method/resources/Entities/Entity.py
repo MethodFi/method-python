@@ -1,9 +1,10 @@
 from typing import TypedDict, Optional, List, Dict, Any, Literal
 
-from method.resource import Resource, RequestOpts
+from method.resource import Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Entity import EntityConnectResource, EntityCreditScoresResource, EntityIdentityResource, EntitySyncResource, EntityVerificationSessionResource
+from method.resources.Entities import EntityConnectResource, EntityCreditScoresResource, EntityIdentityResource, \
+    EntityProductResource, EntitySensitiveResource, EntitySubscriptionsResource, EntityVerificationSessionResource
 
 
 EntityTypesLiterals = Literal[
@@ -148,12 +149,7 @@ class EntityUpdateOpts(TypedDict):
     address: Optional[EntityAddress]
 
 
-class EntityListOpts(TypedDict):
-    to_date: Optional[str]
-    from_date: Optional[str]
-    page: Optional[int]
-    page_limit: Optional[int]
-    page_cursor: Optional[str]
+class EntityListOpts(ResourceListOpts):
     status: Optional[str]
     type: Optional[str]
 
@@ -227,50 +223,22 @@ class EntityUpdateAuthResponse(TypedDict):
     cxn_id: Optional[str]
 
 
-class EntityKYCAddressRecordData(TypedDict):
-    address: str
-    city: str
-    postal_code: str
-    state: str
-    address_term: int
-
-
-class EntityIdentity(TypedDict):
-    first_name: Optional[str]
-    last_name: Optional[str]
-    phone: Optional[str]
-    dob: Optional[str]
-    address: Optional[EntityKYCAddressRecordData]
-    ssn: Optional[str]
-
-
-class EntitySensitiveResponse(TypedDict):
-    first_name: Optional[str]
-    last_name: Optional[str]
-    phone: Optional[str]
-    phone_history: Optional[List[str]]
-    email: Optional[str]
-    dob: Optional[str]
-    address: Optional[EntityKYCAddressRecordData]
-    address_history: List[EntityKYCAddressRecordData]
-    ssn_4: Optional[str]
-    ssn_6: Optional[str]
-    ssn_9: Optional[str]
-    identities: List[EntityIdentity]
-
-
 class EntitySubResources:
     connect: EntityConnectResource
     credit_scores: EntityCreditScoresResource
     identities: EntityIdentityResource
-    syncs: EntitySyncResource
+    products: EntityProductResource
+    sensitive: EntitySensitiveResource
+    subscriptions: EntitySubscriptionsResource
     verification_sessions: EntityVerificationSessionResource
 
     def __init__(self, _id: str, config: Configuration):
         self.connect = EntityConnectResource(config.add_path(_id))
         self.credit_scores = EntityCreditScoresResource(config.add_path(_id))
         self.identities = EntityIdentityResource(config.add_path(_id))
-        self.syncs = EntitySyncResource(config.add_path(_id))
+        self.products = EntityProductResource(config.add_path(_id))
+        self.sensitive = EntitySensitiveResource(config.add_path(_id))
+        self.subscriptions = EntitySubscriptionsResource(config.add_path(_id))
         self.verification_sessions = EntityVerificationSessionResource(config.add_path(_id))
 
 
@@ -293,29 +261,8 @@ class EntityResource(Resource):
     def list(self, params: EntityListOpts = None) -> List[Entity]:
         return super(EntityResource, self)._list(params)
 
-    def create_auth_session(self, _id: str) -> EntityQuestionResponse:
-        return super(EntityResource, self)._create_with_sub_path('{_id}/auth_session'.format(_id=_id), {})
-
-    def retrieve_credit_score(self, _id: str) -> EntityQuestionResponse:
-        return super(EntityResource, self)._get_with_sub_path('{_id}/credit_score'.format(_id=_id))
-
-    def update_auth_session(self, _id: str, opts: EntityUpdateAuthOpts) -> EntityUpdateAuthResponse:
-        return super(EntityResource, self)._update_with_sub_path('{_id}/auth_session'.format(_id=_id), opts)
-
-    def create_manual_auth_session(self, _id: str, opts: EntityManualAuthOpts) -> EntityManualAuthResponse:
-        return super(EntityResource, self)._create_with_sub_path('{_id}/manual_auth_session'.format(_id=_id), opts)
-
-    def update_manual_auth_session(self, _id: str, opts: EntityManualAuthOpts) -> EntityManualAuthResponse:
-        return super(EntityResource, self)._update_with_sub_path('{_id}/manual_auth_session'.format(_id=_id), opts)
-
     def refresh_capabilities(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path('{_id}/refresh_capabilities'.format(_id=_id), {})
-
-    def retrieve_sensitive_fields(self, _id: str, fields: List[EntitySensitiveFieldsLiterals]) -> EntitySensitiveResponse:
-        return super(EntityResource, self)._get_with_sub_path_and_params(
-            '{_id}/sensitive'.format(_id=_id),
-            {'fields[]': fields},
-        )
 
     def withdraw_consent(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path(

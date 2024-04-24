@@ -3,7 +3,7 @@ from typing import TypedDict, Optional, Literal, List
 from method.resource import Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Entity.Entity import EntityIdentity
+from method.resources.Entities.Entity import EntityIdentity
 
 
 EntityVerificationSessionStatusLiterals = Literal[

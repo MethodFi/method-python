@@ -49,6 +49,9 @@ class Merchant(TypedDict):
     is_temp: bool
 
 MerchantListOpts = TypedDict('MerchantListOpts', {
+    'page': Optional[str | int],
+    'page_limit': Optional[str | int],
+    'type': Optional[MerchantTypesLiterals],
     'name': Optional[str],
     'provider_id.plaid': Optional[str],
     'provider_id.mx': Optional[str],
