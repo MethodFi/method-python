@@ -13,6 +13,7 @@ ResourceStatusLiterals = Literal[
     'failed'
 ]
 
+
 class RequestOpts(TypedDict):
     idempotency_key: Optional[str]
 
