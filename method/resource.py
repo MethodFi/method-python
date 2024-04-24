@@ -16,6 +16,7 @@ ResourceStatusLiterals = Literal[
 class RequestOpts(TypedDict):
     idempotency_key: Optional[str]
 
+
 class ResourceListOpts(TypedDict):
     from_date: Optional[str]
     to_date: Optional[str]
