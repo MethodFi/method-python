@@ -20,12 +20,11 @@ class AccountSubscription(TypedDict):
     updated_at: str
 
 
-class AccountSubscriptionTransactions(TypedDict):
-    subscription: AccountSubscription
-
-
-class AccountSubscriptionResponse(TypedDict):
-    transactions: Optional[AccountSubscriptionTransactions]
+AccountSubscriptionsResponse = TypedDict('AccountSubscriptionsResponse', {
+    'transactions': Optional[AccountSubscription],
+    'update': Optional[AccountSubscription],
+    'update.snapshot': Optional[AccountSubscription]
+})
 
 
 class AccountSubscriptionCreateOpts(TypedDict):
@@ -38,3 +37,13 @@ class AccountSubscriptionsResource(Resource):
 
     def create(self, data: AccountSubscriptionCreateOpts) -> AccountSubscription:
         return super(AccountSubscriptionsResource, self)._create(data)
+    
+    def list(self) -> List[AccountSubscription]:
+        return super(AccountSubscriptionsResource, self)._get()
+    
+    def retrieve(self, sub_id: str) -> AccountSubscriptionsResponse:
+        return super(AccountSubscriptionsResource, self)._get_with_id(sub_id)
+    
+    def delete(self, sub_id: str) -> AccountSubscription:
+        return super(AccountSubscriptionsResource, self)._delete(sub_id)
+    

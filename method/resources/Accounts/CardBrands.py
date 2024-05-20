@@ -11,7 +11,7 @@ class AccountCardBrand(TypedDict):
     name: str
 
 
-class AccountCard(TypedDict):
+class AccountCardBrand(TypedDict):
     id: str
     account_id: str
     network: str
@@ -25,12 +25,12 @@ class AccountCard(TypedDict):
     updated_at: str
 
 
-class AccountCardsResource(Resource):
+class AccountCardBrandsResource(Resource):
     def __init__(self, config: Configuration):
-        super(AccountCardsResource, self).__init__(config.add_path('cards'))
+        super(AccountCardBrandsResource, self).__init__(config.add_path('cards'))
 
-    def retrieve(self, crd_id: str) -> AccountCard:
-        return super(AccountCardsResource, self)._get_with_id(crd_id)
+    def retrieve(self, crbd_id: str) -> AccountCardBrand:
+        return super(AccountCardBrandsResource, self)._get_with_id(crbd_id)
     
-    def _create(self) -> AccountCard:
-        return super(AccountCardsResource, self)._create({})
+    def _create(self) -> AccountCardBrand:
+        return super(AccountCardBrandsResource, self)._create({})

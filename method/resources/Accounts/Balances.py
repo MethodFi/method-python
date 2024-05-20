@@ -11,10 +11,11 @@ AccountBalanceStatusLiterals = Literal[
     'failed'
 ]
 
-class AccountBalances(TypedDict):
+class AccountBalance(TypedDict):
     id: str
+    account_id: str
     status: AccountBalanceStatusLiterals
-    balance: Optional[int]
+    amount: Optional[int]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
@@ -23,8 +24,8 @@ class AccountBalancesResource(Resource):
     def __init__(self, config: Configuration):
         super(AccountBalancesResource, self).__init__(config.add_path('balances'))
 
-    def retrieve(self, bal_id: str) -> AccountBalances:
+    def retrieve(self, bal_id: str) -> AccountBalance:
         return super(AccountBalancesResource, self)._get_with_id(bal_id)
 
-    def create(self) -> AccountBalances:
+    def create(self) -> AccountBalance:
         return super(AccountBalancesResource, self)._create({})

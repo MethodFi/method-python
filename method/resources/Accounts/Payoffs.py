@@ -15,6 +15,7 @@ AccountPayoffStatusesLiterals = Literal[
 
 class AccountPayoff(TypedDict):
     id: str
+    account_id: str
     status: AccountPayoffStatusesLiterals
     amount: Optional[int]
     term: Optional[int]

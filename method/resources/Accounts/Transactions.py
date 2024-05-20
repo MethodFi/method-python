@@ -18,12 +18,6 @@ AccountTransactionStatusLiterals = Literal[
 ]
 
 
-class ProductBaseStatusHistoryItem(TypedDict):
-    status: AccountTransactionStatusLiterals
-    timestamp: str
-    metadata: Optional[dict]
-
-
 class AccountTransactionMerchant(TypedDict):
     name: str
     category_code: str
@@ -52,7 +46,6 @@ class AccountTransaction(TypedDict):
     billing_amount: int
     billing_currency: AccountCurrencyTypesLiterals
     status: AccountTransactionStatusLiterals
-    status_history: List[ProductBaseStatusHistoryItem]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str

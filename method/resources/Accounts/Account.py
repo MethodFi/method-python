@@ -3,23 +3,9 @@ from typing import TypedDict, Optional, Dict, List, Any, Literal, Union
 from method.resource import Resource, RequestOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Accounts import AccountBalancesResource, AccountCardsResource, AccountPayoffsResource, \
-    AccountSensitiveResource, AccountSubscriptionsResource, AccountTransactionsResource, AccountUpdatesResource, \
-    AccountVerificationSessionResource
-
-
-# Literals, keep ordered alphabetically
-AccountCapabilitiesLiterals = Literal[
-    'payments:receive',
-    'payments:send',
-    'data:retrieve',
-    'data:sync'
-]
-
-
-AccountClearingSubTypesLiterals = Literal[
-    'single_use'
-]
+from method.resources.Accounts import AccountBalance, AccountBalancesResource, AccountCardBrand, AccountCardBrandsResource, \
+    AccountPayoff, AccountPayoffsResource, AccountSensitive, AccountSensitiveResource, AccountSubscription, AccountSubscriptionsResource, \
+    AccountTransaction, AccountTransactionsResource, AccountUpdate, AccountUpdatesResource, AccountVerificationSession, AccountVerificationSessionResource
 
 
 AccountLiabilityDataSourcesLiterls = Literal[
@@ -38,21 +24,24 @@ AccountLiabilityDataStatusesLiterals = Literal[
 ]
 
 
-AccountLiabilityPaymentStatuesLiterals = Literal[
-    'active',
-    'activating',
-    'unavailable'
+AccountProductTypesLiterals = Literal[
+    'payment',
+    'balance',
+    'sensitive',
+    'card_brand',
+    'payoff',
+    'update'
 ]
 
 
-AccountLiabilitySyncTypesLiterals = Literal[
-    'manual',
-    'auto'
+AccountSubscriptionTypesLiterals = Literal[
+    'transactions',
+    'update',
+    'update.snapshot'
 ]
 
 
 AccountLiabilityTypesLiterals = Literal[
-    'student_loan',
     'student_loans',
     'credit_card',
     'mortgage',
@@ -77,22 +66,9 @@ AccountStatusesLiterals = Literal[
 ]
 
 
-AccountSubTypesLiterals = Literal[
-    'checking',
-    'savings'
-]
-
-
 AccountTypesLiterals = Literal[
     'ach',
-    'liability',
-    'clearing'
-]
-
-AutoPayStatusesLiterals = Literal[
-    'unknown',
-    'active',
-    'inactive'
+    'liability'
 ]
 
 
@@ -104,241 +80,136 @@ TradelineAccountOwnershipLiterals = Literal[
 ]
 
 
-PastDueStatusesLiterals = Literal[
-    'unknown',
-    'overdue',
-    'on_time'
+AccountInterestRateTypesLiterals = Literal[
+    'fixed',
+    'variable'
 ]
 
 
-DelinquencyStatusLiterals = Literal[
-    'good_standing',
-    'past_due',
-    'major_delinquency',
-    'unavailable'
+AccountInterestRateSourcesLiterals = Literal[
+    'financial_institution',
+    'public_data',
+    'method'
 ]
 
 
-DelinquencyPeriodLiterals = Literal[
-    'less_than_30',
-    '30',
-    '60',
-    '90',
-    '120',
-    'over_120'
+AchAccountSubTypesLiterals = Literal[
+    'checking',
+    'savings'
 ]
+
+
+AccountLiabilityAutoLoanSubTypesLiterals = Literal[
+    'lease',
+    'loan'
+]
+
+
+AccountLiabilityCreditCardSubTypesLiterals = Literal[
+    'flexible_spending',
+    'charge',
+    'secured',
+    'unsecured',
+    'purchase',
+    'business'
+]
+
+
+AccountLiabilityCreditCardUsageTypesLiterals = Literal[
+    'transactor',
+    'revolver',
+    'dormant',
+    'unknown'
+]
+
+
+AccountLiabilityPersonalLoanSubTypesLiterals = Literal[
+    'secured',
+    'unsecured',
+    'note',
+    'line_of_credit',
+    'heloc'
+]
+
+
+AccountLiabilityStudentLoanSubTypesLiterals = Literal[
+    'federal',
+    'private'
+]
+
+
+AccountLiabilityMortgageSubTypesLiterals = Literal[
+    'loan'
+]
+
+
+class AccountLiabilityBase(TypedDict):
+    balance: Optional[int]
+    closed_at: Optional[str]
+    last_payment_amount: Optional[int]
+    last_payment_date: Optional[str]
+    next_payment_due_date: Optional[str]
+    next_payment_minimum_amount: Optional[int]
+    opened_at: Optional[str]
+
+
+class AccountLiabilityLoanBase(AccountLiabilityBase):
+    expected_payoff_date: Optional[str]
+    interest_rate_percentage: Optional[float]
+    interest_rate_source: Optional[AccountInterestRateSourcesLiterals]
+    interest_rate_type: Optional[AccountInterestRateTypesLiterals]
+    original_loan_amount: Optional[int]
+    term_length: Optional[int]
+
+
+class AccountLiabilityAutoLoan(AccountLiabilityLoanBase):
+    sub_type: Optional[AccountLiabilityAutoLoanSubTypesLiterals]
+
+
+class AccountLiabilityCreditCard(AccountLiabilityBase):
+    available_credit: Optional[int]
+    credit_limit: Optional[int]
+    interest_rate_percentage_max: Optional[float]
+    interest_rate_percentage_min: Optional[float]
+    interest_rate_type: Optional[AccountInterestRateTypesLiterals]
+    sub_type: Optional[AccountLiabilityCreditCardSubTypesLiterals]
+    usage_pattern: Optional[AccountLiabilityCreditCardUsageTypesLiterals]
+
+
+class AccountLiabilityMortgage(AccountLiabilityLoanBase):
+    sub_type: Optional[AccountLiabilityMortgageSubTypesLiterals]
+
+
+class AccountLiabilityPersonalLoan(AccountLiabilityLoanBase):
+    sub_type: Optional[AccountLiabilityPersonalLoanSubTypesLiterals]
+    available_credit: Optional[int]
+    
+
+class AccountLiabilityStudentLoansDisbursement(AccountLiabilityLoanBase):
+    sequence: int
+    disbursed_at: Optional[str]
+
+
+class AccountLiabilityStudentLoans(AccountLiabilityBase):
+    disbursements: Optional[AccountLiabilityStudentLoansDisbursement]
+    sub_type: Optional[AccountLiabilityStudentLoanSubTypesLiterals]
+    original_loan_amount: Optional[int]
+    term_length: Optional[int]
 
 
 class AccountACH(TypedDict):
     routing: int
     number: int
-    type: AccountSubTypesLiterals
-
-
-class AccountLiabilityLoan(TypedDict):
-    name: str
-    balance: Optional[int]
-    opened_at: Optional[str]
-    original_loan_amount: Optional[int]
-    sub_type: Optional[str]
-    term_length: Optional[int]
-    closed_at: Optional[str]
-    last_payment_amount: Optional[int]
-    last_payment_date: Optional[str]
-    next_payment_minimum_amount: Optional[int]
-    next_payment_due_date: Optional[str]
-    interest_rate_type: Literal['fixed', 'variable']
-    interest_rate_percentage: Optional[int]
-    interest_rate_source: Optional[Literal['financial_institution', 'public_data', 'method']]
-
-
-class AccountLiabilityCreditCard(AccountLiabilityLoan):
-    sub_type: Optional[Literal['flexible_spending', 'charge', 'secured', 'unsecured', 'purchase', 'business']]
-    last_statement_balance: Optional[int]
-    remaining_statement_balance: Optional[int]
-    available_credit: Optional[int]
-    auto_pay_status: Optional[AutoPayStatusesLiterals]
-    auto_pay_amount: Optional[int]
-    auto_pay_date: Optional[str]
-    past_due_status: Optional[PastDueStatusesLiterals]
-    past_due_balance: Optional[int]
-    past_due_date: Optional[str]
-    credit_limit: Optional[int]
-    pending_purchase_authorization_amount: Optional[int]
-    pending_credit_authorization_amount: Optional[int]
-    interest_saving_balance: Optional[int]
-    next_statement_date: Optional[str]
-
-
-class AccountLiabilityAutoLoan(AccountLiabilityLoan):
-    sub_type: Optional[Literal['lease', 'loan']]
-    payoff_amount: Optional[int]
-    payoff_amount_term: Optional[int]
-    past_due_status: Optional[PastDueStatusesLiterals]
-    past_due_balance: Optional[int]
-    past_due_date: Optional[str]
-    late_fees_amount: Optional[int]
-    expected_payoff_date: Optional[str]
-    principal_balance: Optional[int]
-    per_diem_amount: Optional[int]
-    mileage_allocation: Optional[int]
-
-
-class AccountLiabilityStudentLoan(AccountLiabilityLoan):
-    sub_type: Optional[Literal['federal', 'private']]
-    sequence: Optional[int]
-    disbursed_at: Optional[str]
-    expected_payoff_date: Optional[str]
-    payoff_amount: Optional[int]
-    payoff_amount_term: Optional[int]
-    principal_balance: Optional[int]
-  
-
-class DelinquencyHistoryItem(TypedDict):
-    start_date: str
-    end_date: str
-    status: DelinquencyStatusLiterals
-    period: Optional[DelinquencyPeriodLiterals]
-  
-
-class TrendedDataItem(TypedDict):
-    month: Optional[int]
-    year: Optional[int]
-    balance: Optional[int]
-    available_credit: Optional[int]
-    scheduled_payment: Optional[int]
-    actual_payment: Optional[int]
-    high_credit: Optional[int]
-    credit_limit: Optional[int]
-    amount_past_due: Optional[int]
-    last_payment_date: Optional[str]
-    account_status: str
-    payment_status:str
-    
-
-class AccountLiabilityStudentLoansDisbursement(AccountLiabilityLoan):
-    sequence: int
-    disbursed_at: Optional[str]
-    expected_payoff_date: Optional[str]
-    delinquent_status: Optional[str]
-    delinquent_amount: Optional[int]
-    delinquent_period: Optional[int]
-    delinquent_action: Optional[str]
-    delinquent_start_date: Optional[str]
-    delinquent_major_start_date: Optional[str]
-    delinquent_status_updated_at: Optional[str]
-    delinquent_history: Optional[List[DelinquencyHistoryItem]]
-    delinquent_action: Optional[List[TrendedDataItem]]
-
-
-class AccountLiabilityStudentLoans(AccountLiabilityLoan):
-    sub_type: Optional[Literal['federal', 'private']]
-    disbursed_at: Optional[str]
-    expected_payoff_date: Optional[str]
-    interest_rate_type: Optional[Literal['fixed', 'variable']]
-    expected_payoff_date: Optional[str]
-    disbursements: Optional[AccountLiabilityStudentLoansDisbursement]
-
-
-class AccountLiabilityMortgage(AccountLiabilityLoan):
-    principal_balance: Optional[int]
-    expected_payoff_date: Optional[str]
-    address_street: Optional[str]
-    address_city: Optional[str]
-    address_state: Optional[str]
-    address_zip: Optional[str]
-    property_value: Optional[int]
-    past_due_status: Optional[PastDueStatusesLiterals]
-    past_due_balance: Optional[int]
-    past_due_date: Optional[str]
-    payoff_amount: Optional[int]
-    payoff_amount_term: Optional[int]
-    year_to_date_interest_paid: Optional[int]
-    year_to_date_principal_paid: Optional[int]
-    year_to_date_taxes_paid: Optional[int]
-    year_start_principal_balance: Optional[int]
-    escrow_balance: Optional[int]
-
-
-class AccountLiabilityPersonalLoan(AccountLiabilityLoan):
-    sub_type: Optional[Literal['line_of_credit', 'heloc', 'secured', 'unsecured', 'note']]
-    expected_payoff_date: Optional[str]
-    available_credit: Optional[int]
-    principal_balance: Optional[int]
-    year_to_date_interest_paid: Optional[int]
-
-
-class AccountLiabilityCreditBuilder(AccountLiabilityLoan):
-    pass
-
-
-class AccountLiabilityCollection(AccountLiabilityLoan):
-    pass
-
-
-class AccountLiabilityBusinessLoan(TypedDict):
-    name: str
-    balance: Optional[int]
-    opened_at: Optional[str]
-
-
-class AccountLiabilityInsurance(TypedDict):
-    name: str
-    balance: Optional[int]
-    opened_at: Optional[str]
-
-
-class AccountLiabilitySubscription(TypedDict):
-    name: str
-    balance: Optional[int]
-    opened_at: Optional[str]
-
-
-class AccountLiabilityUtility(TypedDict):
-    name: str
-    balance: Optional[int]
-    opened_at: Optional[str]
-
-
-class AccountLiabilityMedical(TypedDict):
-    name: str
-    balance: Optional[int]
-    opened_at: Optional[str]
+    type: AchAccountSubTypesLiterals
 
 
 class AccountLiability(TypedDict):
     mch_id: str
-    mask: str
-    payment_status: AccountLiabilityPaymentStatuesLiterals
-    data_status: AccountLiabilityDataStatusesLiterals
-    data_last_successful_sync: Optional[str]
-    data_status_error: Optional[ResourceError]
-    data_source: AccountLiabilityDataSourcesLiterls
-    data_updated_at: Optional[str]
-    data_sync_type: AccountLiabilitySyncTypesLiterals
-    ownership: TradelineAccountOwnershipLiterals
-    hash: str
-    fingerprint: str
-    type: AccountLiabilityTypesLiterals
-    loan: Optional[AccountLiabilityLoan]
-    student_loan: Optional[AccountLiabilityStudentLoan]
-    student_loans: Optional[AccountLiabilityStudentLoans]
-    credit_card: Optional[AccountLiabilityCreditCard]
-    mortgage: Optional[AccountLiabilityMortgage]
-    auto_loan: Optional[AccountLiabilityAutoLoan]
-    personal_loan: Optional[AccountLiabilityPersonalLoan]
-    business_loan: Optional[AccountLiabilityBusinessLoan]
-    collection: Optional[AccountLiabilityCollection]
-    insurance: Optional[AccountLiabilityInsurance]
-    credit_builder: Optional[AccountLiabilityCreditBuilder]
-    subscription: Optional[AccountLiabilitySubscription]
-    utility: Optional[AccountLiabilityUtility]
-    medical: Optional[AccountLiabilityMedical]
-
-
-class AccountClearing(TypedDict):
-    routing: int
-    number: int
+    mask: Optional[str]
+    ownership: Optional[TradelineAccountOwnershipLiterals]
+    fingerprint: Optional[str]
+    type: Optional[AccountLiabilityTypesLiterals]
+    name: Optional[str]
 
 
 class AccountCreateOpts(TypedDict):
@@ -360,14 +231,6 @@ class AccountLiabilityCreateOpts(AccountCreateOpts):
     liability: LiabilityCreateOpts
 
 
-class ClearingCreateOpts(TypedDict):
-    type: AccountClearingSubTypesLiterals
-
-
-class AccountClearingCreateOpts(AccountCreateOpts):
-    clearing: ClearingCreateOpts
-
-
 class Account(TypedDict):
     id: str
     holder_id: str
@@ -375,9 +238,18 @@ class Account(TypedDict):
     type: AccountTypesLiterals
     ach: Optional[AccountACH]
     liability: Optional[AccountLiability]
-    clearing: Optional[AccountClearing]
-    capabilities: List[AccountCapabilitiesLiterals]
-    available_capabilities: List[AccountCapabilitiesLiterals]
+    products: List[AccountProductTypesLiterals]
+    restricted_products: List[AccountProductTypesLiterals]
+    subscriptions: Optional[List[AccountSubscriptionTypesLiterals]]
+    available_subscriptions: Optional[List[AccountSubscriptionTypesLiterals]]
+    restricted_subscriptions: Optional[List[AccountSubscriptionTypesLiterals]]
+    sensitive: Optional[Union[str, AccountSensitive]]
+    balance: Optional[Union[str, AccountBalance]]
+    card_brand: Optional[Union[str, AccountCardBrand]]
+    payoff: Optional[Union[str, AccountPayoff]]
+    transaction: Optional[Union[str, AccountTransaction]]
+    update: Optional[Union[str, AccountUpdate]]
+    latest_verification_session: Optional[Union[str, AccountVerificationSession]]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
@@ -403,39 +275,9 @@ class AccountWithdrawConsentOpts(TypedDict):
     reason: Optional[Literal['holder_withdrew_consent']]
 
 
-class LiabilityMortgageUpdateOpts(TypedDict):
-    address_street: str
-    address_city: str
-    address_state: str
-    address_zip: str
-
-
-class LiabilityCreditCardUpdateNumberOpts(TypedDict):
-    number: str
-
-
-class LiabilityCreditCardUpdateExpirationOpts(TypedDict):
-    expiration_month: int
-    expiration_year: int
-
-
-class LiabilityUpdateOpts(TypedDict):
-    mortgage: Optional[LiabilityMortgageUpdateOpts]
-    credit_card: Union[LiabilityCreditCardUpdateNumberOpts, LiabilityCreditCardUpdateExpirationOpts]
-
-
-class CreditReportTradelinePaymentHistoryItem(TypedDict):
-    code: int
-    date: str
-
-
-class AccountPaymentHistory(TypedDict):
-    payment_history: List[CreditReportTradelinePaymentHistoryItem]
-
-
 class AccountSubResources:
     balances: AccountBalancesResource
-    cards: AccountCardsResource
+    card_brands: AccountCardBrandsResource
     payoffs: AccountPayoffsResource
     sensitive: AccountSensitiveResource
     subscriptions: AccountSubscriptionsResource
@@ -446,7 +288,7 @@ class AccountSubResources:
 
     def __init__(self, _id: str, config: Configuration):
         self.balances = AccountBalancesResource(config.add_path(_id))
-        self.cards = AccountCardsResource(config.add_path(_id))
+        self.card_brands = AccountCardBrandsResource(config.add_path(_id))
         self.payoffs = AccountPayoffsResource(config.add_path(_id))
         self.sensitive = AccountSensitiveResource(config.add_path(_id))
         self.subscriptions = AccountSubscriptionsResource(config.add_path(_id))
@@ -465,13 +307,10 @@ class AccountResource(Resource):
     def retrieve(self, _id: str) -> Account:
         return super(AccountResource, self)._get_with_id(_id)
 
-    def update(self, _id: str, opts: LiabilityUpdateOpts) -> Account:
-        return super(AccountResource, self)._update_with_id(_id, opts)
-
     def list(self, params: Optional[AccountListOpts] = None) -> List[Account]:
         return super(AccountResource, self)._list(params)
 
-    def create(self, opts: Union[AccountACHCreateOpts, AccountLiabilityCreateOpts, AccountClearingCreateOpts], request_opts: Optional[RequestOpts] = None) -> Account:
+    def create(self, opts: Union[AccountACHCreateOpts, AccountLiabilityCreateOpts], request_opts: Optional[RequestOpts] = None) -> Account:
         return super(AccountResource, self)._create(opts, request_opts)
 
     def withdraw_consent(self, _id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> Account:

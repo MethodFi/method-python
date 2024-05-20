@@ -14,17 +14,10 @@ class AccountUpdate(TypedDict):
     account_id: str
     type: AccountLiabilityTypesLiterals
     auto_loan: Optional[AccountLiabilityAutoLoan]
-    collection: Optional[AccountLiabilityCollection]
-    credit_builder: Optional[AccountLiabilityCreditBuilder]
     credit_card: Optional[AccountLiabilityCreditCard]
-    insurance: Optional[AccountLiabilityInsurance]
-    loan: Optional[AccountLiabilityLoan]
-    medical: Optional[AccountLiabilityMedical]
     mortgage: Optional[AccountLiabilityMortgage]
     personal_loan: Optional[AccountLiabilityPersonalLoan]
-    student_loan: Optional[AccountLiabilityStudentLoan]
     student_loans: Optional[AccountLiabilityStudentLoans]
-    utility: Optional[AccountLiabilityUtility]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
