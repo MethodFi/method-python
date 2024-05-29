@@ -3,9 +3,8 @@ from typing import TypedDict, Optional, List
 from method.resource import Resource, ResourceListOpts, ResourceStatusLiterals
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Accounts.Account import AccountLiabilityTypesLiterals, AccountLiabilityAutoLoan, AccountLiabilityCollection, \
-    AccountLiabilityCreditCard, AccountLiabilityCreditBuilder, AccountLiabilityMortgage, AccountLiabilityStudentLoan, AccountLiabilityStudentLoans, \
-    AccountLiabilityInsurance, AccountLiabilityLoan, AccountLiabilityMedical, AccountLiabilityPersonalLoan, AccountLiabilityUtility
+from method.resources.Accounts.Types import AccountLiabilityTypesLiterals, AccountLiabilityAutoLoan, \
+    AccountLiabilityCreditCard, AccountLiabilityMortgage, AccountLiabilityStudentLoans, AccountLiabilityPersonalLoan
 
 
 class AccountUpdate(TypedDict):

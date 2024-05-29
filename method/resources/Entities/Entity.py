@@ -3,118 +3,15 @@ from typing import TypedDict, Optional, List, Dict, Any, Literal
 from method.resource import Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Entities import EntityConnectResource, EntityCreditScoresResource, EntityIdentityResource, \
-    EntityProductResource, EntitySensitiveResource, EntitySubscriptionsResource, EntityVerificationSessionResource
-
-
-EntityTypesLiterals = Literal[
-    'individual',
-    'c_corporation',
-    's_corporation',
-    'llc',
-    'partnership',
-    'sole_proprietorship',
-    'receive_only'
-]
-
-
-EntityCapabilitiesLiterals = Literal[
-    'payments:send',
-    'payments:receive',
-    'payments:limited-send',
-    'data:retrieve'
-]
-
-
-EntityStatusesLiterals = Literal[
-    'active',
-    'incomplete',
-    'disabled'
-]
-
-
-CreditScoreStatusesLiterals = Literal[
-    'completed',
-    'in_progress',
-    'pending',
-    'failed'
-]
-
-
-EntityIndividualPhoneVerificationTypesLiterals = Literal[
-    'method_sms',
-    'method_verified',
-    'sms',
-    'tos'
-]
-
-
-CreditScoreStatusesLiterals = Literal[
-    'completed',
-    'in_progress',
-    'pending',
-    'failed'
-]
-
-
-CreditReportBureausLiterals = Literal[
-    'experian',
-    'equifax',
-    'transunion'
-]
-
-EntitySensitiveFieldsLiterals = Literal[
-    'first_name',
-    'last_name',
-    'phone',
-    'phone_history',
-    'email',
-    'dob',
-    'address',
-    'address_history',
-    'ssn_4',
-    'ssn_6',
-    'ssn_9',
-    'identities'
-]
-
-
-class EntityIndividual(TypedDict):
-    first_name: Optional[str]
-    last_name: Optional[str]
-    phone: Optional[str]
-    email: Optional[str]
-    dob: Optional[str]
-
-
-class EntityAddress(TypedDict):
-    line1: Optional[str]
-    line2: Optional[str]
-    city: Optional[str]
-    state: Optional[str]
-    zip: Optional[str]
-
-
-class EntityCorporationOwner(TypedDict):
-    first_name: Optional[str]
-    last_name: Optional[str]
-    phone: Optional[str]
-    email: Optional[str]
-    dob: Optional[str]
-    address: EntityAddress
-
-
-class EntityCorporation(TypedDict):
-    name: Optional[str]
-    dba: Optional[str]
-    ein: Optional[str]
-    owners: List[EntityCorporationOwner]
-
-
-class EntityReceiveOnly(TypedDict):
-    name: str
-    phone: Optional[str]
-    email: Optional[str]
+from method.resources.Entities.Types import EntityTypesLiterals, EntityCapabilitiesLiterals, EntityStatusesLiterals, \
+    CreditReportBureausLiterals, EntityIndividual, EntityCorporation, EntityReceiveOnly, EntityAddress
+from method.resources.Entities.Connect import EntityConnectResource
+from method.resources.Entities.CreditScores import EntityCreditScoresResource
+from method.resources.Entities.Identities import EntityIdentityResource
+from method.resources.Entities.Products import EntityProductResource
+from method.resources.Entities.Sensitive import EntitySensitiveResource
+from method.resources.Entities.Subscriptions import EntitySubscriptionsResource
+from method.resources.Entities.VerificationSessions import EntityVerificationSessionResource
 
 
 class Entity(TypedDict):
@@ -260,9 +157,6 @@ class EntityResource(Resource):
 
     def list(self, params: EntityListOpts = None) -> List[Entity]:
         return super(EntityResource, self)._list(params)
-
-    def refresh_capabilities(self, _id: str) -> Entity:
-        return super(EntityResource, self)._create_with_sub_path('{_id}/refresh_capabilities'.format(_id=_id), {})
 
     def withdraw_consent(self, _id: str) -> Entity:
         return super(EntityResource, self)._create_with_sub_path(

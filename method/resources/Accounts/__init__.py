@@ -1,9 +1,1 @@
 from method.resources.Accounts.Account import Account, AccountResource
-from method.resources.Accounts.Balances import AccountBalance, AccountBalancesResource
-from method.resources.Accounts.CardBrands import AccountCardBrand, AccountCardBrandsResource
-from method.resources.Accounts.Payoffs import AccountPayoff, AccountPayoffsResource
-from method.resources.Accounts.Sensitive import AccountSensitive, AccountSensitiveResource
-from method.resources.Accounts.Subscriptions import AccountSubscription, AccountSubscriptionsResource
-from method.resources.Accounts.Transactions import AccountTransaction, AccountTransactionsResource
-from method.resources.Accounts.Updates import AccountUpdate, AccountUpdatesResource
-from method.resources.Accounts.VerificationSessions import AccountVerificationSession, AccountVerificationSessionResource

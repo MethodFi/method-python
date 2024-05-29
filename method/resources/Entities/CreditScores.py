@@ -3,7 +3,7 @@ from typing import TypedDict, Optional, List, Literal
 from method.resource import Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Entities.Entity import EntityStatusesLiterals, CreditReportBureausLiterals
+from method.resources.Entities.Types import EntityStatusesLiterals, CreditReportBureausLiterals
 
 
 CreditScoresModelLiterals = Literal[

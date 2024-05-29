@@ -2,7 +2,7 @@ from typing import TypedDict, Optional, Literal, List, Dict
 
 from method.resource import Resource
 from method.configuration import Configuration
-from method.resources.Account import Account
+from method.resources.Accounts import Account
 
 
 ElementTypesLiterals = Literal[
