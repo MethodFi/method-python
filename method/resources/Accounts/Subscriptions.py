@@ -28,15 +28,15 @@ AccountSubscriptionsResponse = TypedDict('AccountSubscriptionsResponse', {
 
 
 class AccountSubscriptionCreateOpts(TypedDict):
-    enroll: List[AccountSubscriptionTypesLiterals]
+    enroll: AccountSubscriptionTypesLiterals
 
 
 class AccountSubscriptionsResource(Resource):
     def __init__(self, config: Configuration):
         super(AccountSubscriptionsResource, self).__init__(config.add_path('subscriptions'))
 
-    def create(self, data: AccountSubscriptionCreateOpts) -> AccountSubscription:
-        return super(AccountSubscriptionsResource, self)._create(data)
+    def create(self, sub_name: AccountSubscriptionCreateOpts) -> AccountSubscription:
+        return super(AccountSubscriptionsResource, self)._create({ 'enroll': sub_name })
     
     def list(self) -> List[AccountSubscription]:
         return super(AccountSubscriptionsResource, self)._get()

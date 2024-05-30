@@ -58,5 +58,5 @@ class AccountTransactionsResource(Resource):
     def retrieve(self, txn_id: str) -> AccountTransaction:
         return super(AccountTransactionsResource, self)._get_with_id(txn_id)
 
-    def list(self, params: ResourceListOpts) -> List[AccountTransaction]:
+    def list(self, params: Optional[ResourceListOpts] = None) -> List[AccountTransaction]:
         return super(AccountTransactionsResource, self)._list(params)

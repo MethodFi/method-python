@@ -27,10 +27,10 @@ class AccountCardBrand(TypedDict):
 
 class AccountCardBrandsResource(Resource):
     def __init__(self, config: Configuration):
-        super(AccountCardBrandsResource, self).__init__(config.add_path('cards'))
+        super(AccountCardBrandsResource, self).__init__(config.add_path('card_brands'))
 
     def retrieve(self, crbd_id: str) -> AccountCardBrand:
         return super(AccountCardBrandsResource, self)._get_with_id(crbd_id)
     
-    def _create(self) -> AccountCardBrand:
+    def create(self) -> AccountCardBrand:
         return super(AccountCardBrandsResource, self)._create({})

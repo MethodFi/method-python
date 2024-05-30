@@ -1,34 +1,16 @@
 from typing import Literal, Optional, TypedDict
 
-AccountLiabilityTypesLiterals = Literal[
-    'student_loans',
-    'credit_card',
-    'mortgage',
-    'auto_loan',
-    'collection',
-    'personal_loan',
-    'business_loan',
-    'insurance',
-    'credit_builder',
-    'subscription',
-    'utility',
-    'medical',
-    'loan'
-]
 
-AccountLiabilityDataSourcesLiterls = Literal[
-    'credit_report',
-    'financial_institution',
-    'unavailable'
+AccountTypesLiterals = Literal[
+    'ach',
+    'liability'
 ]
 
 
-AccountLiabilityDataStatusesLiterals = Literal[
+AccountStatusesLiterals = Literal[
     'active',
-    'syncing',
-    'unavailable',
-    'failed',
-    'pending'
+    'disabled',
+    'closed'
 ]
 
 
@@ -49,25 +31,39 @@ AccountSubscriptionTypesLiterals = Literal[
 ]
 
 
-AccountStatusesLiterals = Literal[
-    'active',
-    'disabled',
-    'closed',
-    'processing'
-]
-
-
-AccountTypesLiterals = Literal[
-    'ach',
-    'liability'
-]
-
-
-TradelineAccountOwnershipLiterals = Literal[
+AccountOwnershipLiterals = Literal[
     'primary',
     'authorized',
     'joint',
     'unknown'
+]
+
+
+AccountUpdateSourceLiterals = Literal[
+    'direct',
+    'snapshot'
+]
+
+
+AccountLiabilityTypesLiterals = Literal[
+    'auto_loan',
+    'credit_card',
+    'collection',
+    'mortgage',
+    'personal_loan',
+    'student_loans'
+]
+
+
+AchAccountSubTypesLiterals = Literal[
+    'checking',
+    'savings'
+]
+
+
+AccountExpandableFieldsLiterals = Literal[
+    AccountProductTypesLiterals,
+    'latest_verification_session'
 ]
 
 
@@ -83,11 +79,6 @@ AccountInterestRateSourcesLiterals = Literal[
     'method'
 ]
 
-
-AchAccountSubTypesLiterals = Literal[
-    'checking',
-    'savings'
-]
 
 
 AccountLiabilityAutoLoanSubTypesLiterals = Literal[
@@ -114,6 +105,11 @@ AccountLiabilityCreditCardUsageTypesLiterals = Literal[
 ]
 
 
+AccountLiabilityMortgageSubTypesLiterals = Literal[
+    'loan'
+]
+
+
 AccountLiabilityPersonalLoanSubTypesLiterals = Literal[
     'secured',
     'unsecured',
@@ -126,11 +122,6 @@ AccountLiabilityPersonalLoanSubTypesLiterals = Literal[
 AccountLiabilityStudentLoanSubTypesLiterals = Literal[
     'federal',
     'private'
-]
-
-
-AccountLiabilityMortgageSubTypesLiterals = Literal[
-    'loan'
 ]
 
 
@@ -167,13 +158,17 @@ class AccountLiabilityCreditCard(AccountLiabilityBase):
     usage_pattern: Optional[AccountLiabilityCreditCardUsageTypesLiterals]
 
 
+class AccountLiabilityCollection(AccountLiabilityBase):
+    pass
+
+
 class AccountLiabilityMortgage(AccountLiabilityLoanBase):
     sub_type: Optional[AccountLiabilityMortgageSubTypesLiterals]
 
 
 class AccountLiabilityPersonalLoan(AccountLiabilityLoanBase):
-    sub_type: Optional[AccountLiabilityPersonalLoanSubTypesLiterals]
     available_credit: Optional[int]
+    sub_type: Optional[AccountLiabilityPersonalLoanSubTypesLiterals]
     
 
 class AccountLiabilityStudentLoansDisbursement(AccountLiabilityLoanBase):
@@ -186,3 +181,18 @@ class AccountLiabilityStudentLoans(AccountLiabilityBase):
     sub_type: Optional[AccountLiabilityStudentLoanSubTypesLiterals]
     original_loan_amount: Optional[int]
     term_length: Optional[int]
+
+
+class AccountLiability(TypedDict):
+    mch_id: str
+    mask: Optional[str]
+    ownership: Optional[AccountOwnershipLiterals]
+    fingerprint: Optional[str]
+    type: Optional[AccountLiabilityTypesLiterals]
+    name: Optional[str]
+
+
+class AccountACH(TypedDict):
+    routing: int
+    number: int
+    type: AchAccountSubTypesLiterals

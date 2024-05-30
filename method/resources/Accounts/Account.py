@@ -1,34 +1,18 @@
-from typing import TypedDict, Optional, Dict, List, Any, Literal, Union
-
+from typing import TypedDict, Optional, Dict, List, Any, Literal, Union, TypeVar
 from method.resource import Resource, RequestOpts
-from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Accounts.Types import AccountLiabilityTypesLiterals, AchAccountSubTypesLiterals, \
-    AccountStatusesLiterals, AccountTypesLiterals, AccountProductTypesLiterals, AccountSubscriptionTypesLiterals, \
-    AccountLiabilityTypesLiterals, TradelineAccountOwnershipLiterals
+from method.configuration import Configuration
+from method.resources.Accounts.Types import AccountACH, AccountStatusesLiterals, AccountTypesLiterals, \
+    AccountProductTypesLiterals, AccountSubscriptionTypesLiterals, AccountExpandableFieldsLiterals, \
+    AccountLiability
 from method.resources.Accounts.Balances import AccountBalance, AccountBalancesResource
 from method.resources.Accounts.CardBrands import AccountCardBrand, AccountCardBrandsResource
 from method.resources.Accounts.Payoffs import AccountPayoff, AccountPayoffsResource
 from method.resources.Accounts.Sensitive import AccountSensitive, AccountSensitiveResource
-from method.resources.Accounts.Subscriptions import AccountSubscription, AccountSubscriptionsResource
+from method.resources.Accounts.Subscriptions import AccountSubscriptionsResource
 from method.resources.Accounts.Transactions import AccountTransaction, AccountTransactionsResource
 from method.resources.Accounts.Updates import AccountUpdate, AccountUpdatesResource
 from method.resources.Accounts.VerificationSessions import AccountVerificationSession, AccountVerificationSessionResource
-
-
-class AccountACH(TypedDict):
-    routing: int
-    number: int
-    type: AchAccountSubTypesLiterals
-
-
-class AccountLiability(TypedDict):
-    mch_id: str
-    mask: Optional[str]
-    ownership: Optional[TradelineAccountOwnershipLiterals]
-    fingerprint: Optional[str]
-    type: Optional[AccountLiabilityTypesLiterals]
-    name: Optional[str]
 
 
 class AccountCreateOpts(TypedDict):
@@ -48,6 +32,21 @@ class LiabilityCreateOpts(TypedDict):
 
 class AccountLiabilityCreateOpts(AccountCreateOpts):
     liability: LiabilityCreateOpts
+
+
+AccountListOpts = TypedDict('AccountListOpts', {
+    'to_date': Optional[str],
+    'from_date': Optional[str],
+    'page': Optional[int],
+    'page_limit': Optional[int],
+    'page_cursor': Optional[str],
+    'status': Optional[str],
+    'type': Optional[str],
+    'holder_id': Optional[str],
+    'expand': Optional[List[AccountExpandableFieldsLiterals]],
+    'liability.mch_id': Optional[str],
+    'liability.type': Optional[str]
+})
 
 
 class Account(TypedDict):
@@ -72,21 +71,10 @@ class Account(TypedDict):
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
-    metadata: Optional[Dict[str, Any]]
+    metadata: Optional[Dict[str, str]]
 
 
-AccountListOpts = TypedDict('AccountListOpts', {
-    'to_date': Optional[str],
-    'from_date': Optional[str],
-    'page': Optional[int],
-    'page_limit': Optional[int],
-    'page_cursor': Optional[str],
-    'status': Optional[str],
-    'type': Optional[str],
-    'holder_id': Optional[str],
-    'liability.mch_id': Optional[str],
-    'liability.type': Optional[str]
-})
+T = TypeVar('T', bound='Account')
 
 
 class AccountWithdrawConsentOpts(TypedDict):
@@ -120,18 +108,18 @@ class AccountResource(Resource):
     def __init__(self, config: Configuration):
         super(AccountResource, self).__init__(config.add_path('accounts'))
 
-    def __call__(self, _id: str) -> AccountSubResources:
-        return AccountSubResources(_id, self.config)
+    def __call__(self, acc_id: str) -> AccountSubResources:
+        return AccountSubResources(acc_id, self.config)
 
-    def retrieve(self, _id: str) -> Account:
-        return super(AccountResource, self)._get_with_id(_id)
+    def retrieve(self, acc_id: str, params: Optional[Dict[str, List[AccountExpandableFieldsLiterals]]] = None) -> Account:
+        return super(AccountResource, self)._get_with_sub_path_and_params(acc_id, params)
 
-    def list(self, params: Optional[AccountListOpts] = None) -> List[Account]:
+    def list(self, params: Optional[AccountListOpts[T]] = None) -> List[Account]:
         return super(AccountResource, self)._list(params)
 
     def create(self, opts: Union[AccountACHCreateOpts, AccountLiabilityCreateOpts], request_opts: Optional[RequestOpts] = None) -> Account:
         return super(AccountResource, self)._create(opts, request_opts)
 
-    def withdraw_consent(self, _id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> Account:
-        return super(AccountResource, self)._create_with_sub_path('{_id}/consent'.format(_id=_id), data)
+    def withdraw_consent(self, acc_id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> Account:
+        return super(AccountResource, self)._create_with_sub_path('{acc_id}/consent'.format(acc_id=acc_id), data)
 
