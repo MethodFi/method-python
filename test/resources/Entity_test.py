@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from utils import await_results
 from method.resources.Entities.Entity import Entity
 from method.resources.Entities.Connect import EntityConnect
+from method.resources.Entities.CreditScores import EntityCreditScores
 from method.resources.Entities.VerificationSessions import EntityVerificationSession
 
 load_dotenv()
@@ -287,6 +288,7 @@ def test_create_entity_individual_verification():
 
 def test_create_entity_connect():
     global entities_connect_create_response
+    global entities_account_ids
     entities_connect_create_response = method.entities(entities_create_response['id']).connect.create()
     entities_connect_create_response['accounts'] = entities_connect_create_response['accounts'].sort()
     entities_account_list_response = method.accounts.list({ 'holder_id': entities_create_response['id'], 'type': 'liability' })
@@ -303,3 +305,64 @@ def test_create_entity_connect():
     } 
     
     assert entities_connect_create_response == expect_results
+
+def test_retrieve_entity_connect():
+    entities_connect_retrieve_response = method.entities(entities_create_response['id']).connect.retrieve(entities_connect_create_response['id'])
+    entities_connect_retrieve_response['accounts'] = entities_connect_retrieve_response['accounts'].sort()
+    
+    expect_results: EntityConnect = {
+        'id': entities_connect_create_response['id'],
+        'entity_id': entities_create_response['id'],
+        'status': 'completed',
+        'accounts': entities_account_ids,
+        'error': None,
+        'created_at': entities_connect_create_response['created_at'],
+        'updated_at': entities_connect_create_response['updated_at'],
+    } 
+    
+    assert entities_connect_retrieve_response == expect_results
+
+
+def test_create_entity_credit_score():
+    global entities_create_credit_score_response
+    entities_create_credit_score_response = method.entities(entities_create_response['id']).credit_scores.create()
+    
+    expect_results: EntityCreditScores = {
+        'id': entities_create_credit_score_response['id'],
+        'entity_id': entities_create_response['id'],
+        'status': 'pending',
+        'scores': None,
+        'error': None,
+        'created_at': entities_create_credit_score_response['created_at'],
+        'updated_at': entities_create_credit_score_response['updated_at'],
+    }
+    
+    assert entities_create_credit_score_response == expect_results
+
+
+@pytest.mark.asyncio
+async def test_retrieve_entity_credit_score():
+    def get_credit_score():
+        return method.entities(entities_create_response['id']).credit_scores.retrieve(entities_create_credit_score_response['id'])
+    
+    credit_score_retrieve_response = await await_results(get_credit_score)
+
+    expect_results: EntityCreditScores = {
+        'id': entities_create_credit_score_response['id'],
+        'entity_id': entities_create_response['id'],
+        'status': 'completed',
+        'scores': [
+            {
+                'score': credit_score_retrieve_response['scores'][0]['score'],
+                'source': 'equifax',
+                'model': 'vantage_3',
+                'factors': credit_score_retrieve_response['scores'][0]['factors'],
+                'created_at': credit_score_retrieve_response['scores'][0]['created_at']
+            }
+        ],
+        'error': None,
+        'created_at': credit_score_retrieve_response['created_at'],
+        'updated_at': credit_score_retrieve_response['updated_at']
+    }
+
+    assert credit_score_retrieve_response == expect_results

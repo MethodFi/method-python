@@ -40,8 +40,8 @@ class EntityCreditScoresResource(Resource):
     def __init__(self, config: Configuration):
         super(EntityCreditScoresResource, self).__init__(config.add_path('credit_scores'))
 
-    def retrieve_credit_scores(self, crs_id: str) -> EntityCreditScores:
+    def retrieve(self, crs_id: str) -> EntityCreditScores:
         return super(EntityCreditScoresResource, self)._get_with_id(crs_id)
 
-    def create_credit_scores(self) -> EntityCreditScores:
+    def create(self) -> EntityCreditScores:
         return super(EntityCreditScoresResource, self)._create({})
