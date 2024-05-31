@@ -6,24 +6,25 @@ from method.errors import ResourceError
 
 
 EntityVerificationSessionStatusLiterals = Literal[
-    'completed',
+    'verified',
     'in_progress',
     'pending',
     'failed'
 ]
 
 
-EntityVerificationSessionTypeLiterals = Literal[
-    'phone_method_sms',
-    'phone_method_sna',
-    'phone_byo_sms',
-    'identity_byo_kyc',
-    'identity_method_kba',
-    'identity_method_auth_element'
+EntityVerificationSessionMethodsLiterals = Literal[
+    'sms',
+    'sna',
+    'byo_sms',
+    'byo_kyc',
+    'kba',
+    'element',
+    'method_verified'
 ]
 
 
-EntityVerificationSessionCategoryLiterals = Literal[
+EntityVerificationSessionTypeLiterals = Literal[
     'phone',
     'identity'
 ]
@@ -69,18 +70,20 @@ class EntityKbaVerification(TypedDict):
 
 class EntityVerificationSessionCreateOpts(TypedDict):
     type: EntityVerificationSessionTypeLiterals
-    phone_method_sms: Optional[object]
-    phone_method_sna: Optional[object]
-    phone_byo_sms: Optional[EntityPhoneSmsVerification]
-    identity_byo_kyc: Optional[object]
-    identity_method_kba: Optional[object]
+    method: EntityVerificationSessionMethodsLiterals
+    sms: Optional[object]
+    sna: Optional[object]
+    byo_sms: Optional[EntityPhoneSmsVerification]
+    byo_kyc: Optional[object]
+    kba: Optional[object]
 
 
 class EntityVerificationSessionUpdateOpts(TypedDict):
     type: EntityVerificationSessionTypeLiterals
-    phone_method_sms: Optional[EntityPhoneSmsVerificationUpdate]
-    phone_method_sma: Optional[object]
-    identity_method_kba: Optional[EntityKbaVerificationAnswerUpdate]
+    method: EntityVerificationSessionMethodsLiterals
+    sms: Optional[EntityPhoneSmsVerificationUpdate]
+    sma: Optional[object]
+    kba: Optional[EntityKbaVerificationAnswerUpdate]
 
 
 class EntityVerificationSession(TypedDict):
@@ -88,12 +91,12 @@ class EntityVerificationSession(TypedDict):
     entity_id: str
     status: EntityVerificationSessionStatusLiterals
     type: EntityVerificationSessionTypeLiterals
-    category: EntityVerificationSessionCategoryLiterals
-    phone_method_sms: Optional[EntityPhoneSmsVerification]
-    phone_method_sna: Optional[EntityPhoneSnaVerification]
-    phone_byo_sms: Optional[EntityPhoneSmsVerification]
-    identity_byo_kyc: Optional[EntityByoKycVerification]
-    identity_method_kba: Optional[EntityKbaVerification]
+    method: EntityVerificationSessionMethodsLiterals
+    sms: Optional[EntityPhoneSmsVerification]
+    sna: Optional[EntityPhoneSnaVerification]
+    byo_sms: Optional[EntityPhoneSmsVerification]
+    byo_kyc: Optional[EntityByoKycVerification]
+    kba: Optional[EntityKbaVerification]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
