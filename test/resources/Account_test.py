@@ -1,14 +1,22 @@
 import os
 import pytest
 from method import Method
-from dotenv import load_dotenv, dotenv_values 
+from dotenv import load_dotenv 
 from utils import await_results
+from method.resources.Accounts.Account import Account
+from method.resources.Accounts.Balances import AccountBalance
+from method.resources.Accounts.CardBrands import AccountCardBrand
+from method.resources.Accounts.Payoffs import AccountPayoff
+from method.resources.Accounts.Sensitive import AccountSensitive
+from method.resources.Accounts.Subscriptions import AccountSubscription, AccountSubscriptionsResponse
+from method.resources.Accounts.Transactions import AccountTransaction
+from method.resources.Accounts.Updates import AccountUpdate
+from method.resources.Accounts.VerificationSessions import AccountVerificationSession
 
 load_dotenv()
  
 API_KEY = os.getenv('API_KEY')
 
-# Create an instance of Method
 method = Method(env='dev', api_key=API_KEY)
 
 accounts_create_ach_response = None
@@ -92,7 +100,7 @@ def test_create_ach_account(setup):
         },
     })
 
-    expect_results = {
+    expect_results: Account = {
         'id': accounts_create_ach_response['id'],
         'holder_id': holder_1_response['id'],
         'type': 'ach',
@@ -128,7 +136,7 @@ def test_create_liability_account(setup):
 
     accounts_create_liability_response['products'] = accounts_create_liability_response['products'].sort()
 
-    expect_results = {
+    expect_results: Account = {
         'id': accounts_create_liability_response['id'],
         'holder_id': holder_1_response['id'],
         'type': 'liability',
@@ -162,7 +170,7 @@ def test_create_liability_account(setup):
 def test_retrieve_account(setup):
     accounts_retrieve_response = method.accounts.retrieve(accounts_create_ach_response['id'])
 
-    expect_results = {
+    expect_results: Account = {
         'id': accounts_create_ach_response['id'],
         'holder_id': setup['holder_1_response']['id'],
         'type': 'ach',
@@ -213,7 +221,7 @@ def test_create_balances(setup):
 
     balances_create_response = method.accounts(test_credit_card_account['id']).balances.create()
 
-    expect_results = {
+    expect_results: AccountBalance = {
         'id': balances_create_response['id'],
         'account_id': test_credit_card_account['id'],
         'status': 'pending',
@@ -235,7 +243,7 @@ async def test_retrieve_balance(setup):
     
     balances_retrieve_response = await await_results(get_account_balances)
 
-    expect_results = {
+    expect_results: AccountBalance = {
         'id': balances_create_response['id'],
         'account_id': test_credit_card_account['id'],
         'status': 'completed',
@@ -254,7 +262,7 @@ def test_create_card_brands(setup):
 
     card_brand_create_response = method.accounts(test_credit_card_account['id']).card_brands.create()
 
-    expect_results = {
+    expect_results: AccountCardBrand = {
         'id': card_brand_create_response['id'],
         'account_id': test_credit_card_account['id'],
         'network': 'visa',
@@ -275,7 +283,7 @@ def test_retrieve_card_brands(setup):
     test_credit_card_account = setup['test_credit_card_account']
     card_retrieve_response = method.accounts(test_credit_card_account['id']).card_brands.retrieve(card_brand_create_response['id'])
 
-    expect_results = {
+    expect_results: AccountCardBrand = {
         'id': card_brand_create_response['id'],
         'account_id': test_credit_card_account['id'],
         'network': 'visa',
@@ -298,7 +306,7 @@ def test_create_payoffs(setup):
 
     payoff_create_response = method.accounts(test_auto_loan_account['id']).payoffs.create()
 
-    expect_results = {
+    expect_results: AccountPayoff = {
         'id': payoff_create_response['id'],
         'account_id': test_auto_loan_account['id'],
         'amount': None,
@@ -321,7 +329,7 @@ async def test_retrieve_payoffs(setup):
     
     payoff_retrieve_response = await await_results(get_payoff)
 
-    expect_results = {
+    expect_results: AccountPayoff = {
         'id': payoff_create_response['id'],
         'account_id': test_auto_loan_account['id'],
         'amount': 6083988,
@@ -344,7 +352,7 @@ def test_create_account_verification_sessions(setup):
         'type': 'pre_auth'
     })
 
-    expect_results = {
+    expect_results: AccountVerificationSession = {
         'id': verification_session_create['id'],
         'account_id': test_credit_card_account['id'],
         'status': 'pending',
@@ -381,7 +389,7 @@ def test_update_account_verification_sessions(setup):
         }
     })
 
-    expect_results = {
+    expect_results: AccountVerificationSession = {
         'id': verification_session_create['id'],
         'account_id': test_credit_card_account['id'],
         'status': 'verified',
@@ -404,6 +412,7 @@ def test_update_account_verification_sessions(setup):
 
     assert verification_session_update == expect_results
 
+
 @pytest.mark.asyncio
 async def test_retrieve_account_verification_session(setup):
     test_credit_card_account = setup['test_credit_card_account']
@@ -413,7 +422,7 @@ async def test_retrieve_account_verification_session(setup):
     
     verification_session_retrieve_response = await await_results(get_verification_session)
 
-    expect_results = {
+    expect_results: AccountVerificationSession = {
         'id': verification_session_update['id'],
         'account_id': test_credit_card_account['id'],
         'status': 'verified',
@@ -449,7 +458,7 @@ def test_create_account_sensitive(setup):
         ]
     })
 
-    expect_results = {
+    expect_results: AccountSensitive = {
         'id': sensitive_data_response['id'],
         'account_id': test_credit_card_account['id'],
         'type': 'credit_card',
@@ -475,7 +484,7 @@ def test_create_transaction_subscription(setup):
 
     create_txn_subscriptions_response = method.accounts(test_credit_card_account['id']).subscriptions.create('transactions')
 
-    expect_results = {
+    expect_results: AccountSubscription = {
         'id': create_txn_subscriptions_response['id'],
         'name': 'transactions',
         'status': 'active',
@@ -493,7 +502,7 @@ def test_create_update_subscription(setup):
 
     create_update_subscriptions_response = method.accounts(test_credit_card_account['id']).subscriptions.create('update')
 
-    expect_results = {
+    expect_results: AccountSubscription = {
         'id': create_update_subscriptions_response['id'],
         'name': 'update',
         'status': 'active',
@@ -511,7 +520,7 @@ def test_create_snapshot_subscription(setup):
 
     create_update_snapshot_subscriptions_response = method.accounts(test_auto_loan_account['id']).subscriptions.create('update.snapshot')
 
-    expect_results = {
+    expect_results: AccountSubscription = {
         'id': create_update_snapshot_subscriptions_response['id'],
         'name': 'update.snapshot',
         'status': 'active',
@@ -530,7 +539,7 @@ def test_list_subscriptions(setup):
     subscriptions_list_response = method.accounts(test_credit_card_account['id']).subscriptions.list()
     subscriptions_update_snapshot_list_response = method.accounts(test_auto_loan_account['id']).subscriptions.list()
 
-    expect_results_card = {
+    expect_results_card: AccountSubscriptionsResponse = {
         'transactions': {
             'id': create_txn_subscriptions_response['id'],
             'name': 'transactions',
@@ -549,7 +558,7 @@ def test_list_subscriptions(setup):
         }
     }
 
-    expect_results_auto_loan = {
+    expect_results_auto_loan: AccountSubscriptionsResponse = {
         'update.snapshot': {
             'id': create_update_snapshot_subscriptions_response['id'],
             'name': 'update.snapshot',
@@ -572,7 +581,7 @@ def test_retrieve_subscription(setup):
     retrieve_update_subscription_response = method.accounts(test_credit_card_account['id']).subscriptions.retrieve(create_update_subscriptions_response['id'])
     retrieve_update_snapshot_subscription_response = method.accounts(test_auto_loan_account['id']).subscriptions.retrieve(create_update_snapshot_subscriptions_response['id'])
     
-    expect_results_txn = {
+    expect_results_txn: AccountSubscription = {
         'id': create_txn_subscriptions_response['id'],
         'name': 'transactions',
         'status': 'active',
@@ -581,7 +590,7 @@ def test_retrieve_subscription(setup):
         'updated_at': retrieve_txn_subscription_response['updated_at'],
     }
 
-    expect_results_update = {
+    expect_results_update: AccountSubscription = {
         'id': create_update_subscriptions_response['id'],
         'name': 'update',
         'status': 'active',
@@ -590,7 +599,7 @@ def test_retrieve_subscription(setup):
         'updated_at': retrieve_update_subscription_response['updated_at'],
     }
 
-    expect_results_update_snapshot = {
+    expect_results_update_snapshot: AccountSubscription = {
         'id': create_update_snapshot_subscriptions_response['id'],
         'name': 'update.snapshot',
         'status': 'active',
@@ -631,7 +640,7 @@ def test_list_transactions(setup):
 
     transactions_response = transactions_response[0]
 
-    expect_results = {
+    expect_results: AccountTransaction = {
         'id': transactions_response['id'],
         'account_id': test_credit_card_account['id'],
         'merchant': simulated_transaction['merchant'],
@@ -648,3 +657,149 @@ def test_list_transactions(setup):
     }
 
     assert transactions_response == expect_results
+
+
+def test_create_updates(setup):
+    global create_updates_response
+    test_credit_card_account = setup['test_credit_card_account']
+
+    create_updates_response = method.accounts(test_credit_card_account['id']).updates.create()
+
+    expect_results: AccountUpdate = {
+        'id': create_updates_response['id'],
+        'account_id': test_credit_card_account['id'],
+        'status': 'pending',
+        'source': 'direct',
+        'type': 'credit_card',
+        'credit_card': {
+            'sub_type': None,
+            'opened_at': None,
+            'closed_at': None,
+            'balance': None,
+            'last_payment_amount': None,
+            'last_payment_date': None,
+            'next_payment_due_date': None,
+            'next_payment_minimum_amount': None,
+            'interest_rate_type': None,
+            'interest_rate_percentage_max': None,
+            'interest_rate_percentage_min': None,
+            'available_credit': None,
+            'credit_limit': None,
+            'usage_pattern': None
+        },
+        'error': None,
+        'created_at': create_updates_response['created_at'],
+        'updated_at': create_updates_response['updated_at'],
+    }
+
+    assert create_updates_response == expect_results
+
+@pytest.mark.asyncio
+async def test_retrieve_updates(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+
+    def get_updates():
+        return method.accounts(test_credit_card_account['id']).updates.retrieve(create_updates_response['id'])
+    
+    updates_retrieve_response = await await_results(get_updates)
+
+    expect_results: AccountUpdate = {
+        'id': create_updates_response['id'],
+        'account_id': test_credit_card_account['id'],
+        'status': 'completed',
+        'source': 'direct',
+        'type': 'credit_card',
+        'credit_card': {
+            'sub_type': 'flexible_spending',
+            'opened_at': '2016-12-20',
+            'closed_at': None,
+            'balance': 1866688,
+            'last_payment_amount': 100000,
+            'last_payment_date': '2023-01-04',
+            'next_payment_due_date': '2023-02-09',
+            'next_payment_minimum_amount': 51060,
+            'interest_rate_type': 'variable',
+            'interest_rate_percentage_max': 27.5,
+            'interest_rate_percentage_min': 20.5,
+            'available_credit': 930000,
+            'credit_limit': 2800000,
+            'usage_pattern': None
+        },
+        'error': None,
+        'created_at': updates_retrieve_response['created_at'],
+        'updated_at': updates_retrieve_response['updated_at'],
+    }
+
+    assert updates_retrieve_response == expect_results
+
+
+
+def test_list_updates_for_account(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+
+    list_updates_response = method.accounts(test_credit_card_account['id']).updates.list()
+
+    update_to_check = next((update for update in list_updates_response if update['id'] == create_updates_response['id']), None)
+
+    expect_results: AccountUpdate = {
+        'id': create_updates_response['id'],
+        'account_id': test_credit_card_account['id'],
+        'status': 'completed',
+        'source': 'direct',
+        'type': 'credit_card',
+        'credit_card': {
+            'sub_type': 'flexible_spending',
+            'opened_at': '2016-12-20',
+            'closed_at': None,
+            'balance': 1866688,
+            'last_payment_amount': 100000,
+            'last_payment_date': '2023-01-04',
+            'next_payment_due_date': '2023-02-09',
+            'next_payment_minimum_amount': 51060,
+            'interest_rate_type': 'variable',
+            'interest_rate_percentage_max': 27.5,
+            'interest_rate_percentage_min': 20.5,
+            'available_credit': 930000,
+            'credit_limit': 2800000,
+            'usage_pattern': None
+        },
+        'error': None,
+        'created_at': update_to_check['created_at'] if update_to_check else None,
+        'updated_at': update_to_check['updated_at'] if update_to_check else None
+    }
+
+
+    assert update_to_check == expect_results
+
+
+def test_withdraw_account_consent(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+    holder_1_response = setup['holder_1_response']
+
+    withdraw_consent_response = method.accounts.withdraw_consent(test_credit_card_account['id'])
+
+    expect_results: Account = {
+        'id': withdraw_consent_response['id'],
+        'holder_id': holder_1_response['id'],
+        'status': 'disabled',
+        'type': None,
+        'ach': None,
+        'liability': None,
+        'clearing': None,
+        'products': [],
+        'restricted_products': [],
+        'subscriptions': [],
+        'available_subscriptions': [],
+        'restricted_subscriptions': [],
+        'error': {
+            'type': 'ACCOUNT_DISABLED',
+            'sub_type': 'ACCOUNT_CONSENT_WITHDRAWN',
+            'code': 11004,
+            'message': 'Account was disabled due to consent withdrawal.',
+        },
+        'metadata': None,
+        'created_at': withdraw_consent_response['created_at'],
+        'updated_at': withdraw_consent_response['updated_at'],
+    }
+
+    assert withdraw_consent_response == expect_results

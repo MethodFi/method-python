@@ -29,7 +29,7 @@ class AccountUpdatesResource(Resource):
     def retrieve(self, upt_id: str) -> AccountUpdate:
         return super(AccountUpdatesResource, self)._get_with_id(upt_id)
 
-    def list(self, params: ResourceListOpts) -> List[AccountUpdate]:
+    def list(self, params: Optional[ResourceListOpts] = None) -> List[AccountUpdate]:
         return super(AccountUpdatesResource, self)._list(params)
 
     def create(self) -> AccountUpdate:
