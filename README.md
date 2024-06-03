@@ -12,11 +12,11 @@ pip install method-python
 ```python
 from method import Method
 
-method = Method(env='production', api_key='{API_KEY}')
+method = Method(env="production", api_key="{API_KEY}")
 
 # or 
 
-method = Method({'env': 'production', 'api_key': '{API_KEY}'})
+method = Method({"env": "production", "api_key": "{API_KEY}"})
 ```
 
 ## Entities
@@ -35,20 +35,20 @@ Entity PII requirements are pre-defined during onboarding based on your team’s
 
 ```python
 const entity = await method.entities.create({
-  type: "individual",
-  'individual': {
-    'first_name': "Kevin",
-    'last_name': "Doyle",
-    'phone': "+16505555555",
-    'email': "kevin.doyle@gmail.com",
-    'dob': "1997-03-18",
+  "type": "individual",
+  "individual": {
+    "first_name": "Kevin",
+    "last_name": "Doyle",
+    "phone": "+16505555555",
+    "email": "kevin.doyle@gmail.com",
+    "dob": "1997-03-18",
   },
-  'address': {
-    'line1': "3300 N Interstate 35",
-    'line2': None,
-    'city': "Austin",
-    'state': "TX",
-    'zip': "78705",
+  "address": {
+    "line1": "3300 N Interstate 35",
+    "line2": None,
+    "city": "Austin",
+    "state": "TX",
+    "zip": "78705",
   },
 });
 ```
@@ -57,34 +57,34 @@ const entity = await method.entities.create({
 
 ```python
 const entity = await method.entities.create({
-  type: 'corporation',
-  corporation: {
-    name: 'Alphabet Inc.',
-    dba: 'Google',
-    ein: '641234567',
-    owners: [
+  "type": "corporation",
+  "corporation": {
+    "name": "Alphabet Inc.",
+    "dba": "Google",
+    "ein": "641234567",
+    "owners": [
       {
-        first_name: 'Sergey',
-        last_name: 'Brin',
-        phone: '+16505555555',
-        email: 'sergey@google.com',
-        dob: '1973-08-21',
-        address: {
-          line1: '600 Amphitheatre Parkway',
-          line2: None,
-          city: 'Mountain View',
-          state: 'CA',
-          zip: '94043',
+        "first_name": "Sergey",
+        "last_name": "Brin",
+        "phone": "+16505555555",
+        "email": "sergey@google.com",
+        "dob": "1973-08-21",
+        "address": {
+          "line1": "600 Amphitheatre Parkway",
+          "line2": None,
+          "city": "Mountain View",
+          "state": "CA",
+          "zip": "94043",
         },
       },
     ],
   },
-  address: {
-    line1: '1600 Amphitheatre Parkway',
-    line2: None,
-    city: 'Mountain View',
-    state: 'CA',
-    zip: '94043',
+  "address": {
+    "line1": "1600 Amphitheatre Parkway",
+    "line2": None,
+    "city": "Mountain View",
+    "state": "CA",
+    "zip": "94043",
   },
 });
 ```
@@ -92,18 +92,18 @@ const entity = await method.entities.create({
 #### Retrieve Entity
 
 ```python
-const entity = await method.entities.retrieve('ent_au22b1fbFJbp8');
+const entity = await method.entities.retrieve("ent_au22b1fbFJbp8");
 ```
 
 #### Update Entity
 
 ```python
-const entity = await method.entities.update('ent_au22b1fbFJbp8', {
-  'individual': {
-    'first_name': 'Kevin',
-    'last_name': 'Doyle',
-    'email': 'kevin.doyle@gmail.com',
-    'dob': '1997-03-18',
+const entity = await method.entities.update("ent_au22b1fbFJbp8", {
+  "individual": {
+    "first_name": "Kevin",
+    "last_name": "Doyle",
+    "email": "kevin.doyle@gmail.com",
+    "dob": "1997-03-18",
   },
 });
 ```
@@ -114,10 +114,10 @@ const entity = await method.entities.update('ent_au22b1fbFJbp8', {
 const entities = await method.entities.list();
 ```
 
-#### Withdraw an Entity's consent
+#### Withdraw an Entity"s consent
 
 ```python
-const entity = await method.entities.withdraw_consent('ent_au22b1fbFJbp8');
+const entity = await method.entities.withdraw_consent("ent_au22b1fbFJbp8");
 ```
 
 ### Connect
@@ -170,9 +170,9 @@ const response = await method
   .entities("ent_XgYkTdiHyaz3e")
   .verification_sessions
   .create({
-    'type': "identity",
-    'method': "byo_kyc",
-    'byo_kyc': {},
+    "type": "identity",
+    "method": "byo_kyc",
+    "byo_kyc": {},
   });
 ```
 
@@ -183,9 +183,9 @@ const response = await method
   .entities("ent_hy3xhPDfWDVxi")
   .verification_sessions
   .create({
-    'type': "identity",
-    'method': "kba",
-    'kba': {},
+    "type": "identity",
+    "method": "kba",
+    "kba": {},
   });
 ```
 
@@ -196,21 +196,21 @@ const response = await method
   .entities("ent_hy3xhPDfWDVxi")
   .verification_sessions
   .update("evf_ywizPrR6WDxDG", {
-    'type': "identity",
-    'method': "kba",
-    'kba': {
-      'answers': [
+    "type": "identity",
+    "method": "kba",
+    "kba": {
+      "answers": [
         {
-          'question_id': "qtn_xgP6cGhq34fHW",
-          'answer_id': "ans_dbKCwDGwrrBgi"
+          "question_id": "qtn_xgP6cGhq34fHW",
+          "answer_id": "ans_dbKCwDGwrrBgi"
         },
         {
-          'question_id': "qtn_kmfdEftQ9zc6T",
-          'answer_id': "ans_LXN83xnJAUNFb"
+          "question_id": "qtn_kmfdEftQ9zc6T",
+          "answer_id": "ans_LXN83xnJAUNFb"
         },
         {
-          'question_id': "qtn_6mWegPLBpAFxb",
-          'answer_id': "ans_EKi47D8wA6YN3"
+          "question_id": "qtn_6mWegPLBpAFxb",
+          "answer_id": "ans_EKi47D8wA6YN3"
         }
       ]
     }
@@ -224,10 +224,10 @@ const response = await method
   .entities("ent_XgYkTdiHyaz3e")
   .verification_sessions
   .create({
-    'type': "phone",
-    'method': "byo_sms",
-    'byo_sms': {
-      'timestamp': "2023-12-28T14:35:15.816Z",
+    "type": "phone",
+    "method": "byo_sms",
+    "byo_sms": {
+      "timestamp": "2023-12-28T14:35:15.816Z",
     },
   });
 ```
@@ -239,9 +239,9 @@ const response = await method
   .entities("ent_au22b1fbFJbp8")
   .verification_sessions
   .create({
-    'type': "phone",
-    'method': "sms",
-    'sms': {},
+    "type": "phone",
+    "method": "sms",
+    "sms": {},
   });
 ```
 
@@ -252,9 +252,9 @@ const response = await method
   .entities("ent_au22b1fbFJbp8")
   .verification_sessions
   .update("evf_3VT3bHTCnPbrm", {
-    'type': "phone",
-    'method': "sms",
-    'sms': { 'sms_code': "884134" },
+    "type": "phone",
+    "method": "sms",
+    "sms": { "sms_code": "884134" },
   });
 ```
 
@@ -265,9 +265,9 @@ const response = await method
   .entities("ent_au22b1fbFJbp8")
   .verification_sessions
   .create({
-    'type': "phone",
-    'method': "sna",
-    'sna': {},
+    "type": "phone",
+    "method": "sna",
+    "sna": {},
   });
 ```
 
@@ -278,9 +278,9 @@ const response = await method
   .entities("ent_BYdNCVApmp7Gx")
   .verification_sessions
   .update("evf_qTNNzCQ63zHJ9", {
-    'type': "phone",
-    'method': "sna",
-    'sna': {},
+    "type": "phone",
+    "method": "sna",
+    "sna": {},
   });
 ```
 
@@ -292,7 +292,7 @@ The Credit Score endpoint returns the latest credit score and score factors for 
 
 ```python
 const entity = await method
-  .entities('ent_au22b1fbFJbp8')
+  .entities("ent_au22b1fbFJbp8")
   .credit_scores
   .create();
 ```
@@ -301,9 +301,9 @@ const entity = await method
 
 ```python
 const entity = await method
-  .entities('ent_au22b1fbFJbp8')
+  .entities("ent_au22b1fbFJbp8")
   .credit_scores
-  .retrieve('crs_pn4ca33GXFaCE');
+  .retrieve("crs_pn4ca33GXFaCE");
 ```
 
 ### Identities
@@ -329,9 +329,9 @@ const entity = await method
 
 ```python
 const entity = await method
-  .entities('ent_au22b1fbFJbp8')
+  .entities("ent_au22b1fbFJbp8")
   .identities
-  .retrieve('idn_NhTRUVEknYaFM');
+  .retrieve("idn_NhTRUVEknYaFM");
 ```
 
 ### Entity Products
@@ -344,7 +344,7 @@ The Entity Products endpoint outlines the Products (capabilities) an Entity has 
 
 ```python
 const response = await method
-  .entities('ent_TYHMaRJUUeJ7U')
+  .entities("ent_TYHMaRJUUeJ7U")
   .products
   .list();
 ```
@@ -372,14 +372,14 @@ Subscriptions are Products that can provide continuous updates via Webhooks. (e.
 const response = await method
   .entities("ent_TYHMaRJUUeJ7U")
   .subscriptions
-  .create('credit_score');
+  .create("credit_score");
 ```
 
 #### List all Subscriptions
 
 ```python
 const response = await method
-  .entities('ent_TYHMaRJUUeJ7U')
+  .entities("ent_TYHMaRJUUeJ7U")
   .subscriptions
   .list();
 ```
@@ -397,9 +397,9 @@ const response = await method
 
 ```python
 const response = await method
-  .entities('ent_TYHMaRJUUeJ7U')
+  .entities("ent_TYHMaRJUUeJ7U")
   .subscriptions
-  .delete('sub_6f7XtMLymQx3f');
+  .delete("sub_6f7XtMLymQx3f");
 ```
 
 ## Accounts
@@ -412,11 +412,11 @@ Accounts are a representation of an Entity’s financial accounts. An Account ca
 
 ```python
 const account = await method.accounts.create({
-  'holder_id': 'ent_y1a9e1fbnJ1f3',
-  'ach': {
-    'routing': '367537407',
-    'number': '57838927',
-    'type': 'checking',
+  "holder_id": "ent_y1a9e1fbnJ1f3",
+  "ach": {
+    "routing": "367537407",
+    "number": "57838927",
+    "type": "checking",
   },
 });
 ```
@@ -425,10 +425,10 @@ const account = await method.accounts.create({
 
 ```python
 const account = await method.accounts.create({
-  'holder_id': 'ent_au22b1fbFJbp8',
-  'liability': {
-    'mch_id': 'mch_2',
-    'account_number': '1122334455',
+  "holder_id": "ent_au22b1fbFJbp8",
+  "liability": {
+    "mch_id": "mch_2",
+    "account_number": "1122334455",
   }
 });
 ```
@@ -436,7 +436,7 @@ const account = await method.accounts.create({
 #### Retrieve Account
 
 ```python
-const account = await method.accounts.retrieve('acc_Zc4F2aTLt8CBt');
+const account = await method.accounts.retrieve("acc_Zc4F2aTLt8CBt");
 ```
 
 #### List Accounts
@@ -445,10 +445,10 @@ const account = await method.accounts.retrieve('acc_Zc4F2aTLt8CBt');
 const accounts = await method.accounts.list();
 ```
 
-#### Withdraw an Account's consent
+#### Withdraw an Account"s consent
 
 ```python
-const account = await method.accounts.withdraw_consent('acc_yVf3mkzbhz9tj');
+const account = await method.accounts.withdraw_consent("acc_yVf3mkzbhz9tj");
 ```
 
 ### Updates
@@ -459,7 +459,7 @@ The Updates endpoint retrieves in real-time account data including Balance, due 
 
 ```python
 const response = await method
-  .accounts('acc_aEBDiLxiR8bqc')
+  .accounts("acc_aEBDiLxiR8bqc")
   .updates
   .create();
 ```
@@ -468,7 +468,7 @@ const response = await method
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .updates
   .list();
 ```
@@ -477,9 +477,9 @@ const response = await method
 
 ```python
 const response = await method
-  .accounts('acc_aEBDiLxiR8bqc')
+  .accounts("acc_aEBDiLxiR8bqc")
   .updates
-  .retrieve('upt_NYV5kfjskTTCJ');
+  .retrieve("upt_NYV5kfjskTTCJ");
 ```
 
 ### Transactions
@@ -492,11 +492,11 @@ The Transactions endpoint retrieves real-time transaction (authorization, cleari
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .transactions
   .list({
-    'from_date': '2024-03-13',
-    'to_date': '2024-03-15',
+    "from_date": "2024-03-13",
+    "to_date": "2024-03-15",
   });
 ```
 
@@ -504,9 +504,9 @@ const response = await method
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .transactions
-  .retrieve('txn_aRrDMAmEAtHti');
+  .retrieve("txn_aRrDMAmEAtHti");
 ```
 
 ### Card Brand
@@ -517,7 +517,7 @@ The CardBrand endpoint retrieves the associated credit card metadata (Product / 
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .card_brands
   .create();
 ```
@@ -526,9 +526,9 @@ const response = await method
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .card_brands
-  .retrieve('cbrd_eVMDNUPfrFk3e');
+  .retrieve("cbrd_eVMDNUPfrFk3e");
 ```
 
 ### Payoffs
@@ -541,7 +541,7 @@ The Payoffs endpoint retrieves a payoff quote in real-time from the Account’s 
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .payoffs
   .create();
 ```
@@ -550,7 +550,7 @@ const response = await method
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .payoffs
   .list();
 ```
@@ -559,9 +559,9 @@ const response = await method
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .payoffs
-  .retrieve('pyf_ELGT4hfikTTCJ');
+  .retrieve("pyf_ELGT4hfikTTCJ");
 ```
 
 ### Balances
@@ -572,7 +572,7 @@ The Balance endpoint retrieves the real-time balance from the Account’s financ
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .balances
   .create();
 ```
@@ -581,7 +581,7 @@ const response = await method
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .balances
   .list();
 ```
@@ -590,9 +590,9 @@ const response = await method
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .balances
-  .retrieve('bal_ebzh8KaR9HCBG');
+  .retrieve("bal_ebzh8KaR9HCBG");
 ```
 
 ### Account Sensitive
@@ -605,14 +605,14 @@ The Sensitive endpoint returns underlying sensitive Account information (e.g. PA
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .sensitive
   .create({
-    'expand': [
-      'credit_card.number',
-      'credit_card.exp_month',
-      'credit_card.exp_year',
-      'credit_card.cvv'
+    "expand": [
+      "credit_card.number",
+      "credit_card.exp_month",
+      "credit_card.exp_year",
+      "credit_card.cvv"
     ],
   });
 ```
@@ -621,9 +621,9 @@ const response = await method
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .sensitive
-  .retrieve('astv_9WBBA6TH7n7iX');
+  .retrieve("astv_9WBBA6TH7n7iX");
 ```
 
 ### Account Products
@@ -636,7 +636,7 @@ The Account Products endpoint outlines the Products (capabilities) an Account ha
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .products
   .list();
 ```
@@ -661,16 +661,16 @@ Subscriptions are Products that can provide continuous updates via Webhooks. (e.
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .subscriptions
-  .create('update');
+  .create("update");
 ```
 
 #### List all Subscriptions
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .subscriptions
   .list();
 ```
@@ -688,9 +688,9 @@ const response = await method
 
 ```python
 const response = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .subscriptions
-  .delete('sub_xM4VcfRWcJP8D');
+  .delete("sub_xM4VcfRWcJP8D");
 ```
 
 ### Account Verification Sessions
@@ -703,20 +703,20 @@ For example, ACH Accounts require a verified AccountVerificationSession before t
 
 ```python
 const verification = await method
-  .accounts('acc_b9q2XVAnNFbp3')
+  .accounts("acc_b9q2XVAnNFbp3")
   .verification_sessions
-  .create({ type: '<verification session type>' });
+  .create({ "type": "<verification session type>" });
 ```
 
 #### Update Micro Deposits Verification
 
 ```python
 const verification = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
-  .update('avf_yBQQNKmjRBTqF', {
-    'micro_deposits': {
-      'amounts': [10, 34]
+  .update("avf_yBQQNKmjRBTqF", {
+    "micro_deposits": {
+      "amounts": [10, 34]
     }
   });
 ```
@@ -725,18 +725,18 @@ const verification = await method
 
 ```python
 const verification = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
-  .update('avf_DjkdemgTQfqRD', {
-    'plaid': {
-      'balances': {
-        'available': 100,
-        'current': 110,
-        'iso_currency_code': 'USD',
-        'limit': None,
-        'unofficial_currency_code': None
+  .update("avf_DjkdemgTQfqRD", {
+    "plaid": {
+      "balances": {
+        "available": 100,
+        "current": 110,
+        "iso_currency_code": "USD",
+        "limit": None,
+        "unofficial_currency_code": None
       },
-      'transactions': [
+      "transactions": [
         ...
       ]
     }
@@ -747,20 +747,20 @@ const verification = await method
 
 ```python
 const verification = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
-  .update('avf_DjkdemgTQfqRD', {
-    'teller': {
-      'balances': {
-        'account_id': 'acc_ns9gkibeia6ad0rr6s00q',
-        'available': '93011.13',
-        'ledger': '93011.13',
-        'links': {
-          'account': 'https://reference.teller.io/accounts/acc_ns9gkibeia6ad0rr6s00q',
-          'self': 'https://reference.teller.io/accounts/acc_ns9gkibeia6ad0rr6s00q/balances'
+  .update("avf_DjkdemgTQfqRD", {
+    "teller": {
+      "balances": {
+        "account_id": "acc_ns9gkibeia6ad0rr6s00q",
+        "available": "93011.13",
+        "ledger": "93011.13",
+        "links": {
+          "account": "https://reference.teller.io/accounts/acc_ns9gkibeia6ad0rr6s00q",
+          "self": "https://reference.teller.io/accounts/acc_ns9gkibeia6ad0rr6s00q/balances"
         }
       },
-      'transactions': [
+      "transactions": [
         ...
       ]
     }
@@ -771,25 +771,25 @@ const verification = await method
 
 ```python
 const verification = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
-  .update('avf_DjkdemgTQfqRD', {
-    'mx': {
-      'account': {
-        'institution_code': 'chase',
-        'guid': 'ACT-06d7f44b-caae-0f6e-1384-01f52e75dcb1',
-        'account_number': None,
-        'apr': None,
-        'apy': None,
-        'available_balance': 1000.23,
-        'available_credit': None,
-        'balance': 1000.23,
-        'cash_balance': 1000.32,
-        'cash_surrender_value': 1000.23,
-        'created_at': '2016-10-13T17:57:37+00:00',
+  .update("avf_DjkdemgTQfqRD", {
+    "mx": {
+      "account": {
+        "institution_code": "chase",
+        "guid": "ACT-06d7f44b-caae-0f6e-1384-01f52e75dcb1",
+        "account_number": None,
+        "apr": None,
+        "apy": None,
+        "available_balance": 1000.23,
+        "available_credit": None,
+        "balance": 1000.23,
+        "cash_balance": 1000.32,
+        "cash_surrender_value": 1000.23,
+        "created_at": "2016-10-13T17:57:37+00:00",
         ...
       },
-      'transactions': [
+      "transactions": [
         ...
       ]
     }
@@ -800,11 +800,11 @@ const verification = await method
 
 ```python
 const verification = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
-  .update('avf_DjkdemgTQfqRD', {
-    'standard': {
-      'number': '4111111111111111',
+  .update("avf_DjkdemgTQfqRD", {
+    "standard": {
+      "number": "4111111111111111",
     }
   });
 ```
@@ -813,11 +813,11 @@ const verification = await method
 
 ```python
 const verification = await method
-  .accounts('acc_yVf3mkzbhz9tj')
+  .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
-  .update('avf_DjkdemgTQfqRD', {
-    'pre_auth': {
-      'cvv': '031'
+  .update("avf_DjkdemgTQfqRD", {
+    "pre_auth": {
+      "cvv": "031"
     }
   });
 ```
@@ -826,9 +826,9 @@ const verification = await method
 
 ```python
 const verification = await method
-  .accounts('acc_b9q2XVAnNFbp3')
+  .accounts("acc_b9q2XVAnNFbp3")
   .verification_sessions
-  .retrieve('avf_DjkdemgTQfqRD');
+  .retrieve("avf_DjkdemgTQfqRD");
 ```
 
 ## Merchants
@@ -848,7 +848,7 @@ const merchants = await method.merchants.list();
 #### Retrieve Merchant
 
 ```python
-const merchant = await method.merchants.retrieve('mch_1');
+const merchant = await method.merchants.retrieve("mch_1");
 ```
 
 ## Payments
@@ -862,23 +862,23 @@ All Payments are processed electronically between the source and destination, an
 #### Create Payment
 ```python
 const payment = await method.payments.create({
-  'amount': 5000,
-  'source': 'acc_JMJZT6r7iHi8e',
-  'destination': 'acc_AXthnzpBnxxWP',
-  'description': 'Loan Pmt',
+  "amount": 5000,
+  "source": "acc_JMJZT6r7iHi8e",
+  "destination": "acc_AXthnzpBnxxWP",
+  "description": "Loan Pmt",
 });
 ```
 
 #### Retrieve Payment
 
 ```python
-const payment = await method.payments.retrieve('pmt_rPrDPEwyCVUcm');
+const payment = await method.payments.retrieve("pmt_rPrDPEwyCVUcm");
 ```
 
 #### Delete Payment
 
 ```python
-const payment = await method.payments.delete('pmt_rPrDPEwyCVUcm');
+const payment = await method.payments.delete("pmt_rPrDPEwyCVUcm");
 ```
 
 #### List Payments
@@ -892,22 +892,22 @@ const payments = await method.payments.list();
 #### Retrieve Reversal
 
 ```python
-const reversal = await method.payments('pmt_rPrDPEwyCVUcm').reversals.retrieve('rvs_eaBAUJtetgMdR');
+const reversal = await method.payments("pmt_rPrDPEwyCVUcm").reversals.retrieve("rvs_eaBAUJtetgMdR");
 ```
 
 #### Update Reversal
 
 ```python
 const reversal = await method
-  .payments('pmt_rPrDPEwyCVUcm')
+  .payments("pmt_rPrDPEwyCVUcm")
   .reversals
-  .update('rvs_eaBAUJtetgMdR', { 'status': 'pending' });
+  .update("rvs_eaBAUJtetgMdR", { "status": "pending" });
 ```
 
 #### List Reversals for Payment
 
 ```python
-const reversals = await method.payments('pmt_rPrDPEwyCVUcm').reversals.list();
+const reversals = await method.payments("pmt_rPrDPEwyCVUcm").reversals.list();
 ```
 
 ## Webhooks
@@ -930,22 +930,22 @@ If the criteria is not met, Method will reattempt 4 more times with each new att
 
 ```python
 const webhook = await method.webhooks.create({
-  'type': 'payment.update',
-  'url': 'https://api.example.app/webhook',
-  'auth_token': 'md7UqcTSmvXCBzPORDwOkE',
+  "type": "payment.update",
+  "url": "https://api.example.app/webhook",
+  "auth_token": "md7UqcTSmvXCBzPORDwOkE",
 });
 ```
 
 #### Retrieve Webhook
 
 ```python
-const webhook = await method.webhooks.retrieve('whk_cSGjA6d9N8y8R');
+const webhook = await method.webhooks.retrieve("whk_cSGjA6d9N8y8R");
 ```
 
 #### Delete Webhoook
 
 ```python
-const webhook = await method.webhooks.delete('whk_cSGjA6d9N8y8R');
+const webhook = await method.webhooks.delete("whk_cSGjA6d9N8y8R");
 ```
 
 #### List Webhooks
@@ -967,19 +967,19 @@ Reports provide a filtered snapshot view of a specific resource. Method provides
 #### Create Report
 
 ```python
-const report = await method.reports.create({ 'type': 'payments.created.current' });
+const report = await method.reports.create({ "type": "payments.created.current" });
 ```
 
 #### Retrieve Report
 
 ```python
-const report = await method.reports.retrieve('rpt_cj2mkA3hFyHT5');
+const report = await method.reports.retrieve("rpt_cj2mkA3hFyHT5");
 ```
 
 #### Download Report
 
 ```python
-const reportCSV = await method.reports.download('rpt_cj2mkA3hFyHT5');
+const reportCSV = await method.reports.download("rpt_cj2mkA3hFyHT5");
 ```
 
 ## Simulations
@@ -992,13 +992,13 @@ This ensures that your application handles all cases for multistep flows that wo
 
 ### Core
 
-#### Update a payment's status
+#### Update a payment"s status
 
 ```python
 const payment = await method
   .simulate
   .payments
-  .update('pmt_rPrDPEwyCVUcm', { 'status': 'processing' });
+  .update("pmt_rPrDPEwyCVUcm", { "status": "processing" });
 ```
 
 #### Create a Transaction
@@ -1006,7 +1006,7 @@ const payment = await method
 ```python
 const transaction = await method
   .simulate
-  .accounts('acc_r6JUYN67HhCEM')
+  .accounts("acc_r6JUYN67HhCEM")
   .transactions
   .create();
 ```
