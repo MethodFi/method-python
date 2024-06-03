@@ -46,4 +46,4 @@ class AccountSubscriptionsResource(Resource):
     
     def delete(self, sub_id: str) -> AccountSubscription:
         return super(AccountSubscriptionsResource, self)._delete(sub_id)
-    
+   

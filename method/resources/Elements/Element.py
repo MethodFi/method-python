@@ -10,4 +10,3 @@ class ElementResource(Resource):
         _config = config.add_path('elements')
         super(ElementResource, self).__init__(_config)
         self.token = ElementTokenResource(_config)
-

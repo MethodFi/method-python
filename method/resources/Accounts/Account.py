@@ -122,4 +122,3 @@ class AccountResource(Resource):
 
     def withdraw_consent(self, acc_id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> Account:
         return super(AccountResource, self)._create_with_sub_path('{acc_id}/consent'.format(acc_id=acc_id), data)
-

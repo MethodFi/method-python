@@ -180,4 +180,3 @@ class ElementTokenResource(Resource):
     
     def results(self, pk_elem_id: str) -> ElementResults:
         return super(ElementTokenResource, self)._get_with_sub_path('{_id}/results'.format(_id=pk_elem_id))
-
