@@ -10,7 +10,7 @@ setup(
     author_email='marco@mdelcarmen.me',
     url='https://github.com/MethodFi/method-python',
     license='MIT',
-    packages=find_packages(exclude='tests'),
+    packages=find_packages(exclude='test'),
     package_data={'README': ['README.md']},
     python_requires=">=3.6",
     install_requires=[

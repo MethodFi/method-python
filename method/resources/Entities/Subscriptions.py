@@ -31,10 +31,6 @@ class EntitySubscriptionResponseOpts(TypedDict):
     error: Optional[ResourceError]
 
 
-class EntitySubscriptionCreateOpts(TypedDict):
-    enroll: List[EntitySubscriptionNamesLiterals]
-
-
 class EntitySubscriptionListResponse(TypedDict):
     connect: Optional[EntitySubscriptionResponseOpts]
     credit_score: Optional[EntitySubscriptionResponseOpts]
@@ -50,8 +46,8 @@ class EntitySubscriptionsResource(Resource):
     def list(self) -> EntitySubscriptionListResponse:
         return super(EntitySubscriptionsResource, self)._list()
 
-    def create(self, opts: EntitySubscriptionCreateOpts) -> EntitySubscriptionResponseOpts:
-        return super(EntitySubscriptionsResource, self)._create(opts)
+    def create(self, sub_name: EntitySubscriptionNamesLiterals) -> EntitySubscriptionResponseOpts:
+        return super(EntitySubscriptionsResource, self)._create({ 'enroll': sub_name })
     
     def delete(self, sub_id: str) -> EntitySubscriptionResponseOpts:
         return super(EntitySubscriptionsResource, self)._delete(sub_id)

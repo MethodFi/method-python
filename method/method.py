@@ -1,7 +1,7 @@
 from method.configuration import Configuration, ConfigurationOpts
 from method.resources.Accounts import AccountResource
 from method.resources.Entities import EntityResource
-from method.resources.Element import ElementResource
+from method.resources.Elements import ElementResource
 from method.resources.Merchant import MerchantResource
 from method.resources.Payments import PaymentResource
 from method.resources.Report import ReportResource
