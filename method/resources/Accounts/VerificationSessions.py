@@ -24,6 +24,7 @@ AccountVerificationSessionTypesLiterals = Literal[
     'pre_auth'
 ]
 
+
 AccountVerificationPassFailLiterals = Literal[
     'pass',
     'fail'

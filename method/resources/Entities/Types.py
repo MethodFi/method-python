@@ -57,6 +57,7 @@ CreditReportBureausLiterals = Literal[
     'transunion'
 ]
 
+
 EntitySensitiveFieldsLiterals = Literal[
     'first_name',
     'last_name',
@@ -109,6 +110,7 @@ class EntityReceiveOnly(TypedDict):
     name: str
     phone: Optional[str]
     email: Optional[str]
+
 
 class EntityKYCAddressRecordData(TypedDict):
     address: str

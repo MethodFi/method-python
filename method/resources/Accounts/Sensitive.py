@@ -16,6 +16,7 @@ AccountSensitiveFieldsLiterals = Literal[
     'credit_card.cvv'
 ]
 
+
 class AccountSensitiveLoan(TypedDict):
     number: str
 

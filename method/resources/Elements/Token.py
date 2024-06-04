@@ -76,6 +76,7 @@ ElementTypesLiterals = Literal[
     'balance_transfer'
 ]
 
+
 ElementProducts = Literal[
     'balance',
     'payoff',

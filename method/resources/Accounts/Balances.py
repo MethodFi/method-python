@@ -11,6 +11,7 @@ AccountBalanceStatusLiterals = Literal[
     'failed'
 ]
 
+
 class AccountBalance(TypedDict):
     id: str
     account_id: str
@@ -19,6 +20,7 @@ class AccountBalance(TypedDict):
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
+    
 
 class AccountBalancesResource(Resource):
     def __init__(self, config: Configuration):
