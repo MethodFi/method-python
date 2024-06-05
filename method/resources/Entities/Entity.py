@@ -4,7 +4,7 @@ from method.resource import Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Entities.Types import EntityTypesLiterals, EntityCapabilitiesLiterals, EntityStatusesLiterals, \
-    CreditReportBureausLiterals, EntityIndividual, EntityCorporation, EntityReceiveOnly, EntityAddress
+    CreditReportBureausLiterals, EntityIndividual, EntityCorporation, EntityAddress
 from method.resources.Entities.Connect import EntityConnectResource
 from method.resources.Entities.CreditScores import EntityCreditScoresResource
 from method.resources.Entities.Identities import EntityIdentityResource
@@ -14,28 +14,10 @@ from method.resources.Entities.Subscriptions import EntitySubscriptionsResource
 from method.resources.Entities.VerificationSessions import EntityVerificationSessionResource
 
 
-class Entity(TypedDict):
-    id: str
-    type: EntityTypesLiterals
-    individual: Optional[EntityIndividual]
-    corporation: Optional[EntityCorporation]
-    receive_only: Optional[EntityReceiveOnly]
-    capabilities: List[EntityCapabilitiesLiterals]
-    available_capabilities: List[EntityCapabilitiesLiterals]
-    pending_capabilities: List[EntityCapabilitiesLiterals]
-    address: EntityAddress
-    status: EntityStatusesLiterals
-    error: Optional[ResourceError]
-    metadata: Optional[Dict[str, Any]]
-    created_at: str
-    updated_at: str
-
-
 class EntityCreateOpts(TypedDict):
     type: EntityTypesLiterals
     individual: Optional[EntityIndividual]
     corporation: Optional[EntityCorporation]
-    receive_only: Optional[EntityReceiveOnly]
     address: Optional[EntityAddress]
     metadata: Optional[Dict[str, Any]]
 
@@ -118,6 +100,22 @@ class EntityUpdateAuthOpts(TypedDict):
 class EntityUpdateAuthResponse(TypedDict):
     questions: List[EntityQuestion]
     cxn_id: Optional[str]
+
+
+class Entity(TypedDict):
+    id: str
+    type: EntityTypesLiterals
+    individual: Optional[EntityIndividual]
+    corporation: Optional[EntityCorporation]
+    capabilities: List[EntityCapabilitiesLiterals]
+    available_capabilities: List[EntityCapabilitiesLiterals]
+    pending_capabilities: List[EntityCapabilitiesLiterals]
+    address: EntityAddress
+    status: EntityStatusesLiterals
+    error: Optional[ResourceError]
+    metadata: Optional[Dict[str, Any]]
+    created_at: str
+    updated_at: str
 
 
 class EntitySubResources:
