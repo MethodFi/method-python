@@ -2,7 +2,7 @@ from typing import TypedDict, Optional
 
 from method.resource import Resource
 from method.configuration import Configuration
-from method.resources.Payment import Payment, PaymentStatusesLiterals
+from method.resources.Payments.Payment import Payment, PaymentStatusesLiterals
 
 
 class SimulatePaymentUpdateOpts(TypedDict):

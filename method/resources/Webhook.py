@@ -50,7 +50,7 @@ class WebhookResource(Resource):
     def __init__(self, config: Configuration):
         super(WebhookResource, self).__init__(config.add_path('webhooks'))
 
-    def get(self, _id: str) -> Webhook:
+    def retrieve(self, _id: str) -> Webhook:
         return super(WebhookResource, self)._get_with_id(_id)
 
     def delete(self, _id: str) -> Webhook:
