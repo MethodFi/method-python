@@ -5,7 +5,7 @@ async def sleep(ms: int):
 
 async def await_results(fn):
     result = None
-    retries = 5
+    retries = 10
     while retries > 0:
         try:
             result = fn()

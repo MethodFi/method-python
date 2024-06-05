@@ -640,8 +640,6 @@ def test_withdraw_entity_consent():
         'id': entities_create_response['id'],
         'type': None,
         'individual': None,
-        'corporation': None,
-        'receive_only': None,
         'verification': None,
         'error': {
             'type': 'ENTITY_DISABLED',
