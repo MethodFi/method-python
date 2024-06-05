@@ -34,7 +34,7 @@ Entity PII requirements are pre-defined during onboarding based on your team’s
 #### Create Individual Entity
 
 ```python
-const entity = await method.entities.create({
+entity = method.entities.create({
   "type": "individual",
   "individual": {
     "first_name": "Kevin",
@@ -56,7 +56,7 @@ const entity = await method.entities.create({
 #### Create Corporation Entity
 
 ```python
-const entity = await method.entities.create({
+entity = method.entities.create({
   "type": "corporation",
   "corporation": {
     "name": "Alphabet Inc.",
@@ -92,13 +92,13 @@ const entity = await method.entities.create({
 #### Retrieve Entity
 
 ```python
-const entity = await method.entities.retrieve("ent_au22b1fbFJbp8");
+entity = method.entities.retrieve("ent_au22b1fbFJbp8");
 ```
 
 #### Update Entity
 
 ```python
-const entity = await method.entities.update("ent_au22b1fbFJbp8", {
+entity = method.entities.update("ent_au22b1fbFJbp8", {
   "individual": {
     "first_name": "Kevin",
     "last_name": "Doyle",
@@ -111,13 +111,13 @@ const entity = await method.entities.update("ent_au22b1fbFJbp8", {
 #### List Entities
 
 ```python
-const entities = await method.entities.list();
+entities = method.entities.list();
 ```
 
 #### Withdraw an Entity"s consent
 
 ```python
-const entity = await method.entities.withdraw_consent("ent_au22b1fbFJbp8");
+entity = method.entities.withdraw_consent("ent_au22b1fbFJbp8");
 ```
 
 ### Connect
@@ -127,7 +127,7 @@ The Connect endpoint identifies & connects all the liability accounts (e.g. Cred
 #### Create a Connect
 
 ```python
-const entity = await method
+entity = method
   .entities("ent_qKNBB68bfHGNA")
   .connect
   .create();
@@ -136,7 +136,7 @@ const entity = await method
 #### Retrieve a Connect
 
 ```python
-const entity = await method
+entity = method
   .entities("ent_qKNBB68bfHGNA")
   .connect
   .retrieve("cxn_4ewMmBbjYDMR4");
@@ -157,7 +157,7 @@ The method key in entity.verification object will enumerate the phone & identity
 #### Retrieve a Verification Session
 
 ```python
-const response = await method
+response = method
   .entities("ent_au22b1fbFJbp8")
   .verification_sessions
   .retrieve("evf_qTNNzCQ63zHJ9");
@@ -166,7 +166,7 @@ const response = await method
 #### Create a BYO KYC Verification
 
 ```python
-const response = await method
+response = method
   .entities("ent_XgYkTdiHyaz3e")
   .verification_sessions
   .create({
@@ -179,7 +179,7 @@ const response = await method
 #### Create a KBA Verification
 
 ```python
-const response = await method
+response = method
   .entities("ent_hy3xhPDfWDVxi")
   .verification_sessions
   .create({
@@ -192,7 +192,7 @@ const response = await method
 #### Update a KBA Verification
 
 ```python
-const response = await method
+response = method
   .entities("ent_hy3xhPDfWDVxi")
   .verification_sessions
   .update("evf_ywizPrR6WDxDG", {
@@ -220,7 +220,7 @@ const response = await method
 #### Create a BYO SMS Verification
 
 ```python
-const response = await method
+response = method
   .entities("ent_XgYkTdiHyaz3e")
   .verification_sessions
   .create({
@@ -235,7 +235,7 @@ const response = await method
 #### Create a SMS Verification
 
 ```python
-const response = await method
+response = method
   .entities("ent_au22b1fbFJbp8")
   .verification_sessions
   .create({
@@ -248,7 +248,7 @@ const response = await method
 #### Update a SMS Verification
 
 ```python
-const response = await method
+response = method
   .entities("ent_au22b1fbFJbp8")
   .verification_sessions
   .update("evf_3VT3bHTCnPbrm", {
@@ -261,7 +261,7 @@ const response = await method
 #### Create a SNA Verification
 
 ```python
-const response = await method
+response = method
   .entities("ent_au22b1fbFJbp8")
   .verification_sessions
   .create({
@@ -274,7 +274,7 @@ const response = await method
 #### Update a SNA Verification
 
 ```python
-const response = await method
+response = method
   .entities("ent_BYdNCVApmp7Gx")
   .verification_sessions
   .update("evf_qTNNzCQ63zHJ9", {
@@ -291,7 +291,7 @@ The Credit Score endpoint returns the latest credit score and score factors for 
 #### Create Individual Credit Scores
 
 ```python
-const entity = await method
+entity = method
   .entities("ent_au22b1fbFJbp8")
   .credit_scores
   .create();
@@ -300,7 +300,7 @@ const entity = await method
 #### Retrieve Individual Credit Scores
 
 ```python
-const entity = await method
+entity = method
   .entities("ent_au22b1fbFJbp8")
   .credit_scores
   .retrieve("crs_pn4ca33GXFaCE");
@@ -319,7 +319,7 @@ For all other entities the identity endpoint could return multiple identities as
 #### Create Identities
 
 ```python
-const entity = await method
+entity = method
   .entities("ent_au22b1fbFJbp8")
   .identities
   .create();
@@ -328,7 +328,7 @@ const entity = await method
 #### Retrieve Identities
 
 ```python
-const entity = await method
+entity = method
   .entities("ent_au22b1fbFJbp8")
   .identities
   .retrieve("idn_NhTRUVEknYaFM");
@@ -343,7 +343,7 @@ The Entity Products endpoint outlines the Products (capabilities) an Entity has 
 #### List all Products
 
 ```python
-const response = await method
+response = method
   .entities("ent_TYHMaRJUUeJ7U")
   .products
   .list();
@@ -352,7 +352,7 @@ const response = await method
 #### Retrieve a Product
 
 ```python
-const response = await method
+response = method
   .entities("ent_TYHMaRJUUeJ7U")
   .products
   .retrieve("prd_jPRDcQPMk43Ek");
@@ -369,7 +369,7 @@ Subscriptions are Products that can provide continuous updates via Webhooks. (e.
 #### Create a Subscription
 
 ```python
-const response = await method
+response = method
   .entities("ent_TYHMaRJUUeJ7U")
   .subscriptions
   .create("credit_score");
@@ -378,7 +378,7 @@ const response = await method
 #### List all Subscriptions
 
 ```python
-const response = await method
+response = method
   .entities("ent_TYHMaRJUUeJ7U")
   .subscriptions
   .list();
@@ -387,7 +387,7 @@ const response = await method
 #### Retrieve a Subscription
 
 ```python
-const response = await method
+response = method
   .entities("ent_TYHMaRJUUeJ7U")
   .subscriptions
   .retrieve("sub_6f7XtMLymQx3f");
@@ -396,7 +396,7 @@ const response = await method
 #### Delete a Subscription
 
 ```python
-const response = await method
+response = method
   .entities("ent_TYHMaRJUUeJ7U")
   .subscriptions
   .delete("sub_6f7XtMLymQx3f");
@@ -411,7 +411,7 @@ Accounts are a representation of an Entity’s financial accounts. An Account ca
 #### Create Ach Account
 
 ```python
-const account = await method.accounts.create({
+account = method.accounts.create({
   "holder_id": "ent_y1a9e1fbnJ1f3",
   "ach": {
     "routing": "367537407",
@@ -424,7 +424,7 @@ const account = await method.accounts.create({
 #### Create Liability Account
 
 ```python
-const account = await method.accounts.create({
+account = method.accounts.create({
   "holder_id": "ent_au22b1fbFJbp8",
   "liability": {
     "mch_id": "mch_2",
@@ -436,19 +436,19 @@ const account = await method.accounts.create({
 #### Retrieve Account
 
 ```python
-const account = await method.accounts.retrieve("acc_Zc4F2aTLt8CBt");
+account = method.accounts.retrieve("acc_Zc4F2aTLt8CBt");
 ```
 
 #### List Accounts
 
 ```python
-const accounts = await method.accounts.list();
+accounts = method.accounts.list();
 ```
 
 #### Withdraw an Account"s consent
 
 ```python
-const account = await method.accounts.withdraw_consent("acc_yVf3mkzbhz9tj");
+account = method.accounts.withdraw_consent("acc_yVf3mkzbhz9tj");
 ```
 
 ### Updates
@@ -458,7 +458,7 @@ The Updates endpoint retrieves in real-time account data including Balance, due 
 #### Create an Update
 
 ```python
-const response = await method
+response = method
   .accounts("acc_aEBDiLxiR8bqc")
   .updates
   .create();
@@ -467,7 +467,7 @@ const response = await method
 #### List all Updates
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .updates
   .list();
@@ -476,7 +476,7 @@ const response = await method
 #### Retrieve an Update
 
 ```python
-const response = await method
+response = method
   .accounts("acc_aEBDiLxiR8bqc")
   .updates
   .retrieve("upt_NYV5kfjskTTCJ");
@@ -491,7 +491,7 @@ The Transactions endpoint retrieves real-time transaction (authorization, cleari
 #### List all Transactions
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .transactions
   .list({
@@ -503,7 +503,7 @@ const response = await method
 #### Retrieve a Transaction
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .transactions
   .retrieve("txn_aRrDMAmEAtHti");
@@ -516,7 +516,7 @@ The CardBrand endpoint retrieves the associated credit card metadata (Product / 
 #### Create a Card Brand
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .card_brands
   .create();
@@ -525,7 +525,7 @@ const response = await method
 #### Retrieve a Card Brand
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .card_brands
   .retrieve("cbrd_eVMDNUPfrFk3e");
@@ -540,7 +540,7 @@ The Payoffs endpoint retrieves a payoff quote in real-time from the Account’s 
 #### Create a Payoff
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .payoffs
   .create();
@@ -549,7 +549,7 @@ const response = await method
 #### List all Payoffs
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .payoffs
   .list();
@@ -558,7 +558,7 @@ const response = await method
 #### Retrieve a Payoff
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .payoffs
   .retrieve("pyf_ELGT4hfikTTCJ");
@@ -571,7 +571,7 @@ The Balance endpoint retrieves the real-time balance from the Account’s financ
 #### Create a Balance
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .balances
   .create();
@@ -580,7 +580,7 @@ const response = await method
 #### List all Balances
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .balances
   .list();
@@ -589,7 +589,7 @@ const response = await method
 #### Retrieve a Balance
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .balances
   .retrieve("bal_ebzh8KaR9HCBG");
@@ -604,7 +604,7 @@ The Sensitive endpoint returns underlying sensitive Account information (e.g. PA
 #### Create a Sensitive
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .sensitive
   .create({
@@ -620,7 +620,7 @@ const response = await method
 #### Retrieve a Sensitive
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .sensitive
   .retrieve("astv_9WBBA6TH7n7iX");
@@ -635,7 +635,7 @@ The Account Products endpoint outlines the Products (capabilities) an Account ha
 #### List all Products
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .products
   .list();
@@ -644,7 +644,7 @@ const response = await method
 #### Retrieve a Product
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .products
   .retrieve("prd_FQFHqVNiCRb7J");
@@ -660,7 +660,7 @@ Subscriptions are Products that can provide continuous updates via Webhooks. (e.
 #### Create a Subscription
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .subscriptions
   .create("update");
@@ -669,7 +669,7 @@ const response = await method
 #### List all Subscriptions
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .subscriptions
   .list();
@@ -678,7 +678,7 @@ const response = await method
 #### Retrieve a Subscription
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .subscriptions
   .retrieve("sub_P8c4bjj6xajxF");
@@ -687,7 +687,7 @@ const response = await method
 #### Delete a Subscription
 
 ```python
-const response = await method
+response = method
   .accounts("acc_yVf3mkzbhz9tj")
   .subscriptions
   .delete("sub_xM4VcfRWcJP8D");
@@ -702,7 +702,7 @@ For example, ACH Accounts require a verified AccountVerificationSession before t
 #### Create Verification
 
 ```python
-const verification = await method
+verification = method
   .accounts("acc_b9q2XVAnNFbp3")
   .verification_sessions
   .create({ "type": "<verification session type>" });
@@ -711,7 +711,7 @@ const verification = await method
 #### Update Micro Deposits Verification
 
 ```python
-const verification = await method
+verification = method
   .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
   .update("avf_yBQQNKmjRBTqF", {
@@ -724,7 +724,7 @@ const verification = await method
 #### Update Plaid Verification
 
 ```python
-const verification = await method
+verification = method
   .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
   .update("avf_DjkdemgTQfqRD", {
@@ -746,7 +746,7 @@ const verification = await method
 #### Update Teller Verification
 
 ```python
-const verification = await method
+verification = method
   .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
   .update("avf_DjkdemgTQfqRD", {
@@ -770,7 +770,7 @@ const verification = await method
 #### Update MX Verification
 
 ```python
-const verification = await method
+verification = method
   .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
   .update("avf_DjkdemgTQfqRD", {
@@ -799,7 +799,7 @@ const verification = await method
 #### Update Standard Verification
 
 ```python
-const verification = await method
+verification = method
   .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
   .update("avf_DjkdemgTQfqRD", {
@@ -812,7 +812,7 @@ const verification = await method
 #### Update Pre-auth Verification
 
 ```python
-const verification = await method
+verification = method
   .accounts("acc_yVf3mkzbhz9tj")
   .verification_sessions
   .update("avf_DjkdemgTQfqRD", {
@@ -825,7 +825,7 @@ const verification = await method
 #### Retrieve Verification
 
 ```python
-const verification = await method
+verification = method
   .accounts("acc_b9q2XVAnNFbp3")
   .verification_sessions
   .retrieve("avf_DjkdemgTQfqRD");
@@ -842,13 +842,13 @@ Merchants are resources that represent a specific type of liability for a financ
 #### List Merchants
 
 ```python
-const merchants = await method.merchants.list();
+merchants = method.merchants.list();
 ```
 
 #### Retrieve Merchant
 
 ```python
-const merchant = await method.merchants.retrieve("mch_1");
+merchant = method.merchants.retrieve("mch_1");
 ```
 
 ## Payments
@@ -861,7 +861,7 @@ All Payments are processed electronically between the source and destination, an
 
 #### Create Payment
 ```python
-const payment = await method.payments.create({
+payment = method.payments.create({
   "amount": 5000,
   "source": "acc_JMJZT6r7iHi8e",
   "destination": "acc_AXthnzpBnxxWP",
@@ -872,19 +872,19 @@ const payment = await method.payments.create({
 #### Retrieve Payment
 
 ```python
-const payment = await method.payments.retrieve("pmt_rPrDPEwyCVUcm");
+payment = method.payments.retrieve("pmt_rPrDPEwyCVUcm");
 ```
 
 #### Delete Payment
 
 ```python
-const payment = await method.payments.delete("pmt_rPrDPEwyCVUcm");
+payment = method.payments.delete("pmt_rPrDPEwyCVUcm");
 ```
 
 #### List Payments
 
 ```python
-const payments = await method.payments.list();
+payments = method.payments.list();
 ```
 
 ### Reversals
@@ -892,13 +892,13 @@ const payments = await method.payments.list();
 #### Retrieve Reversal
 
 ```python
-const reversal = await method.payments("pmt_rPrDPEwyCVUcm").reversals.retrieve("rvs_eaBAUJtetgMdR");
+reversal = method.payments("pmt_rPrDPEwyCVUcm").reversals.retrieve("rvs_eaBAUJtetgMdR");
 ```
 
 #### Update Reversal
 
 ```python
-const reversal = await method
+reversal = method
   .payments("pmt_rPrDPEwyCVUcm")
   .reversals
   .update("rvs_eaBAUJtetgMdR", { "status": "pending" });
@@ -907,7 +907,7 @@ const reversal = await method
 #### List Reversals for Payment
 
 ```python
-const reversals = await method.payments("pmt_rPrDPEwyCVUcm").reversals.list();
+reversals = method.payments("pmt_rPrDPEwyCVUcm").reversals.list();
 ```
 
 ## Webhooks
@@ -929,7 +929,7 @@ If the criteria is not met, Method will reattempt 4 more times with each new att
 #### Create Webhook
 
 ```python
-const webhook = await method.webhooks.create({
+webhook = method.webhooks.create({
   "type": "payment.update",
   "url": "https://api.example.app/webhook",
   "auth_token": "md7UqcTSmvXCBzPORDwOkE",
@@ -939,19 +939,19 @@ const webhook = await method.webhooks.create({
 #### Retrieve Webhook
 
 ```python
-const webhook = await method.webhooks.retrieve("whk_cSGjA6d9N8y8R");
+webhook = method.webhooks.retrieve("whk_cSGjA6d9N8y8R");
 ```
 
 #### Delete Webhoook
 
 ```python
-const webhook = await method.webhooks.delete("whk_cSGjA6d9N8y8R");
+webhook = method.webhooks.delete("whk_cSGjA6d9N8y8R");
 ```
 
 #### List Webhooks
 
 ```python
-const webhooks = await method.webhooks.list();
+webhooks = method.webhooks.list();
 ```
 
 ## Reports
@@ -967,19 +967,19 @@ Reports provide a filtered snapshot view of a specific resource. Method provides
 #### Create Report
 
 ```python
-const report = await method.reports.create({ "type": "payments.created.current" });
+report = method.reports.create({ "type": "payments.created.current" });
 ```
 
 #### Retrieve Report
 
 ```python
-const report = await method.reports.retrieve("rpt_cj2mkA3hFyHT5");
+report = method.reports.retrieve("rpt_cj2mkA3hFyHT5");
 ```
 
 #### Download Report
 
 ```python
-const reportCSV = await method.reports.download("rpt_cj2mkA3hFyHT5");
+reportCSV = method.reports.download("rpt_cj2mkA3hFyHT5");
 ```
 
 ## Simulations
@@ -995,7 +995,7 @@ This ensures that your application handles all cases for multistep flows that wo
 #### Update a payment"s status
 
 ```python
-const payment = await method
+payment = method
   .simulate
   .payments
   .update("pmt_rPrDPEwyCVUcm", { "status": "processing" });
@@ -1004,7 +1004,7 @@ const payment = await method
 #### Create a Transaction
 
 ```python
-const transaction = await method
+transaction = method
   .simulate
   .accounts("acc_r6JUYN67HhCEM")
   .transactions
