@@ -3,7 +3,7 @@ from typing import TypedDict, Optional, List
 from method.resource import Resource
 from method.configuration import Configuration
 
-from method.resources.Entities.Types import EntityKYCAddressRecordData, EntityIdentity
+from method.resources.Entities.Types import EntityKYCAddressRecordData, EntityIdentityType
 
 
 class EntitySensitive(TypedDict):
@@ -18,7 +18,7 @@ class EntitySensitive(TypedDict):
     ssn_4: Optional[str]
     ssn_6: Optional[str]
     ssn_9: Optional[str]
-    identities: List[EntityIdentity]
+    identities: List[EntityIdentityType]
 
 
 class EntitySensitiveResource(Resource):
@@ -26,4 +26,4 @@ class EntitySensitiveResource(Resource):
         super(EntitySensitiveResource, self).__init__(config.add_path('sensitive'))
 
     def retrieve(self) -> EntitySensitive:
-        return super(EntitySensitive, self)._get()
+        return super(EntitySensitiveResource, self)._get()

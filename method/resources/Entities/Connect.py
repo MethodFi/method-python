@@ -28,6 +28,6 @@ class EntityConnectResource(Resource):
 
     def retrieve(self, cxn_id: str) -> EntityConnect:
         return super(EntityConnectResource, self)._get_with_id(cxn_id)
-    
+
     def create(self) -> EntityConnect:
         return super(EntityConnectResource, self)._create({})

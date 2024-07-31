@@ -178,6 +178,8 @@ class ElementTokenResource(Resource):
 
     def create(self, opts: ElementTokenCreateOpts) -> ElementToken:
         return super(ElementTokenResource, self)._create(opts)
-    
+
     def results(self, pk_elem_id: str) -> ElementResults:
-        return super(ElementTokenResource, self)._get_with_sub_path('{_id}/results'.format(_id=pk_elem_id))
+        return super(ElementTokenResource, self)._get_with_sub_path(
+            '{_id}/results'.format(_id=pk_elem_id)
+        )

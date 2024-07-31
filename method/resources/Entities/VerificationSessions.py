@@ -109,7 +109,7 @@ class EntityVerificationSessionResource(Resource):
     def retrieve(self, verification_session_id: str) -> EntityVerificationSession:
         return super(EntityVerificationSessionResource, self)._get_with_id(verification_session_id)
 
-    def create(self, opts: Optional[EntityVerificationSessionCreateOpts] = {}) -> EntityVerificationSession:
+    def create(self, opts: Optional[EntityVerificationSessionCreateOpts] = {}) -> EntityVerificationSession:  # pylint: disable=dangerous-default-value
         return super(EntityVerificationSessionResource, self)._create(opts)
 
     def update(self, verification_session_id: str, opts: EntityVerificationSessionUpdateOpts) -> EntityVerificationSession:

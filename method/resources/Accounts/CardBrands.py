@@ -5,7 +5,7 @@ from method.configuration import Configuration
 from method.errors import ResourceError
 
 
-class AccountCardBrand(TypedDict):
+class AccountCardBrandInfo(TypedDict):
     art_id: str
     url: str
     name: str
@@ -17,7 +17,7 @@ class AccountCardBrand(TypedDict):
     network: str
     issuer: str
     last4: str
-    brands: List[AccountCardBrand]
+    brands: List[AccountCardBrandInfo]
     status: Literal['completed', 'failed']
     shared: bool
     error: Optional[ResourceError]
