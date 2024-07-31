@@ -49,6 +49,9 @@ class Merchant(TypedDict):
     is_temp: bool
 
 MerchantListOpts = TypedDict('MerchantListOpts', {
+    'page': Optional[str | int],
+    'page_limit': Optional[str | int],
+    'type': Optional[MerchantTypesLiterals],
     'name': Optional[str],
     'provider_id.plaid': Optional[str],
     'provider_id.mx': Optional[str],
@@ -60,7 +63,7 @@ class MerchantResource(Resource):
     def __init__(self, config: Configuration):
         super(MerchantResource, self).__init__(config.add_path('merchants'))
 
-    def get(self, _id: str) -> Merchant:
+    def retrieve(self, _id: str) -> Merchant:
         return super(MerchantResource, self)._get_with_id(_id)
 
     def list(self, opts: Optional[MerchantListOpts] = None) -> List[Merchant]:

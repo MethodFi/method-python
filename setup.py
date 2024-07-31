@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='method-python',
-    version='0.0.44',
+    version='1.0.0',
     description='Python library for the Method API',
     long_description='Python library for the Method API',
     long_description_content_type='text/x-rst',
@@ -10,7 +10,7 @@ setup(
     author_email='marco@mdelcarmen.me',
     url='https://github.com/MethodFi/method-python',
     license='MIT',
-    packages=find_packages(exclude='tests'),
+    packages=find_packages(exclude='test'),
     package_data={'README': ['README.md']},
     python_requires=">=3.6",
     install_requires=[

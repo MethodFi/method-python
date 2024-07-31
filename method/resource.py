@@ -1,13 +1,29 @@
 from importlib.metadata import version
 import json
-from typing import Optional, List, Dict, Any, TypedDict
+from typing import Optional, List, Dict, Any, TypedDict, Literal
 from hammock import Hammock as Client  # type: ignore
 from method.configuration import Configuration
 from method.errors import MethodError
 
 
+ResourceStatusLiterals = Literal[
+    'completed',
+    'in_progress',
+    'pending',
+    'failed'
+]
+
+
 class RequestOpts(TypedDict):
     idempotency_key: Optional[str]
+
+
+class ResourceListOpts(TypedDict):
+    from_date: Optional[str]
+    to_date: Optional[str]
+    page: Optional[int | str]
+    page_limit: Optional[int | str]
+    page_cursor: Optional[int | str]
 
 
 class Resource:
@@ -20,6 +36,7 @@ class Resource:
             'Authorization': 'Bearer {token}'.format(token=config.api_key),
             'Content-Type': 'application/json',
             'User-Agent': 'Method-Python/v{version}'.format(version=version('method-python')),
+            'method-version': '2024-04-04'
         })
 
     @MethodError.catch

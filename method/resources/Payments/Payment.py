@@ -1,9 +1,9 @@
 from typing import TypedDict, Optional, List, Dict, Any, Literal
 
-from method.resource import Resource, RequestOpts
+from method.resource import Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Reversal import ReversalResource
+from method.resources.Payments.Reversal import ReversalResource
 
 
 PaymentStatusesLiterals = Literal[
@@ -80,12 +80,7 @@ class PaymentCreateOpts(TypedDict):
     fee: Optional[PaymentFee]
 
 
-class PaymentListOpts(TypedDict):
-    to_date: Optional[str]
-    from_date: Optional[str]
-    page: Optional[int]
-    page_limit: Optional[int]
-    page_cursor: Optional[str]
+class PaymentListOpts(ResourceListOpts):
     status: Optional[str]
     type: Optional[str]
     source: Optional[str]
@@ -111,7 +106,7 @@ class PaymentResource(Resource):
     def __call__(self, _id: str) -> PaymentSubResources:
         return PaymentSubResources(_id, self.config)
 
-    def get(self, _id: str) -> Payment:
+    def retrieve(self, _id: str) -> Payment:
         return super(PaymentResource, self)._get_with_id(_id)
 
     def list(self, params: Optional[PaymentListOpts] = None) -> List[Payment]:

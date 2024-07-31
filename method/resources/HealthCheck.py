@@ -14,5 +14,5 @@ class HealthCheckResource(Resource):
     def __init__(self, config: Configuration):
         super(HealthCheckResource, self).__init__(config.add_path('ping'))
 
-    def get(self) -> PingResponse:
+    def retrieve(self) -> PingResponse:
         return super(HealthCheckResource, self)._get_raw()

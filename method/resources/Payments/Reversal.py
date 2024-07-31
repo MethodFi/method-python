@@ -43,7 +43,7 @@ class ReversalResource(Resource):
     def __init__(self, config: Configuration):
         super(ReversalResource, self).__init__(config.add_path('reversals'))
 
-    def get(self, _id: str) -> Reversal:
+    def retrieve(self, _id: str) -> Reversal:
         return super(ReversalResource, self)._get_with_id(_id)
 
     def update(self, _id: str, opts: ReversalUpdateOpts) -> Reversal:
