@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, List, Literal
+from typing import TypedDict, Optional, List, Literal, Union
 
 from method.resource import Resource
 from method.configuration import Configuration
@@ -49,8 +49,8 @@ class Merchant(TypedDict):
     is_temp: bool
 
 MerchantListOpts = TypedDict('MerchantListOpts', {
-    'page': Optional[str | int],
-    'page_limit': Optional[str | int],
+    'page': Optional[Union[str, int]],
+    'page_limit': Optional[Union[str, int]],
     'type': Optional[MerchantTypesLiterals],
     'name': Optional[str],
     'provider_id.plaid': Optional[str],

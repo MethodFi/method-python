@@ -1,6 +1,6 @@
 from importlib.metadata import version
 import json
-from typing import Optional, List, Dict, Any, TypedDict, Literal
+from typing import Optional, List, Dict, Any, TypedDict, Literal, Union
 from hammock import Hammock as Client  # type: ignore
 from method.configuration import Configuration
 from method.errors import MethodError
@@ -21,9 +21,9 @@ class RequestOpts(TypedDict):
 class ResourceListOpts(TypedDict):
     from_date: Optional[str]
     to_date: Optional[str]
-    page: Optional[int | str]
-    page_limit: Optional[int | str]
-    page_cursor: Optional[int | str]
+    page: Optional[Union[int, str]]
+    page_limit: Optional[Union[int, str]]
+    page_cursor: Optional[Union[int, str]]
 
 
 class Resource:
