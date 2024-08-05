@@ -142,7 +142,7 @@ def test_create_liability_account(setup):
         'type': 'liability',
         'liability': {
             'fingerprint': None,
-            'mch_id': 'mch_183',
+            'mch_id': 'mch_302086',
             'mask': '8721',
             'ownership': 'unknown',
             'type': 'credit_card',
