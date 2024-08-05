@@ -120,7 +120,7 @@ class EntityKYCAddressRecordData(TypedDict):
     address_term: int
 
 
-class EntityIdentity(TypedDict):
+class EntityIdentityType(TypedDict):
     first_name: Optional[str]
     last_name: Optional[str]
     phone: Optional[str]

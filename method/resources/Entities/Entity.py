@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, List, Dict, Any, Literal
+from typing import TypedDict, Optional, List, Dict, Any
 
 from method.resource import Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
@@ -86,20 +86,6 @@ class EntityManualAuthResponse(TypedDict):
 class EntityGetCreditScoreResponse(TypedDict):
     score: int
     updated_at: str
-
-
-class AnswerOpts(TypedDict):
-    question_id: str
-    answer_id: str
-
-
-class EntityUpdateAuthOpts(TypedDict):
-    answers: List[AnswerOpts]
-
-
-class EntityUpdateAuthResponse(TypedDict):
-    questions: List[EntityQuestion]
-    cxn_id: Optional[str]
 
 
 class Entity(TypedDict):
