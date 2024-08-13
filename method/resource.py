@@ -1,3 +1,4 @@
+import time
 from importlib.metadata import version
 import json
 from typing import Optional, List, Dict, Any, TypedDict, Literal, Union
@@ -18,38 +19,39 @@ class MethodResponse:
         self._data = data
         self._last_response = last_response
 
-    @property
-    def last_response(self):
-        return self._last_response
+    # @property
+    # def last_response(self):
+    #     return self._last_response
     
-    def __getitem__(self, key):
-        return self._data[key]
+    # def __getitem__(self, key):
+    #     return self._data[key]
 
-    def __getattr__(self, name):
-        if name in self._data:
-            return self._data[name]
-        raise AttributeError(f"'MethodResponse' object has no attribute '{name}'")
+    # def __getattr__(self, name):
+    #     if name in self._data:
+    #         return self._data[name]
+    #     raise AttributeError(f"'MethodResponse' object has no attribute '{name}'")
 
-    def __repr__(self):
-        return repr(self._data)
+    # def __repr__(self):
+    #     return repr(self._data)
 
-    def __iter__(self):
-        return iter(self._data)
+    # def __iter__(self):
+    #     return iter(self._data)
 
-    def to_dict(self) -> Dict:
-        return self._data
+    # def to_dict(self) -> Dict:
+    #     return self._data
 
-    def __dir__(self):
-        """Override dir to hide last_response from autocomplete and dir() calls"""
-        return [item for item in dir(self._data) if item != 'last_response']
+    # def __dir__(self):
+    #     """Override dir to hide last_response from autocomplete and dir() calls"""
+    #     return [item for item in dir(self._data) if item != 'last_response']
 
-    def __eq__(self, other):
-        if isinstance(other, MethodResponse):
-            return self._data == other._data and self._last_response == other._last_response
-        return False
+    # def __eq__(self, other):
+    #     if isinstance(other, MethodResponse):
+    #         return self._data == other._data and self._last_response == other._last_response
+    #     return False
 
-    def finalize_response(self, request_end_time: Optional[int] = None):
-        """Sets the request end time."""
+    def finalize_response(self, request_start_time: Optional[int] = None, request_end_time: Optional[int] = None):
+        if request_start_time is not None:
+            self._last_response['request_start_time'] = request_start_time
         if request_end_time is not None:
             self._last_response['request_end_time'] = request_end_time    
 
@@ -58,10 +60,10 @@ class LastResponse:
         self.last_response = {
             'request_id': response.headers.get('idem-request-id', None),
             'idempotency_status': response.headers.get('idem-status', None),
-            # TODO: 'method'
-            # TODO: 'path'
-            # TODO: 'status'
-            # TODO: 'request_start_time'
+            'method': response.request.method,
+            'path': response.request.path_url,
+            'status': response.status_code,
+            'request_start_time': None,
             'request_end_time': None,
             'pagination': self._extract_pagination_info(response.headers)
         }
@@ -106,91 +108,97 @@ class Resource:
             'method-version': '2024-04-04'
         })
     
-    # def _make_request(self, method: str, path: Optional[str] = None, data: Optional[Dict] = None, params: Optional[Dict] = None, headers: Optional[Dict] = None, raw: bool = False) -> MethodResponse:
-    #     client_path = self.client if not path else self.client(path)
+    def _make_request(self, method: str, path: Optional[str] = None, data: Optional[Dict] = None, params: Optional[Dict] = None, headers: Optional[Dict] = None, raw: bool = False) -> MethodResponse:
+        client_path = self.client if not path else self.client(path)
+        request_method = getattr(client_path, method)
+
+        options = {}
+        if data:
+            options['data'] = json.dumps(data)
+        if params:
+            options['params'] = params
+        if headers:
+            options['headers'] = headers
+
+        request_start_time = int(time.time() * 1000)
+        raw_response = request_method(**options)
+        request_end_time = int(time.time() * 1000)
+
+        last_response = LastResponse(raw_response).last_response
+
+        if raw:
+            response = MethodResponse(raw_response.json(), last_response)
+            response.finalize_response(request_start_time, request_end_time)
+            return response
+        else:
+            response = MethodResponse(raw_response.json().get('data'), last_response)
+            response.finalize_response(request_start_time, request_end_time)
+            return response
+
 
     @MethodError.catch
     def _get_raw(self) -> Any:
-        raw = self.client.GET()
-        response = raw.json()
-        last_response = LastResponse(raw).last_response
-        return MethodResponse(response, last_response)
+        return self._make_request('GET', raw=True)
 
     @MethodError.catch
     def _get(self) -> Any:
-        response = self.client.GET().json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('GET')
 
     @MethodError.catch
     def _get_with_id(self, _id: str) -> Any:
-        response = self.client.GET(_id).json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('GET', path=_id)
 
     @MethodError.catch
     def _get_with_params(self, params: Dict) -> Any:
-        response = self.client.GET(params=params).json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('GET', params=params)
 
     @MethodError.catch
     def _get_with_sub_path(self, path: str) -> Any:
-        response = self.client(path).GET().json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('GET', path=path)
 
     @MethodError.catch
     def _get_with_sub_path_and_params(self, path: str, params: Dict) -> Any:
-        response = self.client(path).GET(params=params).json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('GET', path=path, params=params)
 
     @MethodError.catch
     def _list(self, params: Optional[Dict] = None) -> List[Any]:
-        response = self.client.GET(params=params).json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('GET', params=params)
 
     @MethodError.catch
     def _create(self, data: Dict, request_opts: Optional[RequestOpts] = None) -> Any:
-        opts = {'headers': {}}
+        headers = {}
         if request_opts and request_opts.get('idempotency_key'):
-            opts['headers']['Idempotency-Key'] = request_opts.get('idempotency_key')
-
-        response = self.client.POST(data=json.dumps(data), **opts).json()
-        return MethodResponse(response.get('data'), response)
+            headers['Idempotency-Key'] = request_opts.get('idempotency_key')
+        return self._make_request('POST', data=data, headers=headers)
 
     @MethodError.catch
     def _create_with_sub_path(self, path: str, data: Dict) -> Any:
-        response = self.client(path).POST(data=json.dumps(data)).json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('POST', path=path, data=data)
 
     @MethodError.catch
     def _update_with_id(self, _id: str, data: Dict) -> Any:
-        response = self.client(_id).PUT(data=json.dumps(data)).json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('PUT', path=_id, data=data)
 
     @MethodError.catch
     def _update(self, data: Dict) -> Any:
-        response = self.client.PUT(data=json.dumps(data)).json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('PUT', data=data)
 
     @MethodError.catch
     def _update_with_sub_path(self, path: str, data: Dict) -> Any:
-        response = self.client(path).PUT(data=json.dumps(data)).json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('PUT', path=path, data=data)
 
     @MethodError.catch
     def _delete(self, _id: str) -> Any:
-        response = self.client(_id).DELETE().json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('DELETE', path=_id)
    
     @MethodError.catch
     def _delete_with_sub_path(self, path: str) -> Any:
-        response = self.client(path).DELETE().json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('DELETE', path=path)
 
     @MethodError.catch
     def _download(self, _id: str) -> str:
-        response = self.client(_id).download.GET()
-        return MethodResponse(response.text, response)
+        return self._make_request('GET', path=_id).content #FIXME: This should return a file
 
     @MethodError.catch
     def _post_with_id(self, _id: str, data: Dict) -> Any:
-        response = self.client(_id).POST(data=json.dumps(data)).json()
-        return MethodResponse(response.get('data'), response)
+        return self._make_request('POST', path=_id, data=data)
