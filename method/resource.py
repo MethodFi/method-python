@@ -14,59 +14,16 @@ ResourceStatusLiterals = Literal[
     'failed'
 ]
 
-class MethodResponse:
-    def __init__(self, data: Any, last_response: Any):
-        self._data = data
-        self._last_response = last_response
-
-    # @property
-    # def last_response(self):
-    #     return self._last_response
-    
-    # def __getitem__(self, key):
-    #     return self._data[key]
-
-    # def __getattr__(self, name):
-    #     if name in self._data:
-    #         return self._data[name]
-    #     raise AttributeError(f"'MethodResponse' object has no attribute '{name}'")
-
-    # def __repr__(self):
-    #     return repr(self._data)
-
-    # def __iter__(self):
-    #     return iter(self._data)
-
-    # def to_dict(self) -> Dict:
-    #     return self._data
-
-    # def __dir__(self):
-    #     """Override dir to hide last_response from autocomplete and dir() calls"""
-    #     return [item for item in dir(self._data) if item != 'last_response']
-
-    # def __eq__(self, other):
-    #     if isinstance(other, MethodResponse):
-    #         return self._data == other._data and self._last_response == other._last_response
-    #     return False
-
-    def finalize_response(self, request_start_time: Optional[int] = None, request_end_time: Optional[int] = None):
-        if request_start_time is not None:
-            self._last_response['request_start_time'] = request_start_time
-        if request_end_time is not None:
-            self._last_response['request_end_time'] = request_end_time    
-
 class LastResponse:
     def __init__(self, response: Any):
-        self.last_response = {
-            'request_id': response.headers.get('idem-request-id', None),
-            'idempotency_status': response.headers.get('idem-status', None),
-            'method': response.request.method,
-            'path': response.request.path_url,
-            'status': response.status_code,
-            'request_start_time': None,
-            'request_end_time': None,
-            'pagination': self._extract_pagination_info(response.headers)
-        }
+        self.request_id = response.headers.get('idem-request-id', None)
+        self.idempotency_status = response.headers.get('idem-status', None)
+        self.method = response.request.method
+        self.path = response.request.path_url
+        self.status = response.status_code
+        self.request_start_time = None
+        self.request_end_time = None
+        self.pagination = self._extract_pagination_info(response.headers)
 
     def _extract_pagination_info(self, headers: Dict[str, str]) -> Dict[str, Any]:
         pagination = {}
@@ -82,6 +39,65 @@ class LastResponse:
             pagination['next_page'] = headers.get('pagination-page-cursor-next')
         if (headers.get('pagination-page-cursor-prev')):
             pagination['previous_page'] = headers.get('pagination-page-cursor-prev')
+        return pagination
+    
+    def to_dict(self):
+        return {
+            'request_id': self.request_id,
+            'idempotency_status': self.idempotency_status,
+            'method': self.method,
+            'path': self.path,
+            'status': self.status,
+            'request_start_time': self.request_start_time,
+            'request_end_time': self.request_end_time,
+            'pagination': self.pagination
+        }
+
+    def __str__(self):
+        return str(self.to_dict())
+
+    def __repr__(self):
+        return self.__str__()
+
+class MethodResponse:
+    def __init__(self, data: Any, last_response: LastResponse):
+        self._data = data
+        self._last_response = last_response
+
+    @property
+    def last_response(self) -> LastResponse:
+        return self._last_response
+    
+    def __getitem__(self, key):
+        return self._data[key]
+
+    def __getattr__(self, name):
+        if name in self._data:
+            return self._data[name]
+        raise AttributeError(f"'MethodResponse' object has no attribute '{name}'")
+
+    def __repr__(self):
+        return repr(self._data)
+
+    def __iter__(self):
+        return iter(self._data)
+
+    def to_dict(self) -> Dict:
+        return self._data
+
+    def __dir__(self):
+        return list(self._data.keys())
+
+    def __eq__(self, other):
+        if isinstance(other, MethodResponse):
+            return self._data == other._data and self._last_response == other._last_response
+        return False
+
+    def finalize_response(self, request_start_time: Optional[int] = None, request_end_time: Optional[int] = None):
+        if request_start_time is not None:
+            self._last_response.request_start_time = request_start_time
+        if request_end_time is not None:
+            self._last_response.request_end_time = request_end_time    
 
 class RequestOpts(TypedDict):
     idempotency_key: Optional[str]
@@ -124,16 +140,15 @@ class Resource:
         raw_response = request_method(**options)
         request_end_time = int(time.time() * 1000)
 
-        last_response = LastResponse(raw_response).last_response
+        last_response = LastResponse(raw_response)
 
         if raw:
             response = MethodResponse(raw_response.json(), last_response)
-            response.finalize_response(request_start_time, request_end_time)
-            return response
         else:
             response = MethodResponse(raw_response.json().get('data'), last_response)
-            response.finalize_response(request_start_time, request_end_time)
-            return response
+        
+        response.finalize_response(request_start_time, request_end_time)
+        return response
 
 
     @MethodError.catch
