@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List, Literal, Union
 
-from method.resource import Resource
+from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
 
 
@@ -63,8 +63,8 @@ class MerchantResource(Resource):
     def __init__(self, config: Configuration):
         super(MerchantResource, self).__init__(config.add_path('merchants'))
 
-    def retrieve(self, _id: str) -> Merchant:
+    def retrieve(self, _id: str) -> MethodResponse[Merchant]:
         return super(MerchantResource, self)._get_with_id(_id)
 
-    def list(self, opts: Optional[MerchantListOpts] = None) -> List[Merchant]:
+    def list(self, opts: Optional[MerchantListOpts] = None) -> MethodResponse[List[Merchant]]:
         return super(MerchantResource, self)._list(opts)

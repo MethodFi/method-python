@@ -1,4 +1,5 @@
 from method.configuration import Configuration, ConfigurationOpts
+from method.resource import MethodResponse
 from method.resources.Accounts import AccountResource
 from method.resources.Entities import EntityResource
 from method.resources.Elements import ElementResource
@@ -35,5 +36,5 @@ class Method:
         self.healthcheck = HealthCheckResource(config)
         self.simulate = SimulateResource(config)
 
-    def ping(self) -> PingResponse:
+    def ping(self) -> MethodResponse[PingResponse]:
         return self.healthcheck.retrieve()

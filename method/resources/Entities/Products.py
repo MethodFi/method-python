@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal
 
-from method.resource import Resource
+from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -33,8 +33,8 @@ class EntityProductResource(Resource):
     def __init__(self, config: Configuration):
         super(EntityProductResource, self).__init__(config.add_path('products'))
 
-    def retrieve(self, prd_id: str) -> EntityProduct:
+    def retrieve(self, prd_id: str) -> MethodResponse[EntityProduct]:
         return super(EntityProductResource, self)._get_with_id(prd_id)
 
-    def list(self) -> EntityProductListResponse:
+    def list(self) -> MethodResponse[EntityProductListResponse]:
         return super(EntityProductResource, self)._list()

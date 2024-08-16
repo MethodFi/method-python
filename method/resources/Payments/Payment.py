@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List, Dict, Any, Literal
 
-from method.resource import Resource, RequestOpts, ResourceListOpts
+from method.resource import MethodResponse, Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Payments.Reversal import ReversalResource
@@ -106,14 +106,14 @@ class PaymentResource(Resource):
     def __call__(self, _id: str) -> PaymentSubResources:
         return PaymentSubResources(_id, self.config)
 
-    def retrieve(self, _id: str) -> Payment:
+    def retrieve(self, _id: str) -> MethodResponse[Payment]:
         return super(PaymentResource, self)._get_with_id(_id)
 
-    def list(self, params: Optional[PaymentListOpts] = None) -> List[Payment]:
+    def list(self, params: Optional[PaymentListOpts] = None) -> MethodResponse[List[Payment]]:
         return super(PaymentResource, self)._list(params)
 
-    def create(self, opts: PaymentCreateOpts, request_opts: Optional[RequestOpts] = None) -> Payment:
+    def create(self, opts: PaymentCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Payment]:
         return super(PaymentResource, self)._create(opts, request_opts)
 
-    def delete(self, _id: str) -> Payment:
+    def delete(self, _id: str) -> MethodResponse[Payment]:
         return super(PaymentResource, self)._delete(_id)

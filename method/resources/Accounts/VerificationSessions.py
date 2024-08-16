@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List, Literal, Union
 
-from method.resource import Resource
+from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Accounts.ExternalTypes import PlaidBalance, PlaidTransaction, MXAccount, MXTransaction, TellerBalance, TellerTransaction
@@ -152,11 +152,11 @@ class AccountVerificationSessionResource(Resource):
     def __init__(self, config: Configuration):
         super(AccountVerificationSessionResource, self).__init__(config.add_path('verification_sessions'))
 
-    def create(self, opts: AccountVerificationSessionCreateOpts) -> AccountVerificationSession:
+    def create(self, opts: AccountVerificationSessionCreateOpts) -> MethodResponse[AccountVerificationSession]:
         return super(AccountVerificationSessionResource, self)._create(opts)
 
-    def retrieve(self, avs_id: str) -> AccountVerificationSession:
+    def retrieve(self, avs_id: str) -> MethodResponse[AccountVerificationSession]:
         return super(AccountVerificationSessionResource, self)._get_with_id(avs_id)
 
-    def update(self, avs_id: str, opts: AccountVerificationSessionUpdateOpts) -> AccountVerificationSession:
+    def update(self, avs_id: str, opts: AccountVerificationSessionUpdateOpts) -> MethodResponse[AccountVerificationSession]:
         return super(AccountVerificationSessionResource, self)._update_with_id(avs_id, opts)
