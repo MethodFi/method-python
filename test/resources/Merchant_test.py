@@ -71,5 +71,5 @@ def test_list_merchants():
     }
 
     assert merchants_list_response != None
-    assert isinstance(merchants_list_response, list)
+    assert isinstance(merchants_list_response._data, list)
     assert merchant_to_use == expect_results

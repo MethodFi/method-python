@@ -211,7 +211,7 @@ def test_list_accounts(setup):
     test_length = len(set(dupes))
 
     assert accounts_list_response is not None
-    assert isinstance(accounts_list_response, list)
+    assert isinstance(accounts_list_response._data, list)
     assert test_length == len(connect_acc_ids)
 
 
