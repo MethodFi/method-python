@@ -29,6 +29,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install local package
+        run: |
+          pip install -e .
+
+      - name: Debug environment
+        run: |
+          pip list
+          python -c "from importlib.metadata import version; print(version('method-python'))"
+
       - name: Execute pytest
         run: |
-          doppler run -t ${{ secrets.TEST_DOPPLER_TOKEN }} -- pytest
+          doppler run -t ${{ secrets.TEST_DOPPLER_TOKEN }} -- pytest -v
