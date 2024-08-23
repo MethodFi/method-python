@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal, List
 
-from method.resource import Resource, ResourceListOpts
+from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -55,8 +55,8 @@ class AccountTransactionsResource(Resource):
     def __init__(self, config: Configuration):
         super(AccountTransactionsResource, self).__init__(config.add_path('transactions'))
 
-    def retrieve(self, txn_id: str) -> AccountTransaction:
+    def retrieve(self, txn_id: str) -> MethodResponse[AccountTransaction]:
         return super(AccountTransactionsResource, self)._get_with_id(txn_id)
 
-    def list(self, params: Optional[ResourceListOpts] = None) -> List[AccountTransaction]:
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[AccountTransaction]]:
         return super(AccountTransactionsResource, self)._list(params)

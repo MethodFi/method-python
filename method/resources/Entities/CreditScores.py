@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List, Literal
 
-from method.resource import Resource
+from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Entities.Types import EntityStatusesLiterals, CreditReportBureausLiterals
@@ -40,8 +40,8 @@ class EntityCreditScoresResource(Resource):
     def __init__(self, config: Configuration):
         super(EntityCreditScoresResource, self).__init__(config.add_path('credit_scores'))
 
-    def retrieve(self, crs_id: str) -> EntityCreditScores:
+    def retrieve(self, crs_id: str) -> MethodResponse[EntityCreditScores]:
         return super(EntityCreditScoresResource, self)._get_with_id(crs_id)
 
-    def create(self) -> EntityCreditScores:
+    def create(self) -> MethodResponse[EntityCreditScores]:
         return super(EntityCreditScoresResource, self)._create({})

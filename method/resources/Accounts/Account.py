@@ -1,5 +1,5 @@
 from typing import TypedDict, Optional, Dict, List, Any, Literal, Union, TypeVar
-from method.resource import Resource, RequestOpts
+from method.resource import MethodResponse, Resource, RequestOpts
 from method.errors import ResourceError
 from method.configuration import Configuration
 from method.resources.Accounts.Types import AccountACH, AccountStatusesLiterals, AccountTypesLiterals, \
@@ -111,14 +111,14 @@ class AccountResource(Resource):
     def __call__(self, acc_id: str) -> AccountSubResources:
         return AccountSubResources(acc_id, self.config)
 
-    def retrieve(self, acc_id: str, params: Optional[Dict[str, List[AccountExpandableFieldsLiterals]]] = None) -> Account:
+    def retrieve(self, acc_id: str, params: Optional[Dict[str, List[AccountExpandableFieldsLiterals]]] = None) -> MethodResponse[Account]:
         return super(AccountResource, self)._get_with_sub_path_and_params(acc_id, params)
 
-    def list(self, params: Optional[AccountListOpts[T]] = None) -> List[Account]:
+    def list(self, params: Optional[AccountListOpts[T]] = None) -> MethodResponse[List[Account]]:
         return super(AccountResource, self)._list(params)
 
-    def create(self, opts: Union[AccountACHCreateOpts, AccountLiabilityCreateOpts], request_opts: Optional[RequestOpts] = None) -> Account:
+    def create(self, opts: Union[AccountACHCreateOpts, AccountLiabilityCreateOpts], request_opts: Optional[RequestOpts] = None) -> MethodResponse[Account]:
         return super(AccountResource, self)._create(opts, request_opts)
 
-    def withdraw_consent(self, acc_id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> Account: # pylint: disable=dangerous-default-value
+    def withdraw_consent(self, acc_id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> MethodResponse[Account]: # pylint: disable=dangerous-default-value
         return super(AccountResource, self)._create_with_sub_path('{acc_id}/consent'.format(acc_id=acc_id), data)

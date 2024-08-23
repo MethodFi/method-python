@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal
 
-from method.resource import Resource
+from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -29,8 +29,8 @@ class AccountPayoffsResource(Resource):
     def __init__(self, config: Configuration):
         super(AccountPayoffsResource, self).__init__(config.add_path('payoffs'))
 
-    def retrieve(self, pyf_id: str) -> AccountPayoff:
+    def retrieve(self, pyf_id: str) -> MethodResponse[AccountPayoff]:
         return super(AccountPayoffsResource, self)._get_with_id(pyf_id)
     
-    def create(self) -> AccountPayoff:
+    def create(self) -> MethodResponse[AccountPayoff]:
         return super(AccountPayoffsResource, self)._create({})

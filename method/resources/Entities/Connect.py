@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal, List
 
-from method.resource import Resource
+from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -26,8 +26,8 @@ class EntityConnectResource(Resource):
     def __init__(self, config: Configuration):
         super(EntityConnectResource, self).__init__(config.add_path('connect'))
 
-    def retrieve(self, cxn_id: str) -> EntityConnect:
+    def retrieve(self, cxn_id: str) -> MethodResponse[EntityConnect]:
         return super(EntityConnectResource, self)._get_with_id(cxn_id)
 
-    def create(self) -> EntityConnect:
+    def create(self) -> MethodResponse[EntityConnect]:
         return super(EntityConnectResource, self)._create({})

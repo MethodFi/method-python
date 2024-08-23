@@ -1,6 +1,6 @@
 from typing import TypedDict, List, Literal, Optional
 
-from method.resource import Resource
+from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -43,11 +43,11 @@ class ReversalResource(Resource):
     def __init__(self, config: Configuration):
         super(ReversalResource, self).__init__(config.add_path('reversals'))
 
-    def retrieve(self, _id: str) -> Reversal:
+    def retrieve(self, _id: str) -> MethodResponse[Reversal]:
         return super(ReversalResource, self)._get_with_id(_id)
 
-    def update(self, _id: str, opts: ReversalUpdateOpts) -> Reversal:
+    def update(self, _id: str, opts: ReversalUpdateOpts) -> MethodResponse[Reversal]:
         return super(ReversalResource, self)._update_with_id(_id, opts)
 
-    def list(self) -> List[Reversal]:
+    def list(self) -> MethodResponse[List[Reversal]]:
         return super(ReversalResource, self)._list(None)

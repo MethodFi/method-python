@@ -614,7 +614,7 @@ def test_retrieve_entity_subscription():
         'id': entity_connect_subscription_id,
         'name': 'connect',
         'status': 'active',
-        'latest_request_id': None,
+        'latest_request_id': entity_connect_subscription_response['latest_request_id'],
         'created_at': entity_connect_subscription_response['created_at'],
         'updated_at': entity_connect_subscription_response['updated_at']
     }
@@ -623,7 +623,7 @@ def test_retrieve_entity_subscription():
         'id': entity_credit_score_subscription_id,
         'name': 'credit_score',
         'status': 'active',
-        'latest_request_id': None,
+        'latest_request_id': entity_credit_score_subscription_response['latest_request_id'],
         'created_at': entity_credit_score_subscription_response['created_at'],
         'updated_at': entity_credit_score_subscription_response['updated_at']
     }

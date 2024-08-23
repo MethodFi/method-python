@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal, List, Dict
 
-from method.resource import Resource
+from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
 from method.resources.Accounts.Types import AccountLiabilityTypesLiterals
 
@@ -176,10 +176,10 @@ class ElementTokenResource(Resource):
     def __init__(self, config: Configuration):
         super(ElementTokenResource, self).__init__(config.add_path('token'))
 
-    def create(self, opts: ElementTokenCreateOpts) -> ElementToken:
+    def create(self, opts: ElementTokenCreateOpts) -> MethodResponse[ElementToken]:
         return super(ElementTokenResource, self)._create(opts)
 
-    def results(self, pk_elem_id: str) -> ElementResults:
+    def results(self, pk_elem_id: str) -> MethodResponse[ElementResults]:
         return super(ElementTokenResource, self)._get_with_sub_path(
             '{_id}/results'.format(_id=pk_elem_id)
         )

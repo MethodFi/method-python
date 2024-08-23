@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal
 
-from method.resource import Resource
+from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -40,14 +40,14 @@ class EntitySubscriptionsResource(Resource):
     def __init__(self, config: Configuration):
         super(EntitySubscriptionsResource, self).__init__(config.add_path('subscriptions'))
 
-    def retrieve(self, sub_id: str) -> EntitySubscriptionResponseOpts:
+    def retrieve(self, sub_id: str) -> MethodResponse[EntitySubscriptionResponseOpts]:
         return super(EntitySubscriptionsResource, self)._get_with_id(sub_id)
 
-    def list(self) -> EntitySubscriptionListResponse:
+    def list(self) -> MethodResponse[EntitySubscriptionListResponse]:
         return super(EntitySubscriptionsResource, self)._list()
 
-    def create(self, sub_name: EntitySubscriptionNamesLiterals) -> EntitySubscriptionResponseOpts:
+    def create(self, sub_name: EntitySubscriptionNamesLiterals) -> MethodResponse[EntitySubscriptionResponseOpts]:
         return super(EntitySubscriptionsResource, self)._create({ 'enroll': sub_name })
     
-    def delete(self, sub_id: str) -> EntitySubscriptionResponseOpts:
+    def delete(self, sub_id: str) -> MethodResponse[EntitySubscriptionResponseOpts]:
         return super(EntitySubscriptionsResource, self)._delete(sub_id)

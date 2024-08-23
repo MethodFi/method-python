@@ -1,0 +1,43 @@
+name: Pytests
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+      - 'release'
+  workflow_dispatch:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Doppler
+        run: |
+          (curl -Ls https://cli.doppler.com/install.sh || wget -qO- https://cli.doppler.com/install.sh) | sudo sh
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install local package
+        run: |
+          pip install -e .
+
+      - name: Debug environment
+        run: |
+          pip list
+          python -c "from importlib.metadata import version; print(version('method-python'))"
+
+      - name: Execute pytest
+        run: |
+          doppler run -t ${{ secrets.TEST_DOPPLER_TOKEN }} -- pytest -v

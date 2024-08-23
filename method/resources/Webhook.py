@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List, Dict, Any, Literal
 
-from method.resource import Resource, RequestOpts
+from method.resource import MethodResponse, Resource, RequestOpts
 from method.configuration import Configuration
 
 
@@ -50,14 +50,15 @@ class WebhookResource(Resource):
     def __init__(self, config: Configuration):
         super(WebhookResource, self).__init__(config.add_path('webhooks'))
 
-    def retrieve(self, _id: str) -> Webhook:
+    def retrieve(self, _id: str) -> MethodResponse[Webhook]:
         return super(WebhookResource, self)._get_with_id(_id)
 
-    def delete(self, _id: str) -> Webhook:
-        return super(WebhookResource, self)._delete(_id)
+    def delete(self, _id: str) -> MethodResponse[Webhook]:
+        res = super(WebhookResource, self)._delete(_id)
+        return res
 
-    def list(self) -> List[Webhook]:
+    def list(self) -> MethodResponse[List[Webhook]]:
         return super(WebhookResource, self)._list(None)
 
-    def create(self, opts: WebhookCreateOpts, request_opts: Optional[RequestOpts] = None) -> Webhook:
+    def create(self, opts: WebhookCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Webhook]:
         return super(WebhookResource, self)._create(opts, request_opts)

@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Dict, Any, Literal
 
-from method.resource import Resource, RequestOpts
+from method.resource import MethodResponse, Resource, RequestOpts
 from method.configuration import Configuration
 
 
@@ -44,10 +44,10 @@ class ReportResource(Resource):
     def __init__(self, config: Configuration):
         super(ReportResource, self).__init__(config.add_path('reports'))
 
-    def retrieve(self, _id: str) -> Report:
+    def retrieve(self, _id: str) -> MethodResponse[Report]:
         return super(ReportResource, self)._get_with_id(_id)
 
-    def create(self, opts: ReportCreateOpts, request_opts: Optional[RequestOpts] = None) -> Report:
+    def create(self, opts: ReportCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Report]:
         return super(ReportResource, self)._create(opts, request_opts)
 
     def download(self, _id: str) -> str:

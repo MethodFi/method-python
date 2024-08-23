@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List, Dict, Any
 
-from method.resource import Resource, RequestOpts, ResourceListOpts
+from method.resource import MethodResponse, Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Entities.Types import EntityTypesLiterals, EntityCapabilitiesLiterals, EntityStatusesLiterals, \
@@ -130,19 +130,19 @@ class EntityResource(Resource):
     def __call__(self, _id: str) -> EntitySubResources:
         return EntitySubResources(_id, self.config)
 
-    def create(self, opts: EntityCreateOpts, request_opts: Optional[RequestOpts] = None) -> Entity:
+    def create(self, opts: EntityCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Entity]:
         return super(EntityResource, self)._create(opts, request_opts)
 
-    def update(self, _id: str, opts: EntityCreateOpts) -> Entity:
+    def update(self, _id: str, opts: EntityCreateOpts) -> MethodResponse[Entity]:
         return super(EntityResource, self)._update_with_id(_id, opts)
 
-    def retrieve(self, _id: str) -> Entity:
+    def retrieve(self, _id: str) -> MethodResponse[Entity]:
         return super(EntityResource, self)._get_with_id(_id)
 
-    def list(self, params: EntityListOpts = None) -> List[Entity]:
+    def list(self, params: EntityListOpts = None) -> MethodResponse[List[Entity]]:
         return super(EntityResource, self)._list(params)
 
-    def withdraw_consent(self, _id: str) -> Entity:
+    def withdraw_consent(self, _id: str) -> MethodResponse[Entity]:
         return super(EntityResource, self)._create_with_sub_path(
             '{_id}/consent'.format(_id=_id),
             {'type': 'withdraw', 'reason': 'entity_withdrew_consent'}

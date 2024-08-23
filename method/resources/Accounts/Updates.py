@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List
 
-from method.resource import Resource, ResourceListOpts, ResourceStatusLiterals
+from method.resource import MethodResponse, Resource, ResourceListOpts, ResourceStatusLiterals
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Accounts.Types import AccountLiabilityTypesLiterals, AccountLiabilityAutoLoan, \
@@ -26,11 +26,11 @@ class AccountUpdatesResource(Resource):
     def __init__(self, config: Configuration):
         super(AccountUpdatesResource, self).__init__(config.add_path('updates'))
 
-    def retrieve(self, upt_id: str) -> AccountUpdate:
+    def retrieve(self, upt_id: str) -> MethodResponse[AccountUpdate]:
         return super(AccountUpdatesResource, self)._get_with_id(upt_id)
 
-    def list(self, params: Optional[ResourceListOpts] = None) -> List[AccountUpdate]:
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[AccountUpdate]]:
         return super(AccountUpdatesResource, self)._list(params)
 
-    def create(self) -> AccountUpdate:
+    def create(self) -> MethodResponse[AccountUpdate]:
         return super(AccountUpdatesResource, self)._create({})
