@@ -3,6 +3,7 @@ from typing import TypedDict, Optional, List, Dict, Any
 from method.resource import MethodResponse, Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
+from method.resources.Entities.Attributes import EntityAttributesResource
 from method.resources.Entities.Types import EntityTypesLiterals, EntityCapabilitiesLiterals, EntityStatusesLiterals, \
     CreditReportBureausLiterals, EntityIndividual, EntityCorporation, EntityAddress
 from method.resources.Entities.Connect import EntityConnectResource
@@ -105,6 +106,7 @@ class Entity(TypedDict):
 
 
 class EntitySubResources:
+    attributes: EntityAttributesResource
     connect: EntityConnectResource
     credit_scores: EntityCreditScoresResource
     identities: EntityIdentityResource
@@ -114,6 +116,7 @@ class EntitySubResources:
     verification_sessions: EntityVerificationSessionResource
 
     def __init__(self, _id: str, config: Configuration):
+        self.attributes = EntityAttributesResource(config.add_path(_id))
         self.connect = EntityConnectResource(config.add_path(_id))
         self.credit_scores = EntityCreditScoresResource(config.add_path(_id))
         self.identities = EntityIdentityResource(config.add_path(_id))

@@ -24,6 +24,7 @@ class EntityProduct(TypedDict):
 
 
 class EntityProductListResponse(TypedDict):
+    attribute: Optional[EntityProduct]
     connect: Optional[EntityProduct]
     credit_score: Optional[EntityProduct]
     identity: Optional[EntityProduct]
