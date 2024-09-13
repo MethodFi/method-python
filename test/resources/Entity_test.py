@@ -1,4 +1,5 @@
 import os
+from method.resources.Entities.Attributes import EntityAttributes
 import pytest
 from method import Method
 from dotenv import load_dotenv 
@@ -26,6 +27,7 @@ entities_connect_create_response = None
 entities_account_list_response = None
 entities_account_ids = None
 entities_create_credit_score_response = None
+entities_create_attribute_response = None
 entities_create_idenitity_response = None
 entities_retrieve_product_list_response = None
 entities_create_connect_subscription_response = None
@@ -86,6 +88,7 @@ def test_create_entity():
           },
           'connect': None,
           'credit_score': None,
+          'attribute': None,
           'products': [],
           'restricted_products': entities_create_response['restricted_products'],
           'subscriptions': [],
@@ -148,6 +151,7 @@ def test_retrieve_entity():
           },
           'connect': None,
           'credit_score': None,
+          'attribute': None,
           'products': [],
           'restricted_products': entities_retrieve_response['restricted_products'],
           'subscriptions': [],
@@ -218,8 +222,9 @@ def test_update_entity():
           },
           'connect': None,
           'credit_score': None,
+          'attribute': None,
           'products': [ 'identity' ],
-          'restricted_products': [ 'connect', 'credit_score' ].sort(),
+          'restricted_products': entities_update_response['restricted_products'],
           'subscriptions': [],
           'available_subscriptions': [],
           'restricted_subscriptions': [ 'connect', 'credit_score' ].sort(),
@@ -378,6 +383,44 @@ async def test_retrieve_entity_credit_score():
 
     assert credit_score_retrieve_response == expect_results
 
+# ENTITY ATTRIBUTE TESTS
+
+def test_create_entity_attribute():
+    global entities_create_attribute_response
+    entities_create_attribute_response = method.entities(entities_create_response['id']).attributes.create()
+
+    expect_results: EntityAttributes = {
+        'id': entities_create_attribute_response['id'],
+        'entity_id': entities_create_response['id'],
+        'status': 'completed',
+        'attributes': entities_create_attribute_response.attributes,
+        'error': None,
+        'created_at': entities_create_attribute_response['created_at'],
+        'updated_at': entities_create_attribute_response['updated_at']
+    }
+
+    assert entities_create_attribute_response == expect_results
+
+@pytest.mark.asyncio
+async def test_retrieve_entity_attribute():
+    def get_attribute():
+        return method.entities(entities_create_response['id']).attributes.retrieve(entities_create_attribute_response['id'])
+    
+    attribute_retrieve_response = await await_results(get_attribute)
+
+    expect_results: EntityAttributes = {
+        'id': attribute_retrieve_response['id'],
+        'entity_id': entities_create_response['id'],
+        'status': 'completed',
+        'attributes': attribute_retrieve_response.attributes,
+        'error': None,
+        'created_at': attribute_retrieve_response['created_at'],
+        'updated_at': attribute_retrieve_response['updated_at']
+    }
+
+    assert attribute_retrieve_response == expect_results
+
+
 # ENTITY IDENTITY TESTS
 
 def test_create_entity_identity():
@@ -517,6 +560,16 @@ def test_retrieve_entity_product_list():
             'is_subscribable': False,
             'created_at': entities_retrieve_product_list_response.get('identity', {}).get('created_at', ''),
             'updated_at': entities_retrieve_product_list_response.get('identity', {}).get('updated_at', ''),
+        },
+        'attribute': {
+            'id': entities_retrieve_product_list_response.get('attribute', {}).get('id', ''),
+            'name': 'attribute',
+            'status': 'available',
+            'status_error': None,
+            'latest_request_id': entities_retrieve_product_list_response.get('attribute', {}).get('latest_request_id', None),
+            'is_subscribable': False,
+            'created_at': entities_retrieve_product_list_response.get('attribute', {}).get('created_at', ''),
+            'updated_at': entities_retrieve_product_list_response.get('attribute', {}).get('updated_at', ''),
         }
     }
 
@@ -552,6 +605,17 @@ def test_retrieve_entity_product():
         'is_subscribable': True,
         'created_at': entity_credit_score_product_response['created_at'],
         'updated_at': entity_credit_score_product_response['updated_at']
+    }
+
+    expect_attribute_results: EntityProduct = {
+        'id': entities_retrieve_product_list_response.get('attribute', {}).get('id', ''),
+        'name': 'attribute',
+        'status': 'available',
+        'status_error': None,
+        'latest_request_id': entities_retrieve_product_list_response.get('attribute', {}).get('latest_request_id', None),
+        'is_subscribable': False,
+        'created_at': entities_retrieve_product_list_response.get('attribute', {}).get('created_at', ''),
+        'updated_at': entities_retrieve_product_list_response.get('attribute', {}).get('updated_at', ''),
     }
 
     expect_identity_results: EntityProduct = {
