@@ -1,8 +1,8 @@
+from time import sleep
 import os
 import pytest
 from method import Method
 from dotenv import load_dotenv
-from utils import await_results
 
 load_dotenv()
 
@@ -54,7 +54,7 @@ def test_simulate_account_closed(setup):
     })
 
     # Wait for event to be created
-    await_results(lambda: True, delay=5)
+    sleep(1)
 
     events_list_response = method.events.list({
         'resource_id': setup['account_response'][0]['id']
