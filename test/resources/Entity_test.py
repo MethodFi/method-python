@@ -371,7 +371,7 @@ async def test_retrieve_entity_credit_score():
             {
                 'score': credit_score_retrieve_response['scores'][0]['score'],
                 'source': 'equifax',
-                'model': 'vantage_3',
+                'model': 'vantage_4',
                 'factors': credit_score_retrieve_response['scores'][0]['factors'],
                 'created_at': credit_score_retrieve_response['scores'][0]['created_at']
             }

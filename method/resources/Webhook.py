@@ -73,6 +73,7 @@ class Webhook(TypedDict):
     metadata: Optional[Dict[str, Any]]
     created_at: str
     updated_at: str
+    expand_event: bool
 
 
 class WebhookCreateOpts(TypedDict):
@@ -80,6 +81,7 @@ class WebhookCreateOpts(TypedDict):
     url: str
     auth_token: Optional[str]
     metadata: Optional[Dict[str, Any]]
+    expand_event: Optional[bool]
 
 
 class WebhookResource(Resource):

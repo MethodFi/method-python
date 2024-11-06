@@ -28,7 +28,8 @@ def test_create_webhooks():
         'url': 'https://dev.methodfi.com',
         'metadata': None,
         'created_at': webhooks_create_response['created_at'],
-        'updated_at': webhooks_create_response['updated_at']
+        'updated_at': webhooks_create_response['updated_at'],
+        'expand_event': webhooks_create_response['expand_event']
     }
 
     assert webhooks_create_response == expect_results
@@ -45,7 +46,8 @@ def test_retrieve_webhook():
         'url': 'https://dev.methodfi.com',
         'metadata': None,
         'created_at': webhooks_retrieve_response['created_at'],
-        'updated_at': webhooks_retrieve_response['updated_at']
+        'updated_at': webhooks_retrieve_response['updated_at'],
+        'expand_event': webhooks_retrieve_response['expand_event']
     }
 
     assert webhooks_retrieve_response == expect_results
