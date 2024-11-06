@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import os
 from method.resources.Entities.Attributes import EntityAttributes
 import pytest
@@ -239,7 +240,8 @@ def test_update_entity():
 
 def test_list_entities():
     global entities_list_response
-    entities_list_response = method.entities.list()
+    # list only those entities created in past day, in the format of YYYY-MM-DD
+    entities_list_response = method.entities.list( {'from_date': (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')} )
     entities_list_response = [entity['id'] for entity in entities_list_response]
 
     assert entities_create_response['id'] in entities_list_response
