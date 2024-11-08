@@ -11,3 +11,4 @@ from method.resources.HealthCheck import PingResponse, HealthCheckResource
 from method.resources.Merchant import Merchant, MerchantProviderIds, MerchantResource
 from method.resources.Report import Report, ReportCreateOpts, ReportResource
 from method.resources.Webhook import Webhook, WebhookCreateOpts, WebhookResource
+from method.resources.Events.Event import Event, EventResource

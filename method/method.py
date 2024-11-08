@@ -9,12 +9,13 @@ from method.resources.Report import ReportResource
 from method.resources.Webhook import WebhookResource
 from method.resources.HealthCheck import PingResponse, HealthCheckResource
 from method.resources.Simulate import SimulateResource
-
+from method.resources.Events import EventResource
 
 class Method:
     accounts: AccountResource
     entities: EntityResource
     elements: ElementResource
+    events: EventResource
     merchants: MerchantResource
     payments: PaymentResource
     reports: ReportResource
@@ -29,6 +30,7 @@ class Method:
         self.accounts = AccountResource(config)
         self.entities = EntityResource(config)
         self.elements = ElementResource(config)
+        self.events = EventResource(config)
         self.merchants = MerchantResource(config)
         self.payments = PaymentResource(config)
         self.reports = ReportResource(config)
