@@ -1,4 +1,5 @@
 import os
+from typing import List
 import pytest
 from method import Method
 from dotenv import load_dotenv 
@@ -256,6 +257,24 @@ async def test_retrieve_balance(setup):
     assert balances_retrieve_response == expect_results
 
 
+@pytest.mark.asyncio
+async def test_list_balances(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+    
+    balances_list_response = method.accounts(test_credit_card_account['id']).balances.list()
+
+    expect_results: AccountBalance = {
+        'id': balances_create_response['id'],
+        'account_id': test_credit_card_account['id'],
+        'status': 'completed',
+        'amount': 1866688,
+        'error': None,
+        'created_at': balances_list_response[0]['created_at'],
+        'updated_at': balances_list_response[0]['updated_at'],
+    }
+
+    assert balances_list_response[0] == expect_results
+
 def test_create_card_brands(setup):
     global card_brand_create_response
     test_credit_card_account = setup['test_credit_card_account']
@@ -299,6 +318,27 @@ def test_retrieve_card_brands(setup):
 
     assert card_retrieve_response == expect_results
 
+@pytest.mark.asyncio
+async def test_list_card_brands(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+    
+    card_brands_list_response = method.accounts(test_credit_card_account['id']).card_brands.list()
+
+    expect_results: AccountCardBrand = {
+        'id': card_brand_create_response['id'],
+        'account_id': test_credit_card_account['id'],
+        'network': 'visa',
+        'status': 'completed',
+        'issuer': card_brand_create_response['issuer'],
+        'last4': '1580',
+        'brands': card_brand_create_response['brands'],
+        'shared': False,
+        'error': None,
+        'created_at': card_brands_list_response[0]['created_at'],
+        'updated_at': card_brands_list_response[0]['updated_at'],
+    }
+
+    assert card_brands_list_response[0] == expect_results
 
 def test_create_payoffs(setup):
     global payoff_create_response
@@ -343,6 +383,25 @@ async def test_retrieve_payoffs(setup):
 
     assert payoff_retrieve_response == expect_results
 
+@pytest.mark.asyncio
+async def test_list_payoffs(setup):
+    test_auto_loan_account = setup['test_auto_loan_account']
+    
+    payoff_list_response = method.accounts(test_auto_loan_account['id']).payoffs.list()
+
+    expect_results: AccountPayoff = {
+        'id': payoff_create_response['id'],
+        'account_id': test_auto_loan_account['id'],
+        'amount': 6083988,
+        'per_diem_amount': None,
+        'term': 15,
+        'status': 'completed',
+        'error': None,
+        'created_at': payoff_list_response[0]['created_at'],
+        'updated_at': payoff_list_response[0]['updated_at'],
+    }
+
+    assert payoff_list_response[0] == expect_results
 
 def test_create_account_verification_sessions(setup):
     global verification_session_create
@@ -445,6 +504,34 @@ async def test_retrieve_account_verification_session(setup):
 
     assert verification_session_retrieve_response == expect_results
 
+@pytest.mark.asyncio
+async def test_list_account_verification_sessions(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+    
+    verification_sessions_list_response = method.accounts(test_credit_card_account['id']).verification_sessions.list()
+
+    expect_results: AccountVerificationSession = {
+        'id': verification_session_create['id'],
+        'account_id': test_credit_card_account['id'],
+        'status': 'verified',
+        'type': 'pre_auth',
+        'error': None,
+        'pre_auth': {
+            'billing_zip_code': 'xxxxx',
+            'billing_zip_code_check': 'pass',
+            'cvv': 'xxx',
+            'cvv_check': 'pass',
+            'exp_check': 'pass',
+            'exp_month': 'xx',
+            'exp_year': 'xxxx',
+            'number': 'xxxxxxxxxxxxxxxx',
+            'pre_auth_check': 'pass',
+        },
+        'created_at': verification_sessions_list_response[0]['created_at'],
+        'updated_at': verification_sessions_list_response[0]['updated_at'],
+    }
+
+    assert verification_sessions_list_response[0] == expect_results
 
 def test_create_account_sensitive(setup):
     global sensitive_data_response
@@ -477,6 +564,31 @@ def test_create_account_sensitive(setup):
 
     assert sensitive_data_response == expect_results
 
+
+@pytest.mark.asyncio
+async def test_list_account_sensitive(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+    
+    sensitive_list_response = method.accounts(test_credit_card_account['id']).sensitive.list()
+
+    expect_results: AccountSensitive = {
+        'id': sensitive_data_response['id'],
+        'account_id': test_credit_card_account['id'],
+        'type': 'credit_card',
+        'credit_card': {
+            'billing_zip_code': None,
+            'number': '5555555555551580',
+            'exp_month': '03',
+            'exp_year': '2028',
+            'cvv': None
+        },
+        'status': 'completed',
+        'error': None,
+        'created_at': sensitive_list_response[0]['created_at'],
+        'updated_at': sensitive_list_response[0]['updated_at']
+    }
+
+    assert sensitive_list_response[0] == expect_results
 
 def test_create_transaction_subscription(setup):
     global create_txn_subscriptions_response

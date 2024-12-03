@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List, Literal
 
-from method.resource import MethodResponse, Resource
+from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -108,6 +108,9 @@ class EntityVerificationSessionResource(Resource):
 
     def retrieve(self, verification_session_id: str) -> MethodResponse[EntityVerificationSession]:
         return super(EntityVerificationSessionResource, self)._get_with_id(verification_session_id)
+
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[EntityVerificationSession]]:
+        return super(EntityVerificationSessionResource, self)._list(params)
 
     def create(self, opts: Optional[EntityVerificationSessionCreateOpts] = {}) -> MethodResponse[EntityVerificationSession]:  # pylint: disable=dangerous-default-value
         return super(EntityVerificationSessionResource, self)._create(opts)

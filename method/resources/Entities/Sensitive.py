@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List
 
-from method.resource import MethodResponse, Resource
+from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 
 from method.resources.Entities.Types import EntityKYCAddressRecordData, EntityIdentityType
@@ -27,3 +27,6 @@ class EntitySensitiveResource(Resource):
 
     def retrieve(self) -> MethodResponse[EntitySensitive]:
         return super(EntitySensitiveResource, self)._get()
+    
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[EntitySensitive]]:
+        return super(EntitySensitiveResource, self)._list(params)

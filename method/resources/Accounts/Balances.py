@@ -1,6 +1,6 @@
-from typing import TypedDict, Optional, Literal
+from typing import List, TypedDict, Optional, Literal
 
-from method.resource import MethodResponse, Resource
+from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -28,6 +28,9 @@ class AccountBalancesResource(Resource):
 
     def retrieve(self, bal_id: str) -> MethodResponse[AccountBalance]:
         return super(AccountBalancesResource, self)._get_with_id(bal_id)
+    
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[AccountBalance]]:
+        return super(AccountBalancesResource, self)._list(params)
 
     def create(self) -> MethodResponse[AccountBalance]:
         return super(AccountBalancesResource, self)._create({})

@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal, List
 
-from method.resource import MethodResponse, Resource
+from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -52,6 +52,9 @@ class AccountSensitiveResource(Resource):
 
     def retrieve(self, astv_id: str) -> MethodResponse[AccountSensitive]:
         return super(AccountSensitiveResource, self)._get_with_id(astv_id)
+    
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[AccountSensitive]]:
+        return super(AccountSensitiveResource, self)._list(params)
 
     def create(self, data: AccountSensitiveCreateOpts) -> MethodResponse[AccountSensitive]:
         return super(AccountSensitiveResource, self)._create(data)

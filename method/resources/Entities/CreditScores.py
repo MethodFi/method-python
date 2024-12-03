@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List, Literal
 
-from method.resource import MethodResponse, Resource
+from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Entities.Types import EntityStatusesLiterals, CreditReportBureausLiterals
@@ -42,6 +42,9 @@ class EntityCreditScoresResource(Resource):
 
     def retrieve(self, crs_id: str) -> MethodResponse[EntityCreditScores]:
         return super(EntityCreditScoresResource, self)._get_with_id(crs_id)
+    
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[EntityCreditScores]]:
+        return super(EntityCreditScoresResource, self)._list(params)
 
     def create(self) -> MethodResponse[EntityCreditScores]:
         return super(EntityCreditScoresResource, self)._create({})
