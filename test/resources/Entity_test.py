@@ -304,10 +304,12 @@ def test_create_entity_individual_verification():
 
 async def test_list_entity_verification_sessions():
     verification_sessions_list_response = method.entities(entities_create_response['id']).verification_sessions.list()
-
-    expect_results: List[EntityVerificationSession] = [entities_create_phone_verification_response, entities_create_individual_verification_response]
-
-    assert verification_sessions_list_response == expect_results
+    
+    # Sort both arrays by type to ensure consistent ordering
+    sorted_response = sorted(verification_sessions_list_response, key=lambda x: x['type'])
+    sorted_expected = sorted([entities_create_phone_verification_response, entities_create_individual_verification_response], key=lambda x: x['type'])
+    
+    assert sorted_response == sorted_expected
 
 # ENTITY CONNECT TESTS
 
