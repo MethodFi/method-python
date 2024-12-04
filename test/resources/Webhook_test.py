@@ -17,7 +17,7 @@ def test_create_webhooks():
     global webhooks_create_response
 
     webhooks_create_response = method.webhooks.create({
-        'type': 'payment.create',
+        'type': 'payment.update',
         'url': 'https://dev.methodfi.com',
         'auth_token': 'test_auth_token'
     })
