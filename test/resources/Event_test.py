@@ -54,7 +54,7 @@ def test_simulate_account_closed(setup):
     })
 
     # Wait for event to be created
-    sleep(1)
+    sleep(5)
 
     events_list_response = method.events.list({
         'resource_id': setup['account_response'][0]['id']
