@@ -49,7 +49,9 @@ def test_retrieve_webhook():
         'metadata': None,
         'created_at': webhooks_retrieve_response['created_at'],
         'updated_at': webhooks_retrieve_response['updated_at'],
-        'expand_event': webhooks_retrieve_response['expand_event']
+        'expand_event': webhooks_retrieve_response['expand_event'],
+        'status': webhooks_retrieve_response['status'],
+        'error': webhooks_retrieve_response['error']
     }
 
     assert webhooks_retrieve_response == expect_results
