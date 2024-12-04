@@ -29,7 +29,9 @@ def test_create_webhooks():
         'metadata': None,
         'created_at': webhooks_create_response['created_at'],
         'updated_at': webhooks_create_response['updated_at'],
-        'expand_event': webhooks_create_response['expand_event']
+        'expand_event': webhooks_create_response['expand_event'],
+        'status': webhooks_create_response['status'],
+        'error': webhooks_create_response['error']
     }
 
     assert webhooks_create_response == expect_results
