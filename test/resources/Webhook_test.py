@@ -24,7 +24,7 @@ def test_create_webhooks():
 
     expect_results = {
         'id': webhooks_create_response['id'],
-        'type': 'payment.create',
+        'type': 'payment.update',
         'url': 'https://dev.methodfi.com',
         'metadata': None,
         'created_at': webhooks_create_response['created_at'],
@@ -44,7 +44,7 @@ def test_retrieve_webhook():
 
     expect_results = {
         'id': webhooks_create_response['id'],
-        'type': 'payment.create',
+        'type': 'payment.update',
         'url': 'https://dev.methodfi.com',
         'metadata': None,
         'created_at': webhooks_retrieve_response['created_at'],
