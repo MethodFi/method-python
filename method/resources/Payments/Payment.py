@@ -27,7 +27,8 @@ PaymentFundStatusesLiterals = Literal[
     'clearing',
     'failed',
     'sent',
-    'unknown'
+    'unknown',
+    'posted'
 ]
 
 
