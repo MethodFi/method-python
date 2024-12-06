@@ -12,11 +12,11 @@ PaymentStatusesLiterals = Literal[
     'processing',
     'failed',
     'sent',
+    'posted',
     'reversed',
     'reversal_required',
     'reversal_processing',
-    'settled',
-    'posted'
+    'settled'
 ]
 
 
@@ -27,8 +27,8 @@ PaymentFundStatusesLiterals = Literal[
     'clearing',
     'failed',
     'sent',
-    'unknown',
-    'posted'
+    'posted',
+    'unknown'
 ]
 
 
