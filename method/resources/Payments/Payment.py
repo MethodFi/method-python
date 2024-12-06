@@ -15,7 +15,8 @@ PaymentStatusesLiterals = Literal[
     'reversed',
     'reversal_required',
     'reversal_processing',
-    'settled'
+    'settled',
+    'posted'
 ]
 
 
