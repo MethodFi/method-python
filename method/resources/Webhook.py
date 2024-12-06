@@ -74,6 +74,8 @@ class Webhook(TypedDict):
     created_at: str
     updated_at: str
     expand_event: bool
+    status: str
+    error: Optional[object]
 
 
 class WebhookCreateOpts(TypedDict):

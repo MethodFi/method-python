@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal, List
 
-from method.resource import MethodResponse, Resource
+from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -51,6 +51,9 @@ class EntityAttributesResource(Resource):
 
     def retrieve(self, attr_id: str) -> MethodResponse[EntityAttributes]:
         return super(EntityAttributesResource, self)._get_with_id(attr_id)
+    
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[EntityAttributes]]:
+        return super(EntityAttributesResource, self)._list(params)
 
     def create(self) -> MethodResponse[EntityAttributes]:
         return super(EntityAttributesResource, self)._create({})

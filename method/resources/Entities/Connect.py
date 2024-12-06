@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal, List
 
-from method.resource import MethodResponse, Resource
+from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -28,6 +28,9 @@ class EntityConnectResource(Resource):
 
     def retrieve(self, cxn_id: str) -> MethodResponse[EntityConnect]:
         return super(EntityConnectResource, self)._get_with_id(cxn_id)
+    
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[EntityConnect]]:
+        return super(EntityConnectResource, self)._list(params)
 
     def create(self) -> MethodResponse[EntityConnect]:
         return super(EntityConnectResource, self)._create({})

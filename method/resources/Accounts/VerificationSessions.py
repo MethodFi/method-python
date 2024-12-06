@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List, Literal, Union
 
-from method.resource import MethodResponse, Resource
+from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Accounts.ExternalTypes import PlaidBalance, PlaidTransaction, MXAccount, MXTransaction, TellerBalance, TellerTransaction
@@ -157,6 +157,9 @@ class AccountVerificationSessionResource(Resource):
 
     def retrieve(self, avs_id: str) -> MethodResponse[AccountVerificationSession]:
         return super(AccountVerificationSessionResource, self)._get_with_id(avs_id)
+    
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[AccountVerificationSession]]:
+        return super(AccountVerificationSessionResource, self)._list(params)
 
     def update(self, avs_id: str, opts: AccountVerificationSessionUpdateOpts) -> MethodResponse[AccountVerificationSession]:
         return super(AccountVerificationSessionResource, self)._update_with_id(avs_id, opts)

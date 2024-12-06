@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal, List
 
-from method.resource import MethodResponse, Resource
+from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Entities.Types import EntityIdentityType
@@ -29,6 +29,9 @@ class EntityIdentityResource(Resource):
 
     def retrieve(self, identity_id: str) -> MethodResponse[EntityIdentity]:
         return super(EntityIdentityResource, self)._get_with_id(identity_id)
+    
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[EntityIdentity]]:
+        return super(EntityIdentityResource, self)._list(params)
 
     def create(self, opts: Optional[EntityIdentityType] = {}) -> MethodResponse[EntityIdentity]:  # pylint: disable=dangerous-default-value
         return super(EntityIdentityResource, self)._create(opts)

@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import os
+from typing import List
 from method.resources.Entities.Attributes import EntityAttributes
 import pytest
 from method import Method
@@ -33,7 +34,8 @@ entities_create_idenitity_response = None
 entities_retrieve_product_list_response = None
 entities_create_connect_subscription_response = None
 entities_create_credit_score_subscription_response = None
-entities_create_verification_session_response = None
+entities_create_individual_verification_response = None
+entities_create_phone_verification_response = None
 
 # ENTITY CORE METHODS TESTS
 
@@ -240,8 +242,8 @@ def test_update_entity():
 
 def test_list_entities():
     global entities_list_response
-    # list only those entities created in past day, in the format of YYYY-MM-DD
-    entities_list_response = method.entities.list( {'from_date': (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')} )
+    # list only those entities created in past hour, in the format of YYYY-MM-DD
+    entities_list_response = method.entities.list( {'from_date': (datetime.now() - timedelta(hours=1)).strftime('%Y-%m-%d')} )
     entities_list_response = [entity['id'] for entity in entities_list_response]
 
     assert entities_create_response['id'] in entities_list_response
@@ -249,7 +251,8 @@ def test_list_entities():
 # ENTITY VERIFICATION TESTS
 
 def test_create_entity_phone_verification():
-    entity_create_phone_verification_response = method.entities(entities_create_response['id']).verification_sessions.create({
+    global entities_create_phone_verification_response
+    entities_create_phone_verification_response = method.entities(entities_create_response['id']).verification_sessions.create({
         'type': 'phone',
         'method': 'byo_sms',
         'byo_sms': {
@@ -258,7 +261,7 @@ def test_create_entity_phone_verification():
     })
 
     expect_results: EntityVerificationSession = {
-        'id': entity_create_phone_verification_response['id'],
+        'id': entities_create_phone_verification_response['id'],
         'entity_id': entities_create_response['id'],
         'byo_sms': {
             'timestamp': '2021-09-01T00:00:00.000Z',
@@ -267,22 +270,23 @@ def test_create_entity_phone_verification():
         'status': 'verified',
         'type': 'phone',
         'error': None,
-        'created_at': entity_create_phone_verification_response['created_at'],
-        'updated_at': entity_create_phone_verification_response['updated_at'],
+        'created_at': entities_create_phone_verification_response['created_at'],
+        'updated_at': entities_create_phone_verification_response['updated_at'],
     }
     
-    assert entity_create_phone_verification_response == expect_results
+    assert entities_create_phone_verification_response == expect_results
 
 
 def test_create_entity_individual_verification():
-    entity_create_individual_verification_response = method.entities(entities_create_response['id']).verification_sessions.create({
+    global entities_create_individual_verification_response
+    entities_create_individual_verification_response = method.entities(entities_create_response['id']).verification_sessions.create({
         'type': 'identity',
         'method': 'kba',
         'kba': {}
     })
 
     expect_results: EntityVerificationSession = {
-        'id': entity_create_individual_verification_response['id'],
+        'id': entities_create_individual_verification_response['id'],
         'entity_id': entities_create_response['id'],
         'kba': {
             'authenticated': True,
@@ -292,12 +296,20 @@ def test_create_entity_individual_verification():
         'status': 'verified',
         'type': 'identity',
         'error': None,
-        'created_at': entity_create_individual_verification_response['created_at'],
-        'updated_at': entity_create_individual_verification_response['updated_at'],
+        'created_at': entities_create_individual_verification_response['created_at'],
+        'updated_at': entities_create_individual_verification_response['updated_at'],
     }
     
-    assert entity_create_individual_verification_response == expect_results
+    assert entities_create_individual_verification_response == expect_results
 
+async def test_list_entity_verification_sessions():
+    verification_sessions_list_response = method.entities(entities_create_response['id']).verification_sessions.list()
+    
+    # Sort both arrays by type to ensure consistent ordering
+    sorted_response = sorted(verification_sessions_list_response, key=lambda x: x['type'])
+    sorted_expected = sorted([entities_create_phone_verification_response, entities_create_individual_verification_response], key=lambda x: x['type'])
+    
+    assert sorted_response == sorted_expected
 
 # ENTITY CONNECT TESTS
 
@@ -338,6 +350,21 @@ def test_retrieve_entity_connect():
     
     assert entities_connect_retrieve_response == expect_results
 
+async def test_list_entity_connect():
+    connect_list_response = method.entities(entities_create_response['id']).connect.list()
+    connect_list_response[0]['accounts'] = connect_list_response[0]['accounts'].sort()
+
+    expect_results: EntityConnect = {
+        'id': entities_connect_create_response['id'],
+        'entity_id': entities_create_response['id'],
+        'status': 'completed',
+        'accounts': entities_account_ids,
+        'error': None,
+        'created_at': entities_connect_create_response['created_at'],
+        'updated_at': entities_connect_create_response['updated_at'],
+    }
+
+    assert connect_list_response[0] == expect_results
 
 # ENTITY CREDIT SCORE TESTS
 
@@ -385,6 +412,31 @@ async def test_retrieve_entity_credit_score():
 
     assert credit_score_retrieve_response == expect_results
 
+
+async def test_list_entity_credit_score():
+    
+    credit_score_list_response = method.entities(entities_create_response['id']).credit_scores.list()
+
+    expect_results: EntityCreditScores = {
+        'id': entities_create_credit_score_response['id'],
+        'entity_id': entities_create_response['id'],
+        'status': 'completed',
+        'scores': [
+            {
+                'score': credit_score_list_response[0]['scores'][0]['score'],
+                'source': 'equifax',
+                'model': 'vantage_4',
+                'factors': credit_score_list_response[0]['scores'][0]['factors'],
+                'created_at': credit_score_list_response[0]['scores'][0]['created_at']
+            }
+        ],
+        'error': None,
+        'created_at': credit_score_list_response[0]['created_at'],
+        'updated_at': credit_score_list_response[0]['updated_at']
+    }
+
+    assert credit_score_list_response[0] == expect_results
+
 # ENTITY ATTRIBUTE TESTS
 
 def test_create_entity_attribute():
@@ -422,6 +474,21 @@ async def test_retrieve_entity_attribute():
 
     assert attribute_retrieve_response == expect_results
 
+async def test_list_entity_attribute():
+
+    attribute_list_response = method.entities(entities_create_response['id']).attributes.list()
+
+    expect_results: EntityAttributes = {
+        'id': attribute_list_response[0]['id'],
+        'entity_id': entities_create_response['id'],
+        'status': 'completed',
+        'attributes': attribute_list_response[0]['attributes'],
+        'error': None,
+        'created_at': attribute_list_response[0]['created_at'],
+        'updated_at': attribute_list_response[0]['updated_at']
+    }
+
+    assert attribute_list_response[0] == expect_results
 
 # ENTITY IDENTITY TESTS
 
@@ -525,6 +592,49 @@ async def test_retrieve_entity_identity():
       };
 
     assert identity_retrieve_response == expect_results
+
+async def test_list_entity_identity():
+    
+    identity_list_response = method.entities(entitiy_with_identity_cap['id']).identities.list()
+
+    expect_results: EntityIdentity = {
+        'id': entities_create_idenitity_response['id'],
+        'entity_id': entitiy_with_identity_cap['id'],
+        'status': 'completed',
+        'identities': [
+          {
+            'address': {
+              'address': '3300 N INTERSTATE 35',
+              'city': 'AUSTIN',
+              'postal_code': '78705',
+              'state': 'TX'
+            },
+            'dob': '1997-03-18',
+            'first_name': 'KEVIN',
+            'last_name': 'DOYLE',
+            'phone': '+16505551115',
+            'ssn': '111223333'
+          },
+          {
+            'address': {
+              'address': '3300 N INTERSTATE 35',
+              'city': 'AUSTIN',
+              'postal_code': '78705',
+              'state': 'TX'
+            },
+            'dob': '1997-03-18',
+            'first_name': 'KEVIN',
+            'last_name': 'DOYLE',
+            'phone': '+16505551115',
+            'ssn': '123456789'
+          }
+        ],
+        'error': None,
+        'created_at': identity_list_response[0]['created_at'],
+        'updated_at': identity_list_response[0]['updated_at']
+      };
+
+    assert identity_list_response[0] == expect_results
 
 # ENTITY PRODUCT TESTS
 

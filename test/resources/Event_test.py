@@ -52,14 +52,16 @@ def test_simulate_account_closed(setup):
         'type': 'account.closed',
         'account_id': setup['account_response'][0]['id']
     })
-
-    # Wait for event to be created
-    sleep(1)
-
-    events_list_response = method.events.list({
-        'resource_id': setup['account_response'][0]['id']
-    })
-
+    
+    max_retries = 3
+    for _ in range(max_retries):
+        sleep(10)  
+        events_list_response = method.events.list({
+            'resource_id': setup['account_response'][0]['id']
+        })
+        if events_list_response and len(events_list_response) > 0:
+            break
+    
     event_response = events_list_response[0]
     event_retrieve_response = method.events.retrieve(event_response['id'])
 

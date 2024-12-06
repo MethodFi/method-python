@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal, List
 
-from method.resource import MethodResponse, Resource
+from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -31,6 +31,9 @@ class AccountCardBrandsResource(Resource):
 
     def retrieve(self, crbd_id: str) -> MethodResponse[AccountCardBrand]:
         return super(AccountCardBrandsResource, self)._get_with_id(crbd_id)
+    
+    def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[AccountCardBrand]]:
+        return super(AccountCardBrandsResource, self)._list(params)
     
     def create(self) -> MethodResponse[AccountCardBrand]:
         return super(AccountCardBrandsResource, self)._create({})
