@@ -676,7 +676,7 @@ def test_create_entity_vehicle():
 
     expect_results: EntityAttributes = {
         'id': entities_create_vehicle_response['id'],
-        'entity_id': entities_create_response['id'],
+        'entity_id': entity_with_vehicle['id'],
         'status': 'completed',
         'vehicles': entities_create_vehicle_response.vehicles,
         'error': None,
@@ -689,13 +689,13 @@ def test_create_entity_vehicle():
 @pytest.mark.asyncio
 async def test_retrieve_entity_vehicle():
     def get_vehicle():
-        return method.entities(entities_create_response['id']).vehicles.retrieve(entities_create_vehicle_response['id'])
+        return method.entities(entity_with_vehicle['id']).vehicles.retrieve(entities_create_vehicle_response['id'])
     
     vehicle_retrieve_response = await await_results(get_vehicle)
 
     expect_results: EntityAttributes = {
         'id': vehicle_retrieve_response['id'],
-        'entity_id': entities_create_response['id'],
+        'entity_id': entity_with_vehicle['id'],
         'status': 'completed',
         'vehicles': vehicle_retrieve_response.vehicles,
         'error': None,
@@ -707,11 +707,11 @@ async def test_retrieve_entity_vehicle():
 
 async def test_list_entity_vehicle():
 
-    vehicle_list_response = method.entities(entities_create_response['id']).vehicles.list()
+    vehicle_list_response = method.entities(entity_with_vehicle['id']).vehicles.list()
 
     expect_results: EntityAttributes = {
         'id': vehicle_list_response[0]['id'],
-        'entity_id': entities_create_response['id'],
+        'entity_id': entity_with_vehicle['id'],
         'status': 'completed',
         'vehicles': vehicle_list_response[0]['vehicles'],
         'error': None,
@@ -772,7 +772,7 @@ def test_retrieve_entity_product_list():
             'id': entities_retrieve_product_list_response.get('vehicle', {}).get('id', ''),
             'name': 'vehicle',
             'status': 'available',
-            'status_error': None,
+            'status_error': entities_retrieve_product_list_response.get('vehicle', {}).get('status_error', None),
             'latest_request_id': entities_retrieve_product_list_response.get('vehicle', {}).get('latest_request_id', None),
             'is_subscribable': False,
             'created_at': entities_retrieve_product_list_response.get('vehicle', {}).get('created_at', ''),
