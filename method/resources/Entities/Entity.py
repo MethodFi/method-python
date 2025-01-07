@@ -9,6 +9,7 @@ from method.resources.Entities.Types import EntityTypesLiterals, EntityCapabilit
 from method.resources.Entities.Connect import EntityConnectResource
 from method.resources.Entities.CreditScores import EntityCreditScoresResource
 from method.resources.Entities.Identities import EntityIdentityResource
+from method.resources.Entities.Vehicles import EntityVehiclesResource
 from method.resources.Entities.Products import EntityProductResource
 from method.resources.Entities.Sensitive import EntitySensitiveResource
 from method.resources.Entities.Subscriptions import EntitySubscriptionsResource
@@ -110,6 +111,7 @@ class EntitySubResources:
     connect: EntityConnectResource
     credit_scores: EntityCreditScoresResource
     identities: EntityIdentityResource
+    vehicles: EntityVehiclesResource
     products: EntityProductResource
     sensitive: EntitySensitiveResource
     subscriptions: EntitySubscriptionsResource
@@ -120,6 +122,7 @@ class EntitySubResources:
         self.connect = EntityConnectResource(config.add_path(_id))
         self.credit_scores = EntityCreditScoresResource(config.add_path(_id))
         self.identities = EntityIdentityResource(config.add_path(_id))
+        self.vehicles = EntityVehiclesResource(config.add_path(_id))
         self.products = EntityProductResource(config.add_path(_id))
         self.sensitive = EntitySensitiveResource(config.add_path(_id))
         self.subscriptions = EntitySubscriptionsResource(config.add_path(_id))
