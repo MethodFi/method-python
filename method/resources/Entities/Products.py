@@ -28,6 +28,7 @@ class EntityProductListResponse(TypedDict):
     connect: Optional[EntityProduct]
     credit_score: Optional[EntityProduct]
     identity: Optional[EntityProduct]
+    vehicles: Optional[EntityProduct]
 
 
 class EntityProductResource(Resource):

@@ -31,6 +31,8 @@ entities_account_ids = None
 entities_create_credit_score_response = None
 entities_create_attribute_response = None
 entities_create_idenitity_response = None
+entities_create_vehicle_response = None
+entity_with_vehicle = None
 entities_retrieve_product_list_response = None
 entities_create_connect_subscription_response = None
 entities_create_credit_score_subscription_response = None
@@ -92,6 +94,7 @@ def test_create_entity():
           'connect': None,
           'credit_score': None,
           'attribute': None,
+          'vehicle': None,
           'products': [],
           'restricted_products': entities_create_response['restricted_products'],
           'subscriptions': [],
@@ -155,6 +158,7 @@ def test_retrieve_entity():
           'connect': None,
           'credit_score': None,
           'attribute': None,
+          'vehicle': None,
           'products': [],
           'restricted_products': entities_retrieve_response['restricted_products'],
           'subscriptions': [],
@@ -226,6 +230,7 @@ def test_update_entity():
           'connect': None,
           'credit_score': None,
           'attribute': None,
+          'vehicle': None,
           'products': [ 'identity' ],
           'restricted_products': entities_update_response['restricted_products'],
           'subscriptions': [],
@@ -636,6 +641,86 @@ async def test_list_entity_identity():
 
     assert identity_list_response[0] == expect_results
 
+# ENTITY VEHICLE TESTS
+
+def test_create_entity_vehicle():
+    global entities_create_vehicle_response
+    global entity_with_vehicle
+
+    entity_with_vehicle = method.entities.create({
+        'type': 'individual',
+        'individual': {
+          'first_name': 'Kevin',
+          'last_name': 'Doyle',
+          'phone': '+15121231122',
+        }
+    })
+
+    method.entities(entity_with_vehicle['id']).verification_sessions.create({
+          'type': 'phone',
+          'method': 'byo_sms',
+          'byo_sms': {
+            'timestamp': '2021-09-01T00:00:00.000Z',
+        },
+    });
+
+    method.entities(entity_with_vehicle['id']).verification_sessions.create({
+          'type': 'identity',
+          'method': 'kba',
+          'kba': {},
+    });
+
+    method.entities(entity_with_vehicle['id']).connect.create();
+
+    entities_create_vehicle_response = method.entities(entity_with_vehicle['id']).vehicles.create()
+
+    expect_results: EntityAttributes = {
+        'id': entities_create_vehicle_response['id'],
+        'entity_id': entity_with_vehicle['id'],
+        'status': 'completed',
+        'vehicles': entities_create_vehicle_response.vehicles,
+        'error': None,
+        'created_at': entities_create_vehicle_response['created_at'],
+        'updated_at': entities_create_vehicle_response['updated_at']
+    }
+
+    assert entities_create_vehicle_response == expect_results
+
+@pytest.mark.asyncio
+async def test_retrieve_entity_vehicle():
+    def get_vehicle():
+        return method.entities(entity_with_vehicle['id']).vehicles.retrieve(entities_create_vehicle_response['id'])
+    
+    vehicle_retrieve_response = await await_results(get_vehicle)
+
+    expect_results: EntityAttributes = {
+        'id': vehicle_retrieve_response['id'],
+        'entity_id': entity_with_vehicle['id'],
+        'status': 'completed',
+        'vehicles': vehicle_retrieve_response.vehicles,
+        'error': None,
+        'created_at': vehicle_retrieve_response['created_at'],
+        'updated_at': vehicle_retrieve_response['updated_at']
+    }
+
+    assert vehicle_retrieve_response == expect_results
+
+async def test_list_entity_vehicle():
+
+    vehicle_list_response = method.entities(entity_with_vehicle['id']).vehicles.list()
+
+    expect_results: EntityAttributes = {
+        'id': vehicle_list_response[0]['id'],
+        'entity_id': entity_with_vehicle['id'],
+        'status': 'completed',
+        'vehicles': vehicle_list_response[0]['vehicles'],
+        'error': None,
+        'created_at': vehicle_list_response[0]['created_at'],
+        'updated_at': vehicle_list_response[0]['updated_at']
+    }
+
+    assert vehicle_list_response[0] == expect_results
+
 # ENTITY PRODUCT TESTS
 
 def test_retrieve_entity_product_list():
@@ -682,6 +767,26 @@ def test_retrieve_entity_product_list():
             'is_subscribable': False,
             'created_at': entities_retrieve_product_list_response.get('attribute', {}).get('created_at', ''),
             'updated_at': entities_retrieve_product_list_response.get('attribute', {}).get('updated_at', ''),
+        },
+        'vehicle': {
+            'id': entities_retrieve_product_list_response.get('vehicle', {}).get('id', ''),
+            'name': 'vehicle',
+            'status': 'available',
+            'status_error': None,
+            'latest_request_id': entities_retrieve_product_list_response.get('vehicle', {}).get('latest_request_id', None),
+            'is_subscribable': False,
+            'created_at': entities_retrieve_product_list_response.get('vehicle', {}).get('created_at', ''),
+            'updated_at': entities_retrieve_product_list_response.get('vehicle', {}).get('updated_at', ''),
+        },
+        'manual_connect': {
+            'id': entities_retrieve_product_list_response.get('manual_connect', {}).get('id', ''),
+            'name': 'manual_connect',
+            'status': 'restricted',
+            'status_error': entities_retrieve_product_list_response.get('manual_connect', {}).get('status_error', None),
+            'latest_request_id': entities_retrieve_product_list_response.get('manual_connect', {}).get('latest_request_id', None),
+            'is_subscribable': False,
+            'created_at': entities_retrieve_product_list_response.get('manual_connect', {}).get('created_at', ''),
+            'updated_at': entities_retrieve_product_list_response.get('manual_connect', {}).get('updated_at', ''),
         }
     }
 
