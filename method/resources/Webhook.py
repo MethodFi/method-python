@@ -62,7 +62,9 @@ WebhookTypesLiterals = Literal[
     'attribute.credit_health_credit_age.increased',
     'attribute.credit_health_credit_age.decreased',
     'attribute.credit_health_payment_history.increased',
-    'attribute.credit_health_payment_history.decreased'
+    'attribute.credit_health_payment_history.decreased',
+    'attribute.credit_health_open_accounts.increased',
+    'attribute.credit_health_open_accounts.decreased',
 ]
 
 
