@@ -33,6 +33,7 @@ class EntityAttributesType(TypedDict):
     credit_health_total_accounts: CreditHealthAttribute
     credit_health_credit_age: CreditHealthAttribute
     credit_health_payment_history: CreditHealthAttribute
+    credit_health_open_accounts: CreditHealthAttribute
 
 
 class EntityAttributes(TypedDict):
