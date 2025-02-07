@@ -797,11 +797,11 @@ def test_retrieve_entity_product():
     entity_connect_product_id = entities_retrieve_product_list_response.get('connect', {}).get('id', '')
     entity_credit_score_product_id = entities_retrieve_product_list_response.get('credit_score', {}).get('id', '')
     entity_identity_product_id = entities_retrieve_product_list_response.get('identity', {}).get('id', '')
-
+    entity_attribute_product_id = entities_retrieve_product_list_response.get('attribute', {}).get('id', '')
     entity_connect_product_response = method.entities(entities_create_response['id']).products.retrieve(entity_connect_product_id)
     entity_credit_score_product_response = method.entities(entities_create_response['id']).products.retrieve(entity_credit_score_product_id)
     entity_identity_product_response = method.entities(entities_create_response['id']).products.retrieve(entity_identity_product_id)
-
+    entity_attribute_product_response = method.entities(entities_create_response['id']).products.retrieve(entity_attribute_product_id)
     expect_connect_results: EntityProduct = {
         'id': entity_connect_product_id,
         'name': 'connect',
@@ -849,7 +849,7 @@ def test_retrieve_entity_product():
     assert entity_connect_product_response == expect_connect_results
     assert entity_credit_score_product_response == expect_credit_score_results
     assert entity_identity_product_response == expect_identity_results
-
+    assert entity_attribute_product_response == expect_attribute_results
 # ENTITY SUBSCRIPTION TESTS
 
 def test_create_entity_connect_subscription():

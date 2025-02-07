@@ -20,7 +20,9 @@ AccountProductTypesLiterals = Literal[
     'sensitive',
     'card_brand',
     'payoff',
-    'update'
+    'update',
+    'attribute',
+    'transactions'
 ]
 
 

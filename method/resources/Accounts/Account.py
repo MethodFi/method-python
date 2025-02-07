@@ -13,8 +13,8 @@ from method.resources.Accounts.Subscriptions import AccountSubscriptionsResource
 from method.resources.Accounts.Transactions import AccountTransaction, AccountTransactionsResource
 from method.resources.Accounts.Updates import AccountUpdate, AccountUpdatesResource
 from method.resources.Accounts.VerificationSessions import AccountVerificationSession, AccountVerificationSessionResource
-
-
+from method.resources.Accounts.Products import AccountProduct, AccountProductResource
+from method.resources.Accounts.Attributes import AccountAttributes, AccountAttributesResource
 class AccountCreateOpts(TypedDict):
     holder_id: str
     metadata: Optional[Dict[str, Any]]
@@ -61,6 +61,7 @@ class Account(TypedDict):
     subscriptions: Optional[List[AccountSubscriptionTypesLiterals]]
     available_subscriptions: Optional[List[AccountSubscriptionTypesLiterals]]
     restricted_subscriptions: Optional[List[AccountSubscriptionTypesLiterals]]
+    attribute: Optional[Union[str, AccountAttributes]]
     sensitive: Optional[Union[str, AccountSensitive]]
     balance: Optional[Union[str, AccountBalance]]
     card_brand: Optional[Union[str, AccountCardBrand]]
@@ -91,6 +92,8 @@ class AccountSubResources:
     transactions: AccountTransactionsResource
     updates: AccountUpdatesResource
     verification_sessions: AccountVerificationSessionResource
+    products: AccountProductResource
+    attributes: AccountAttributesResource
 
 
     def __init__(self, _id: str, config: Configuration):
@@ -102,7 +105,8 @@ class AccountSubResources:
         self.transactions = AccountTransactionsResource(config.add_path(_id))
         self.updates = AccountUpdatesResource(config.add_path(_id))
         self.verification_sessions = AccountVerificationSessionResource(config.add_path(_id))
-
+        self.products = AccountProductResource(config.add_path(_id))
+        self.attributes = AccountAttributesResource(config.add_path(_id))
 
 class AccountResource(Resource):
     def __init__(self, config: Configuration):

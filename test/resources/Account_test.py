@@ -13,6 +13,8 @@ from method.resources.Accounts.Subscriptions import AccountSubscription, Account
 from method.resources.Accounts.Transactions import AccountTransaction
 from method.resources.Accounts.Updates import AccountUpdate
 from method.resources.Accounts.VerificationSessions import AccountVerificationSession
+from method.resources.Accounts.Attributes import AccountAttributes
+from method.resources.Accounts.Products import AccountProduct, AccountProductListResponse
 
 load_dotenv()
  
@@ -35,7 +37,7 @@ create_txn_subscriptions_response = None
 create_update_subscriptions_response = None
 create_update_snapshot_subscriptions_response = None
 create_updates_response = None
-
+attributes_create_response = None
 
 @pytest.fixture(scope="module")
 def setup():
@@ -152,8 +154,9 @@ def test_create_liability_account(setup):
         'latest_verification_session': accounts_create_liability_response['latest_verification_session'],
         'balance': None,
         'update': accounts_create_liability_response['update'],
+        'attribute': accounts_create_liability_response['attribute'],
         'card_brand': None,
-        'products': [ 'balance', 'payment', 'sensitive', 'update' ].sort(),
+        'products': accounts_create_liability_response['products'],
         'restricted_products': accounts_create_liability_response['restricted_products'],
         'subscriptions': accounts_create_liability_response['subscriptions'],
         'available_subscriptions': [ 'update' ],
@@ -883,6 +886,241 @@ def test_list_updates_for_account(setup):
 
     assert update_to_check == expect_results
 
+def test_create_attributes(setup):
+    global attributes_create_response
+    test_credit_card_account = setup['test_credit_card_account']
+
+    attributes_create_response = method.accounts(test_credit_card_account['id']).attributes.create()
+
+    expect_results: AccountAttributes = {
+        'id': attributes_create_response['id'],
+        'account_id': test_credit_card_account['id'],
+        'status': 'completed',
+        'attributes': attributes_create_response['attributes'],
+        'error': None,
+        'created_at': attributes_create_response['created_at'],
+        'updated_at': attributes_create_response['updated_at'],
+    }
+
+    assert attributes_create_response == expect_results
+
+def test_list_attributes(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+
+    list_attributes_response = method.accounts(test_credit_card_account['id']).attributes.list()
+
+    attribute_to_check = next((attribute for attribute in list_attributes_response if attribute['id'] == attributes_create_response['id']), None)
+
+    expect_results: AccountAttributes = {
+        'id': attributes_create_response['id'],
+        'account_id': test_credit_card_account['id'],
+        'status': 'completed',
+        'attributes': attributes_create_response['attributes'],
+        'error': None,
+        'created_at': attribute_to_check['created_at'],
+        'updated_at': attribute_to_check['updated_at'],
+    }
+
+    assert attribute_to_check == expect_results
+
+def test_retrieve_attributes(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+
+    retrieve_attributes_response = method.accounts(test_credit_card_account['id']).attributes.retrieve(attributes_create_response['id'])
+
+    expect_results: AccountAttributes = {
+        'id': attributes_create_response['id'],
+        'account_id': test_credit_card_account['id'],
+        'status': 'completed',
+        'attributes': attributes_create_response['attributes'],
+        'error': None,
+        'created_at': retrieve_attributes_response['created_at'],
+        'updated_at': retrieve_attributes_response['updated_at'],
+    }
+
+    assert retrieve_attributes_response == expect_results
+
+def test_list_account_products(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+    
+    account_products_list_response = method.accounts(test_credit_card_account['id']).products.list()
+
+    expect_results: AccountProductListResponse = {
+        'balance': {
+            'id': account_products_list_response.get('balance', {}).get('id', ''),
+            'name': 'balance',
+            'status': 'available',
+            'status_error': None,
+            'latest_request_id': account_products_list_response.get('balance', {}).get('latest_request_id', None),
+            'is_subscribable': False,
+            'created_at': account_products_list_response.get('balance', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('balance', {}).get('updated_at', ''),
+        },
+        'payment': {
+            'id': account_products_list_response.get('payment', {}).get('id', ''),
+            'name': 'payment',
+            'status': 'available',
+            'status_error': None,
+            'latest_request_id': account_products_list_response.get('payment', {}).get('latest_request_id', None),
+            'is_subscribable': False,
+            'created_at': account_products_list_response.get('payment', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('payment', {}).get('updated_at', ''),
+        },
+        'sensitive': {
+            'id': account_products_list_response.get('sensitive', {}).get('id', ''),
+            'name': 'sensitive',
+            'status': 'available',
+            'status_error': None,
+            'latest_request_id': account_products_list_response.get('sensitive', {}).get('latest_request_id', None),
+            'is_subscribable': False,
+            'created_at': account_products_list_response.get('sensitive', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('sensitive', {}).get('updated_at', ''),
+        },
+        'update': {
+            'id': account_products_list_response.get('update', {}).get('id', ''),
+            'name': 'update',
+            'status': 'available',
+            'status_error': None,
+            'latest_request_id': account_products_list_response.get('update', {}).get('latest_request_id', None),
+            'is_subscribable': True,
+            'created_at': account_products_list_response.get('update', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('update', {}).get('updated_at', ''),
+        },
+        'attribute': {
+            'id': account_products_list_response.get('attribute', {}).get('id', ''),
+            'name': 'attribute',
+            'status': 'available',
+            'status_error': None,
+            'latest_request_id': account_products_list_response.get('attribute', {}).get('latest_request_id', None),
+            'is_subscribable': False,
+            'created_at': account_products_list_response.get('attribute', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('attribute', {}).get('updated_at', ''),
+        },
+        'transactions': {
+            'id': account_products_list_response.get('transactions', {}).get('id', ''),
+            'name': 'transactions',
+            'status': 'available',
+            'status_error': None,
+            'latest_request_id': account_products_list_response.get('transactions', {}).get('latest_request_id', None),
+            'is_subscribable': True,
+            'created_at': account_products_list_response.get('transactions', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('transactions', {}).get('updated_at', ''),
+        },
+        'payoff': {
+            'id': account_products_list_response.get('payoff', {}).get('id', ''),
+            'name': 'payoff',
+            'status': 'unavailable',
+            'status_error': account_products_list_response.get('payoff', {}).get('status_error', None),
+            'latest_request_id': account_products_list_response.get('payoff', {}).get('latest_request_id', None),
+            'is_subscribable': False,
+            'created_at': account_products_list_response.get('payoff', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('payoff', {}).get('updated_at', ''),
+        },
+        'card_brand': {
+            'id': account_products_list_response.get('card_brand', {}).get('id', ''),
+            'name': 'card_brand',
+            'status': 'available',
+            'status_error': None,
+            'latest_request_id': account_products_list_response.get('card_brand', {}).get('latest_request_id', None),
+            'is_subscribable': False,
+            'created_at': account_products_list_response.get('card_brand', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('card_brand', {}).get('updated_at', ''),
+        }
+    }
+
+    assert account_products_list_response == expect_results
+
+
+def test_retrieve_account_product(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+    account_products_list_response = method.accounts(test_credit_card_account['id']).products.list()
+    
+    balance_product_id = account_products_list_response.get('balance', {}).get('id', '')
+    payment_product_id = account_products_list_response.get('payment', {}).get('id', '')
+    sensitive_product_id = account_products_list_response.get('sensitive', {}).get('id', '')
+    update_product_id = account_products_list_response.get('update', {}).get('id', '')
+    attribute_product_id = account_products_list_response.get('attribute', {}).get('id', '')
+    transactions_product_id = account_products_list_response.get('transactions', {}).get('id', '')
+
+    balance_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(balance_product_id)
+    payment_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(payment_product_id)
+    sensitive_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(sensitive_product_id)
+    update_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(update_product_id)
+    attribute_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(attribute_product_id)
+    transactions_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(transactions_product_id)
+
+    expect_balance_results: AccountProduct = {
+        'id': balance_product_id,
+        'name': 'balance',
+        'status': 'available',
+        'status_error': None,
+        'latest_request_id': balance_product_response['latest_request_id'],
+        'is_subscribable': False,
+        'created_at': balance_product_response['created_at'],
+        'updated_at': balance_product_response['updated_at']
+    }
+
+    expect_payment_results: AccountProduct = {
+        'id': payment_product_id,
+        'name': 'payment',
+        'status': 'available',
+        'status_error': None,
+        'latest_request_id': payment_product_response['latest_request_id'],
+        'is_subscribable': False,
+        'created_at': payment_product_response['created_at'],
+        'updated_at': payment_product_response['updated_at']
+    }
+
+    expect_sensitive_results: AccountProduct = {
+        'id': sensitive_product_id,
+        'name': 'sensitive',
+        'status': 'available',
+        'status_error': None,
+        'latest_request_id': sensitive_product_response['latest_request_id'],
+        'is_subscribable': False,
+        'created_at': sensitive_product_response['created_at'],
+        'updated_at': sensitive_product_response['updated_at']
+    }
+
+    expect_update_results: AccountProduct = {
+        'id': update_product_id,
+        'name': 'update',
+        'status': 'available',
+        'status_error': None,
+        'latest_request_id': update_product_response['latest_request_id'],
+        'is_subscribable': True,
+        'created_at': update_product_response['created_at'],
+        'updated_at': update_product_response['updated_at']
+    }
+
+    expect_attribute_results: AccountProduct = {
+        'id': attribute_product_id,
+        'name': 'attribute',
+        'status': 'available',
+        'status_error': None,
+        'latest_request_id': attribute_product_response['latest_request_id'],
+        'is_subscribable': False,
+        'created_at': attribute_product_response['created_at'],
+        'updated_at': attribute_product_response['updated_at']
+    }
+
+    expect_transactions_results: AccountProduct = {
+        'id': transactions_product_id,
+        'name': 'transactions',
+        'status': 'available',
+        'status_error': None,
+        'latest_request_id': transactions_product_response['latest_request_id'],
+        'is_subscribable': True,
+        'created_at': transactions_product_response['created_at'],
+        'updated_at': transactions_product_response['updated_at']
+    }
+
+    assert balance_product_response == expect_balance_results
+    assert payment_product_response == expect_payment_results
+    assert sensitive_product_response == expect_sensitive_results
+    assert update_product_response == expect_update_results
+    assert attribute_product_response == expect_attribute_results
+    assert transactions_product_response == expect_transactions_results
 
 def test_withdraw_account_consent(setup):
     test_credit_card_account = setup['test_credit_card_account']
