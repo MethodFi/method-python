@@ -248,7 +248,8 @@ def test_update_entity():
 def test_list_entities():
     global entities_list_response
     # list only those entities created in past hour, in the format of YYYY-MM-DD
-    entities_list_response = method.entities.list( {'from_date': (datetime.now() - timedelta(hours=1)).strftime('%Y-%m-%d')} )
+    from_date = (datetime.now() - timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    entities_list_response = method.entities.list({'from_date': from_date})
     entities_list_response = [entity['id'] for entity in entities_list_response]
 
     assert entities_create_response['id'] in entities_list_response
