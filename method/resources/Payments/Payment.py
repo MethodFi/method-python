@@ -80,6 +80,7 @@ class PaymentCreateOpts(TypedDict):
     description: str
     metadata: Optional[Dict[str, Any]]
     fee: Optional[PaymentFee]
+    dry_run: Optional[bool]
 
 
 class PaymentListOpts(ResourceListOpts):
