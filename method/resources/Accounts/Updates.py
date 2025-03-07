@@ -17,6 +17,7 @@ class AccountUpdate(TypedDict):
     mortgage: Optional[AccountLiabilityMortgage]
     personal_loan: Optional[AccountLiabilityPersonalLoan]
     student_loans: Optional[AccountLiabilityStudentLoans]
+    data_as_of: Optional[str]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str

@@ -16,7 +16,8 @@ PaymentStatusesLiterals = Literal[
     'reversed',
     'reversal_required',
     'reversal_processing',
-    'settled'
+    'settled',
+    'cashed'
 ]
 
 
@@ -44,6 +45,12 @@ PaymentFeeTypesLiterals = Literal[
 ]
 
 
+PaymentDestinationPaymentMethodsLiterals = Literal[
+    'paper',
+    'electronic'
+]
+
+
 class PaymentFee(TypedDict):
     type: PaymentFeeTypesLiterals
     amount: int
@@ -67,6 +74,7 @@ class Payment(TypedDict):
     destination_settlement_date: Optional[str]
     source_status: PaymentStatusesLiterals
     destination_status: PaymentStatusesLiterals
+    destination_payment_method: Optional[PaymentDestinationPaymentMethodsLiterals]
     fee: Optional[PaymentFee]
     type: PaymentTypesLiterals
     created_at: str
