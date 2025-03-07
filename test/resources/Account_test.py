@@ -70,6 +70,7 @@ def setup():
         'holder_id': holder_1_response['id'],
         'liability.type': 'credit_card',
         'liability.mch_id': 'mch_302086',
+        'status': 'active',
     })
     test_credit_card_account = test_credit_card_accounts[0]
 
@@ -77,6 +78,7 @@ def setup():
         'holder_id': holder_1_response['id'],
         'liability.type': 'auto_loan',
         'liability.mch_id': 'mch_2347',
+        'status': 'active',
     })
     test_auto_loan_account = test_auto_loan_accounts[0]
 
@@ -802,6 +804,7 @@ def test_create_updates(setup):
             'credit_limit': None,
             'usage_pattern': None
         },
+        'data_as_of': None,
         'error': None,
         'created_at': create_updates_response['created_at'],
         'updated_at': create_updates_response['updated_at'],
@@ -840,6 +843,7 @@ async def test_retrieve_updates(setup):
             'credit_limit': 2800000,
             'usage_pattern': None
         },
+        'data_as_of': None,
         'error': None,
         'created_at': updates_retrieve_response['created_at'],
         'updated_at': updates_retrieve_response['updated_at'],
@@ -878,6 +882,7 @@ def test_list_updates_for_account(setup):
             'credit_limit': 2800000,
             'usage_pattern': None
         },
+        'data_as_of': None,
         'error': None,
         'created_at': update_to_check['created_at'] if update_to_check else None,
         'updated_at': update_to_check['updated_at'] if update_to_check else None
