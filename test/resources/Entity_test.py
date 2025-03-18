@@ -765,7 +765,7 @@ def test_retrieve_entity_product_list():
             'status': 'available',
             'status_error': None,
             'latest_request_id': entities_retrieve_product_list_response.get('attribute', {}).get('latest_request_id', None),
-            'is_subscribable': False,
+            'is_subscribable': True,
             'created_at': entities_retrieve_product_list_response.get('attribute', {}).get('created_at', ''),
             'updated_at': entities_retrieve_product_list_response.get('attribute', {}).get('updated_at', ''),
         },
@@ -831,7 +831,7 @@ def test_retrieve_entity_product():
         'status': 'available',
         'status_error': None,
         'latest_request_id': entities_retrieve_product_list_response.get('attribute', {}).get('latest_request_id', None),
-        'is_subscribable': False,
+        'is_subscribable': True,
         'created_at': entities_retrieve_product_list_response.get('attribute', {}).get('created_at', ''),
         'updated_at': entities_retrieve_product_list_response.get('attribute', {}).get('updated_at', ''),
     }
