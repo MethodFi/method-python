@@ -7,7 +7,8 @@ from method.errors import ResourceError
 
 EntitySubscriptionNamesLiterals = Literal[
     'connect',
-    'credit_score'
+    'credit_score',
+    'attribute'
 ]
 
 
