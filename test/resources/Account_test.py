@@ -74,10 +74,18 @@ def setup():
     })
     test_credit_card_account = test_credit_card_accounts[0]
 
+    test_credit_card_accounts_1 = method.accounts.list({
+        'holder_id': holder_1_response['id'],
+        'liability.type': 'credit_card',
+        'liability.mch_id': 'mch_311289',
+        'status': 'active',
+    })
+    test_credit_card_account_1 = test_credit_card_accounts_1[0]
+
     test_auto_loan_accounts = method.accounts.list({
         'holder_id': holder_1_response['id'],
         'liability.type': 'auto_loan',
-        'liability.mch_id': 'mch_2347',
+        'liability.mch_id': 'mch_311130',
         'status': 'active',
     })
     test_auto_loan_account = test_auto_loan_accounts[0]
@@ -86,6 +94,7 @@ def setup():
         'holder_1_response': holder_1_response,
         'holder_connect_response': holder_connect_response,
         'test_credit_card_account': test_credit_card_account,
+        'test_credit_card_account_1': test_credit_card_account_1,
         'test_auto_loan_account': test_auto_loan_account,
         'phone_verification': phone_verification,
         'identity_verification': identity_verification,
@@ -158,6 +167,7 @@ def test_create_liability_account(setup):
         'update': accounts_create_liability_response['update'],
         'attribute': accounts_create_liability_response['attribute'],
         'card_brand': None,
+        'payment_instrument': None,
         'products': accounts_create_liability_response['products'],
         'restricted_products': accounts_create_liability_response['restricted_products'],
         'subscriptions': accounts_create_liability_response['subscriptions'],
@@ -597,13 +607,26 @@ async def test_list_account_sensitive(setup):
 
 def test_create_transaction_subscription(setup):
     global create_txn_subscriptions_response
-    test_credit_card_account = setup['test_credit_card_account']
+    test_credit_card_account = setup['test_credit_card_account_1']
 
-    create_txn_subscriptions_response = method.accounts(test_credit_card_account['id']).subscriptions.create('transactions')
+    network_verification = method.accounts(test_credit_card_account['id']).verification_sessions.create({
+        'type': 'network'
+    })
+
+    method.accounts(test_credit_card_account['id']).verification_sessions.update(network_verification['id'], {
+        'network': {
+            'exp_month': '09',
+            'exp_year': '2028',
+            'billing_zip_code': '78758',
+            'cvv': '539'
+        }
+    })
+
+    create_txn_subscriptions_response = method.accounts(test_credit_card_account['id']).subscriptions.create('transaction')
 
     expect_results: AccountSubscription = {
         'id': create_txn_subscriptions_response['id'],
-        'name': 'transactions',
+        'name': 'transaction',
         'status': 'active',
         'latest_request_id': None,
         'created_at': create_txn_subscriptions_response['created_at'],
@@ -651,20 +674,14 @@ def test_create_snapshot_subscription(setup):
 
 def test_list_subscriptions(setup):
     test_credit_card_account = setup['test_credit_card_account']
+    test_credit_card_account_1 = setup['test_credit_card_account_1']
     test_auto_loan_account = setup['test_auto_loan_account']
 
     subscriptions_list_response = method.accounts(test_credit_card_account['id']).subscriptions.list()
+    subscriptions_transaction_list_response = method.accounts(test_credit_card_account_1['id']).subscriptions.list()
     subscriptions_update_snapshot_list_response = method.accounts(test_auto_loan_account['id']).subscriptions.list()
 
     expect_results_card: AccountSubscriptionsResponse = {
-        'transactions': {
-            'id': create_txn_subscriptions_response['id'],
-            'name': 'transactions',
-            'status': 'active',
-            'latest_request_id': None,
-            'created_at': create_txn_subscriptions_response['created_at'],
-            'updated_at': create_txn_subscriptions_response['updated_at']
-        },
         'update': {
             'id': create_update_subscriptions_response['id'],
             'name': 'update',
@@ -672,6 +689,17 @@ def test_list_subscriptions(setup):
             'latest_request_id': None,
             'created_at': create_update_subscriptions_response['created_at'],
             'updated_at': create_update_subscriptions_response['updated_at']
+        }
+    }
+
+    expect_results_transaction: AccountSubscriptionsResponse = {
+        'transaction': {
+            'id': create_txn_subscriptions_response['id'],
+            'name': 'transaction',
+            'status': 'active',
+            'latest_request_id': None,
+            'created_at': create_txn_subscriptions_response['created_at'],
+            'updated_at': create_txn_subscriptions_response['updated_at']
         }
     }
 
@@ -687,20 +715,22 @@ def test_list_subscriptions(setup):
     }
 
     assert subscriptions_list_response == expect_results_card
+    assert subscriptions_transaction_list_response == expect_results_transaction
     assert subscriptions_update_snapshot_list_response == expect_results_auto_loan
 
 
 def test_retrieve_subscription(setup):
     test_credit_card_account = setup['test_credit_card_account']
+    test_credit_card_account_1 = setup['test_credit_card_account_1']
     test_auto_loan_account = setup['test_auto_loan_account']
 
-    retrieve_txn_subscription_response = method.accounts(test_credit_card_account['id']).subscriptions.retrieve(create_txn_subscriptions_response['id'])
+    retrieve_txn_subscription_response = method.accounts(test_credit_card_account_1['id']).subscriptions.retrieve(create_txn_subscriptions_response['id'])
     retrieve_update_subscription_response = method.accounts(test_credit_card_account['id']).subscriptions.retrieve(create_update_subscriptions_response['id'])
     retrieve_update_snapshot_subscription_response = method.accounts(test_auto_loan_account['id']).subscriptions.retrieve(create_update_snapshot_subscriptions_response['id'])
     
     expect_results_txn: AccountSubscription = {
         'id': create_txn_subscriptions_response['id'],
-        'name': 'transactions',
+        'name': 'transaction',
         'status': 'active',
         'latest_request_id': None,
         'created_at': retrieve_txn_subscription_response['created_at'],
@@ -750,7 +780,7 @@ def test_delete_subscription(setup):
 def test_list_transactions(setup):
     global transactions_response
 
-    test_credit_card_account = setup['test_credit_card_account']
+    test_credit_card_account = setup['test_credit_card_account_1']
     simulated_transaction = method.simulate.accounts(test_credit_card_account['id']).transactions.create()
 
     transactions_response = method.accounts(test_credit_card_account['id']).transactions.list()
@@ -760,15 +790,19 @@ def test_list_transactions(setup):
     expect_results: AccountTransaction = {
         'id': transactions_response['id'],
         'account_id': test_credit_card_account['id'],
-        'merchant': simulated_transaction['merchant'],
-        'network': 'visa',
-        'network_data': None,
+        'status': 'posted',
+        'descriptor': simulated_transaction['descriptor'],
         'amount': simulated_transaction['amount'],
-        'currency': 'USD',
-        'billing_amount': simulated_transaction['billing_amount'],
-        'billing_currency': 'USD',
-        'status': 'cleared',
-        'error': None,
+        'auth_amount': simulated_transaction['auth_amount'],
+        'currency_code': simulated_transaction['currency_code'],
+        'transaction_amount': simulated_transaction['transaction_amount'],
+        'transaction_auth_amount': simulated_transaction['transaction_auth_amount'],
+        'transaction_currency_code': simulated_transaction['transaction_currency_code'],
+        'merchant_category_code': simulated_transaction['merchant_category_code'],
+        'transacted_at': simulated_transaction['transacted_at'],
+        'posted_at': simulated_transaction['posted_at'],
+        'voided_at': None,
+        'original_txn_id': None,
         'created_at': transactions_response['created_at'],
         'updated_at': transactions_response['updated_at'],
     }
@@ -1001,15 +1035,15 @@ def test_list_account_products(setup):
             'created_at': account_products_list_response.get('attribute', {}).get('created_at', ''),
             'updated_at': account_products_list_response.get('attribute', {}).get('updated_at', ''),
         },
-        'transactions': {
-            'id': account_products_list_response.get('transactions', {}).get('id', ''),
-            'name': 'transactions',
-            'status': 'available',
-            'status_error': None,
-            'latest_request_id': account_products_list_response.get('transactions', {}).get('latest_request_id', None),
+        'transaction': {
+            'id': account_products_list_response.get('transaction', {}).get('id', ''),
+            'name': 'transaction',
+            'status': 'unavailable',
+            'status_error': account_products_list_response.get('transaction', {}).get('status_error', None),
+            'latest_request_id': account_products_list_response.get('transaction', {}).get('latest_request_id', None),
             'is_subscribable': True,
-            'created_at': account_products_list_response.get('transactions', {}).get('created_at', ''),
-            'updated_at': account_products_list_response.get('transactions', {}).get('updated_at', ''),
+            'created_at': account_products_list_response.get('transaction', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('transaction', {}).get('updated_at', ''),
         },
         'payoff': {
             'id': account_products_list_response.get('payoff', {}).get('id', ''),
@@ -1030,6 +1064,16 @@ def test_list_account_products(setup):
             'is_subscribable': False,
             'created_at': account_products_list_response.get('card_brand', {}).get('created_at', ''),
             'updated_at': account_products_list_response.get('card_brand', {}).get('updated_at', ''),
+        },
+        'payment_instrument': {
+            'id': account_products_list_response.get('payment_instrument', {}).get('id', ''),
+            'name': 'payment_instrument',
+            'status': 'restricted',
+            'status_error': account_products_list_response.get('payment_instrument', {}).get('status_error', None),
+            'latest_request_id': account_products_list_response.get('payment_instrument', {}).get('latest_request_id', None),
+            'is_subscribable': True,
+            'created_at': account_products_list_response.get('payment_instrument', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('payment_instrument', {}).get('updated_at', ''),
         }
     }
 
@@ -1045,14 +1089,16 @@ def test_retrieve_account_product(setup):
     sensitive_product_id = account_products_list_response.get('sensitive', {}).get('id', '')
     update_product_id = account_products_list_response.get('update', {}).get('id', '')
     attribute_product_id = account_products_list_response.get('attribute', {}).get('id', '')
-    transactions_product_id = account_products_list_response.get('transactions', {}).get('id', '')
+    transaction_product_id = account_products_list_response.get('transaction', {}).get('id', '')
+    payment_instrument_product_id = account_products_list_response.get('payment_instrument', {}).get('id', '')
 
     balance_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(balance_product_id)
     payment_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(payment_product_id)
     sensitive_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(sensitive_product_id)
     update_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(update_product_id)
     attribute_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(attribute_product_id)
-    transactions_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(transactions_product_id)
+    transaction_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(transaction_product_id)
+    payment_instrument_product_response = method.accounts(test_credit_card_account['id']).products.retrieve(payment_instrument_product_id)
 
     expect_balance_results: AccountProduct = {
         'id': balance_product_id,
@@ -1109,15 +1155,26 @@ def test_retrieve_account_product(setup):
         'updated_at': attribute_product_response['updated_at']
     }
 
-    expect_transactions_results: AccountProduct = {
-        'id': transactions_product_id,
-        'name': 'transactions',
-        'status': 'available',
-        'status_error': None,
-        'latest_request_id': transactions_product_response['latest_request_id'],
+    expect_transaction_results: AccountProduct = {
+        'id': transaction_product_id,
+        'name': 'transaction',
+        'status': 'unavailable',
+        'status_error': transaction_product_response['status_error'],
+        'latest_request_id': transaction_product_response['latest_request_id'],
         'is_subscribable': True,
-        'created_at': transactions_product_response['created_at'],
-        'updated_at': transactions_product_response['updated_at']
+        'created_at': transaction_product_response['created_at'],
+        'updated_at': transaction_product_response['updated_at']
+    }
+
+    expect_payment_instrument_results: AccountProduct = {
+        'id': payment_instrument_product_id,
+        'name': 'payment_instrument',
+        'status': 'restricted',
+        'status_error': payment_instrument_product_response['status_error'],
+        'latest_request_id': payment_instrument_product_response['latest_request_id'],
+        'is_subscribable': True,
+        'created_at': payment_instrument_product_response['created_at'],
+        'updated_at': payment_instrument_product_response['updated_at']
     }
 
     assert balance_product_response == expect_balance_results
@@ -1125,7 +1182,8 @@ def test_retrieve_account_product(setup):
     assert sensitive_product_response == expect_sensitive_results
     assert update_product_response == expect_update_results
     assert attribute_product_response == expect_attribute_results
-    assert transactions_product_response == expect_transactions_results
+    assert transaction_product_response == expect_transaction_results
+    assert payment_instrument_product_response == expect_payment_instrument_results
 
 def test_withdraw_account_consent(setup):
     test_credit_card_account = setup['test_credit_card_account']

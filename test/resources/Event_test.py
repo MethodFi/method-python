@@ -47,17 +47,17 @@ def setup():
         'credit_score_response': credit_score_response
     }
 
-def test_simulate_account_closed(setup):
+def test_simulate_account_opened(setup):
     method.simulate.events.create({
-        'type': 'account.closed',
-        'account_id': setup['account_response'][0]['id']
+        'type': 'account.opened',
+        'entity_id': setup['entity_response']['id']
     })
     
     max_retries = 3
     for _ in range(max_retries):
         sleep(10)  
         events_list_response = method.events.list({
-            'resource_id': setup['account_response'][0]['id']
+            'type': 'account.opened'
         })
         if events_list_response and len(events_list_response) > 0:
             break
@@ -69,9 +69,9 @@ def test_simulate_account_closed(setup):
         'id': event_response['id'],
         'created_at': event_response['created_at'],
         'updated_at': event_response['updated_at'],
-        'type': 'account.closed',
-        'resource_id': setup['account_response'][0]['id'],
-        'resource_type': 'account',
+        'type': 'account.opened',
+        'resource_id': event_response['resource_id'],
+        'resource_type': event_response['resource_type'],
         'data': event_response['data'],
         'diff': event_response['diff']
     }

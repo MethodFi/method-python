@@ -5,7 +5,7 @@ from method.configuration import Configuration
 
 
 AccountSubscriptionTypesLiterals = Literal[
-    'transactions',
+    'transaction',
     'update',
     'update.snapshot'
 ]
@@ -21,7 +21,7 @@ class AccountSubscription(TypedDict):
 
 
 AccountSubscriptionsResponse = TypedDict('AccountSubscriptionsResponse', {
-    'transactions': Optional[AccountSubscription],
+    'transaction': Optional[AccountSubscription],
     'update': Optional[AccountSubscription],
     'update.snapshot': Optional[AccountSubscription]
 })

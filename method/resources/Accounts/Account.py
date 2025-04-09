@@ -15,6 +15,8 @@ from method.resources.Accounts.Updates import AccountUpdate, AccountUpdatesResou
 from method.resources.Accounts.VerificationSessions import AccountVerificationSession, AccountVerificationSessionResource
 from method.resources.Accounts.Products import AccountProduct, AccountProductResource
 from method.resources.Accounts.Attributes import AccountAttributes, AccountAttributesResource
+from method.resources.Accounts.PaymentInstruments import AccountPaymentInstrument, AccountPaymentInstrumentsResource
+
 class AccountCreateOpts(TypedDict):
     holder_id: str
     metadata: Optional[Dict[str, Any]]
@@ -67,6 +69,7 @@ class Account(TypedDict):
     card_brand: Optional[Union[str, AccountCardBrand]]
     payoff: Optional[Union[str, AccountPayoff]]
     transaction: Optional[Union[str, AccountTransaction]]
+    payment_instrument: Optional[Union[str, AccountPaymentInstrument]]
     update: Optional[Union[str, AccountUpdate]]
     latest_verification_session: Optional[Union[str, AccountVerificationSession]]
     error: Optional[ResourceError]
@@ -94,7 +97,7 @@ class AccountSubResources:
     verification_sessions: AccountVerificationSessionResource
     products: AccountProductResource
     attributes: AccountAttributesResource
-
+    payment_instruments: AccountPaymentInstrumentsResource
 
     def __init__(self, _id: str, config: Configuration):
         self.balances = AccountBalancesResource(config.add_path(_id))
@@ -103,6 +106,7 @@ class AccountSubResources:
         self.sensitive = AccountSensitiveResource(config.add_path(_id))
         self.subscriptions = AccountSubscriptionsResource(config.add_path(_id))
         self.transactions = AccountTransactionsResource(config.add_path(_id))
+        self.payment_instruments = AccountPaymentInstrumentsResource(config.add_path(_id))
         self.updates = AccountUpdatesResource(config.add_path(_id))
         self.verification_sessions = AccountVerificationSessionResource(config.add_path(_id))
         self.products = AccountProductResource(config.add_path(_id))
