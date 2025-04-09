@@ -14,7 +14,7 @@ from method import Method
 
 method = Method(env="production", api_key="{API_KEY}")
 
-# or 
+# or
 
 method = Method({"env": "production", "api_key": "{API_KEY}"})
 ```
@@ -114,7 +114,7 @@ entity = method.entities.update("ent_au22b1fbFJbp8", {
 entities = method.entities.list();
 ```
 
-#### Withdraw an Entity"s consent
+#### Withdraw an Entity's consent
 
 ```python
 entity = method.entities.withdraw_consent("ent_au22b1fbFJbp8");
@@ -445,7 +445,7 @@ account = method.accounts.retrieve("acc_Zc4F2aTLt8CBt");
 accounts = method.accounts.list();
 ```
 
-#### Withdraw an Account"s consent
+#### Withdraw an Account's consent
 
 ```python
 account = method.accounts.withdraw_consent("acc_yVf3mkzbhz9tj");
@@ -992,7 +992,7 @@ This ensures that your application handles all cases for multistep flows that wo
 
 ### Core
 
-#### Update a payment"s status
+#### Update a payment's status
 
 ```python
 payment = method
