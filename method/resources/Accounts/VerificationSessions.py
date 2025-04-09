@@ -21,7 +21,8 @@ AccountVerificationSessionTypesLiterals = Literal[
     'teller',
     'standard',
     'instant',
-    'pre_auth'
+    'pre_auth',
+    'network'
 ]
 
 
@@ -85,6 +86,13 @@ class AccountVerificationSessionPreAuth(AccountVerificationSessionInstant):
     pre_auth_check: Optional[AccountVerificationPassFailLiterals]
 
 
+class AccountVerificationSessionNetwork(AccountVerificationSessionInstant):
+    cvv: str
+    cvv_check: Optional[AccountVerificationPassFailLiterals]
+    billing_zip_code: str
+    billing_zip_code_check: Optional[AccountVerificationPassFailLiterals]
+    network_check: Optional[AccountVerificationPassFailLiterals]
+
 class AccountVerificationSessionCreateOpts(TypedDict):
     type: AccountVerificationSessionTypesLiterals
 
@@ -117,6 +125,10 @@ class AccountVerificationSessionPreAuthUpdateOpts(TypedDict):
     pre_auth: AccountVerificationSessionPreAuth
 
 
+class AccountVerificationSessionNetworkUpdateOpts(TypedDict):
+    network: AccountVerificationSessionNetwork
+
+
 AccountVerificationSessionUpdateOpts = Union[
     AccountVerificationSessionMicroDepositsUpdateOpts,
     AccountVerificationSessionPlaidUpdateOpts,
@@ -124,7 +136,8 @@ AccountVerificationSessionUpdateOpts = Union[
     AccountVerificationSessionTellerUpdateOpts,
     AccountVerificationSessionStandardUpdateOpts,
     AccountVerificationSessionInstantUpdateOpts,
-    AccountVerificationSessionPreAuthUpdateOpts
+    AccountVerificationSessionPreAuthUpdateOpts,
+    AccountVerificationSessionNetworkUpdateOpts
 ]
 
 
@@ -144,6 +157,7 @@ class AccountVerificationSession(TypedDict):
     pre_auth: Optional[AccountVerificationSessionPreAuth]
     three_ds: Optional[AccountVerificationSessionThreeDS]
     issuer: Optional[AccountVerificationSessionIssuer]
+    network: Optional[AccountVerificationSessionNetwork]
     created_at: str
     updated_at: str
 

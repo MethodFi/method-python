@@ -22,7 +22,8 @@ AccountProductTypesLiterals = Literal[
     'payoff',
     'update',
     'attribute',
-    'transactions'
+    'transactions',
+    'payment_instruments'
 ]
 
 

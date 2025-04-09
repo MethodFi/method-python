@@ -32,6 +32,7 @@ class AccountProductListResponse(TypedDict):
     transactions: Optional[AccountProduct]
     payoff: Optional[AccountProduct]
     card_brand: Optional[AccountProduct]
+    payment_instruments: Optional[AccountProduct]
 
 class AccountProductResource(Resource):
     def __init__(self, config: Configuration):

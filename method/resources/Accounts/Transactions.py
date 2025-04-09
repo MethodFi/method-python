@@ -2,53 +2,33 @@ from typing import TypedDict, Optional, Literal, List
 
 from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
-from method.errors import ResourceError
-
-
-AccountCurrencyTypesLiterals = Literal[
-    'USD'
-]
-
 
 AccountTransactionStatusLiterals = Literal[
-    'cleared',
-    'auth',
-    'refund',
-    'unknown'
+    'pending',
+    'posted',
+    'voided',
 ]
-
-
-class AccountTransactionMerchant(TypedDict):
-    name: str
-    category_code: str
-    city: str
-    state: str
-    country: str
-    acquirer_bin: str
-    acquirer_card_acceptor_id: str
-
-
-class AccountTransactionNetworkData(TypedDict):
-    visa_merchant_id: Optional[str]
-    visa_merchant_name: Optional[str]
-    visa_store_id: Optional[str]
-    visa_store_name: Optional[str]
-
 
 class AccountTransaction(TypedDict):
     id: str
     account_id: str
-    merchant: AccountTransactionMerchant
-    network: str
-    network_data: AccountTransactionNetworkData
+    descriptor: str
     amount: int
-    currency: AccountCurrencyTypesLiterals
-    billing_amount: int
-    billing_currency: AccountCurrencyTypesLiterals
+    auth_amount: int
+    currency_code: str
+    transaction_amount: int
+    transaction_auth_amount: int
+    transaction_currency_code: str
+    merchant_category_code: str
     status: AccountTransactionStatusLiterals
-    error: Optional[ResourceError]
+    transacted_at: str
+    posted_at: Optional[str]
+    voided_at: Optional[str]
+    original_txn_id: Optional[str]
     created_at: str
     updated_at: str
+    
+    
 
 
 class AccountTransactionsResource(Resource):
