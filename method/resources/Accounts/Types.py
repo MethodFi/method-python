@@ -22,13 +22,15 @@ AccountProductTypesLiterals = Literal[
     'payoff',
     'update',
     'attribute',
-    'transactions',
-    'payment_instruments'
+    'transaction',
+    'payment_instrument'
 ]
 
 
 AccountSubscriptionTypesLiterals = Literal[
-    'transactions',
+    'card_brand',
+    'payment_instrument',
+    'transaction',
     'update',
     'update.snapshot'
 ]
@@ -50,11 +52,18 @@ AccountUpdateSourceLiterals = Literal[
 
 AccountLiabilityTypesLiterals = Literal[
     'auto_loan',
+    'bnpl',
+    'credit_builder',
     'credit_card',
     'collection',
+    'fintech',
+    'insurance',
+    'loan',
+    'medical',
     'mortgage',
     'personal_loan',
-    'student_loans'
+    'student_loans',
+    'utility',
 ]
 
 
