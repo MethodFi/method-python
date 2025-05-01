@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, Literal
+from typing import TypedDict, Optional, Literal, Dict, Any
 
 from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
@@ -22,6 +22,7 @@ class EntitySubscription(TypedDict):
     id: str
     name: EntitySubscriptionNamesLiterals
     status: EntitySubscriptionStatusesLiterals
+    payload: Optional[Dict[str, Any]]
     last_request_id: Optional[str]
     created_at: str
     updated_at: str
@@ -35,6 +36,12 @@ class EntitySubscriptionResponseOpts(TypedDict):
 class EntitySubscriptionListResponse(TypedDict):
     connect: Optional[EntitySubscriptionResponseOpts]
     credit_score: Optional[EntitySubscriptionResponseOpts]
+    attribute: Optional[EntitySubscriptionResponseOpts]
+
+
+class EntitySubscriptionCreateOpts(TypedDict):
+    enroll: EntitySubscriptionNamesLiterals
+    payload: Optional[Dict[str, Any]]
 
 
 class EntitySubscriptionsResource(Resource):
@@ -47,8 +54,8 @@ class EntitySubscriptionsResource(Resource):
     def list(self) -> MethodResponse[EntitySubscriptionListResponse]:
         return super(EntitySubscriptionsResource, self)._list()
 
-    def create(self, sub_name: EntitySubscriptionNamesLiterals) -> MethodResponse[EntitySubscriptionResponseOpts]:
-        return super(EntitySubscriptionsResource, self)._create({ 'enroll': sub_name })
+    def create(self, opts: EntitySubscriptionCreateOpts) -> MethodResponse[EntitySubscriptionResponseOpts]:
+        return super(EntitySubscriptionsResource, self)._create(opts)
     
     def delete(self, sub_id: str) -> MethodResponse[EntitySubscriptionResponseOpts]:
         return super(EntitySubscriptionsResource, self)._delete(sub_id)

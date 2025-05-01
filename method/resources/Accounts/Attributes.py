@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, Literal, List, Any
+from typing import TypedDict, Optional, Literal, List, Any, Dict
 
 from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
@@ -28,6 +28,7 @@ class AccountAttributes(TypedDict):
     id: str
     account_id: str
     status: AccountAttributesStatusesLiterals
+    payload: Optional[Dict[str, Any]]
     attributes: Optional[List[AccountAttributesType]]
     error: Optional[ResourceError]
     created_at: str
