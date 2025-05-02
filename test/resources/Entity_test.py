@@ -36,6 +36,7 @@ entity_with_vehicle = None
 entities_retrieve_product_list_response = None
 entities_create_connect_subscription_response = None
 entities_create_credit_score_subscription_response = None
+entities_create_attribute_subscription_response = None
 entities_create_individual_verification_response = None
 entities_create_phone_verification_response = None
 
@@ -447,13 +448,15 @@ async def test_list_entity_credit_score():
 
 def test_create_entity_attribute():
     global entities_create_attribute_response
-    entities_create_attribute_response = method.entities(entities_create_response['id']).attributes.create()
+    entities_create_attribute_response = method.entities(entities_create_response['id']).attributes.create({
+        'attributes': ['credit_health_credit_card_usage']
+    })
 
     expect_results: EntityAttributes = {
         'id': entities_create_attribute_response['id'],
         'entity_id': entities_create_response['id'],
         'status': 'completed',
-        'attributes': entities_create_attribute_response.attributes,
+        'attributes': entities_create_attribute_response['attributes'],
         'error': None,
         'created_at': entities_create_attribute_response['created_at'],
         'updated_at': entities_create_attribute_response['updated_at']
@@ -472,7 +475,7 @@ async def test_retrieve_entity_attribute():
         'id': attribute_retrieve_response['id'],
         'entity_id': entities_create_response['id'],
         'status': 'completed',
-        'attributes': attribute_retrieve_response.attributes,
+        'attributes': attribute_retrieve_response['attributes'],
         'error': None,
         'created_at': attribute_retrieve_response['created_at'],
         'updated_at': attribute_retrieve_response['updated_at']
@@ -855,12 +858,15 @@ def test_retrieve_entity_product():
 
 def test_create_entity_connect_subscription():
     global entities_create_connect_subscription_response
-    entities_create_connect_subscription_response = method.entities(entities_create_response['id']).subscriptions.create('connect')
+    entities_create_connect_subscription_response = method.entities(entities_create_response['id']).subscriptions.create({
+        'enroll': 'connect'
+    })
 
     expect_results: EntitySubscription = {
         'id': entities_create_connect_subscription_response['id'],
         'name': 'connect',
         'status': 'active',
+        'payload': None,
         'latest_request_id': None,
         'created_at': entities_create_connect_subscription_response['created_at'],
         'updated_at': entities_create_connect_subscription_response['updated_at']
@@ -871,12 +877,15 @@ def test_create_entity_connect_subscription():
 
 def test_create_entity_credit_score_subscription():
     global entities_create_credit_score_subscription_response
-    entities_create_credit_score_subscription_response = method.entities(entities_create_response['id']).subscriptions.create('credit_score')
+    entities_create_credit_score_subscription_response = method.entities(entities_create_response['id']).subscriptions.create({
+        'enroll': 'credit_score'
+    })
 
     expect_results: EntitySubscription = {
         'id': entities_create_credit_score_subscription_response['id'],
         'name': 'credit_score',
         'status': 'active',
+        'payload': None,
         'latest_request_id': None,
         'created_at': entities_create_credit_score_subscription_response['created_at'],
         'updated_at': entities_create_credit_score_subscription_response['updated_at']
@@ -885,17 +894,43 @@ def test_create_entity_credit_score_subscription():
     assert entities_create_credit_score_subscription_response == expect_results
 
 
+def test_create_entity_attribute_subscription():
+    global entities_create_attribute_subscription_response
+    entities_create_attribute_subscription_response = method.entities(entities_create_response['id']).subscriptions.create({
+        'enroll': 'attribute',
+        'payload': {
+            'attributes': {
+                'requested_attributes': ['credit_health_credit_card_usage']
+            }
+        }
+    })
+
+    expect_results: EntitySubscription = {
+        'id': entities_create_attribute_subscription_response['id'],
+        'name': 'attribute',
+        'status': 'active',
+        'payload': entities_create_attribute_subscription_response['payload'],
+        'latest_request_id': entities_create_attribute_subscription_response['latest_request_id'],
+        'created_at': entities_create_attribute_subscription_response['created_at'],
+        'updated_at': entities_create_attribute_subscription_response['updated_at']
+    }
+
+    assert entities_create_attribute_subscription_response == expect_results
+
+
 def test_retrieve_entity_subscription():
     entity_connect_subscription_id = entities_create_connect_subscription_response['id']
     entity_credit_score_subscription_id = entities_create_credit_score_subscription_response['id']
-
+    entity_attribute_subscription_id = entities_create_attribute_subscription_response['id']
     entity_connect_subscription_response = method.entities(entities_create_response['id']).subscriptions.retrieve(entity_connect_subscription_id)
     entity_credit_score_subscription_response = method.entities(entities_create_response['id']).subscriptions.retrieve(entity_credit_score_subscription_id)
+    entity_attribute_subscription_response = method.entities(entities_create_response['id']).subscriptions.retrieve(entity_attribute_subscription_id)
 
     expect_connect_results: EntitySubscription = {
         'id': entity_connect_subscription_id,
         'name': 'connect',
         'status': 'active',
+        'payload': None,
         'latest_request_id': entity_connect_subscription_response['latest_request_id'],
         'created_at': entity_connect_subscription_response['created_at'],
         'updated_at': entity_connect_subscription_response['updated_at']
@@ -905,14 +940,25 @@ def test_retrieve_entity_subscription():
         'id': entity_credit_score_subscription_id,
         'name': 'credit_score',
         'status': 'active',
+        'payload': None,
         'latest_request_id': entity_credit_score_subscription_response['latest_request_id'],
         'created_at': entity_credit_score_subscription_response['created_at'],
         'updated_at': entity_credit_score_subscription_response['updated_at']
     }
 
+    expect_attribute_results: EntitySubscription = {
+        'id': entity_attribute_subscription_id,
+        'name': 'attribute',
+        'status': 'active',
+        'payload': entities_create_attribute_subscription_response['payload'],
+        'latest_request_id': entities_create_attribute_subscription_response['latest_request_id'],
+        'created_at': entities_create_attribute_subscription_response['created_at'],
+        'updated_at': entities_create_attribute_subscription_response['updated_at']
+    }
+
     assert entity_connect_subscription_response == expect_connect_results
     assert entity_credit_score_subscription_response == expect_credit_score_results
-
+    assert entity_attribute_subscription_response == expect_attribute_results
 # ENTITY CONSENT TESTS
 
 def test_withdraw_entity_consent():

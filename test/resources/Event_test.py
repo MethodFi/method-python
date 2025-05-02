@@ -36,7 +36,9 @@ def setup():
 
     connect_response = method.entities(entity_response['id']).connect.create()
     account_response = method.accounts.list({'holder_id': entity_response['id']})
-    attribute_response = method.entities(entity_response['id']).attributes.create()
+    attribute_response = method.entities(entity_response['id']).attributes.create({
+        'attributes': ['credit_health_credit_card_usage']
+    })
     credit_score_response = method.entities(entity_response['id']).credit_scores.create()
 
     return {

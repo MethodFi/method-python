@@ -35,6 +35,8 @@ class EntityAttributesType(TypedDict):
     credit_health_payment_history: CreditHealthAttribute
     credit_health_open_accounts: CreditHealthAttribute
 
+class EntityAttributesCreateOpts(TypedDict):
+    attributes: List[EntityAttributesType]
 
 class EntityAttributes(TypedDict):
     id: str
@@ -56,5 +58,5 @@ class EntityAttributesResource(Resource):
     def list(self, params: Optional[ResourceListOpts] = None) -> MethodResponse[List[EntityAttributes]]:
         return super(EntityAttributesResource, self)._list(params)
 
-    def create(self) -> MethodResponse[EntityAttributes]:
-        return super(EntityAttributesResource, self)._create({})
+    def create(self, opts: EntityAttributesCreateOpts) -> MethodResponse[EntityAttributes]:
+        return super(EntityAttributesResource, self)._create(opts)
