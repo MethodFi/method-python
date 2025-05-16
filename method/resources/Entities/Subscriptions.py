@@ -54,7 +54,9 @@ class EntitySubscriptionsResource(Resource):
     def list(self) -> MethodResponse[EntitySubscriptionListResponse]:
         return super(EntitySubscriptionsResource, self)._list()
 
-    def create(self, opts: EntitySubscriptionCreateOpts) -> MethodResponse[EntitySubscriptionResponseOpts]:
+    def create(self, opts: EntitySubscriptionCreateOpts | EntitySubscriptionNamesLiterals) -> MethodResponse[EntitySubscriptionResponseOpts]:
+        if isinstance(opts, str) and opts in ('connect', 'credit_score', 'attribute'):
+            opts = {'enroll': opts}
         return super(EntitySubscriptionsResource, self)._create(opts)
     
     def delete(self, sub_id: str) -> MethodResponse[EntitySubscriptionResponseOpts]:
