@@ -858,9 +858,7 @@ def test_retrieve_entity_product():
 
 def test_create_entity_connect_subscription():
     global entities_create_connect_subscription_response
-    entities_create_connect_subscription_response = method.entities(entities_create_response['id']).subscriptions.create({
-        'enroll': 'connect'
-    })
+    entities_create_connect_subscription_response = method.entities(entities_create_response['id']).subscriptions.create('connect')
 
     expect_results: EntitySubscription = {
         'id': entities_create_connect_subscription_response['id'],
@@ -877,9 +875,7 @@ def test_create_entity_connect_subscription():
 
 def test_create_entity_credit_score_subscription():
     global entities_create_credit_score_subscription_response
-    entities_create_credit_score_subscription_response = method.entities(entities_create_response['id']).subscriptions.create({
-        'enroll': 'credit_score'
-    })
+    entities_create_credit_score_subscription_response = method.entities(entities_create_response['id']).subscriptions.create('credit_score')
 
     expect_results: EntitySubscription = {
         'id': entities_create_credit_score_subscription_response['id'],
