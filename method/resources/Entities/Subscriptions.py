@@ -55,7 +55,7 @@ class EntitySubscriptionsResource(Resource):
         return super(EntitySubscriptionsResource, self)._list()
 
     def create(self, opts: EntitySubscriptionCreateOpts | EntitySubscriptionNamesLiterals) -> MethodResponse[EntitySubscriptionResponseOpts]:
-        if isinstance(opts, str) and opts in ('connect', 'credit_score', 'attribute'):
+        if isinstance(opts, str):
             opts = {'enroll': opts}
         return super(EntitySubscriptionsResource, self)._create(opts)
     
