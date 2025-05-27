@@ -809,6 +809,7 @@ def test_list_transactions(setup):
         'transaction_auth_amount': simulated_transaction['transaction_auth_amount'],
         'transaction_currency_code': simulated_transaction['transaction_currency_code'],
         'merchant_category_code': simulated_transaction['merchant_category_code'],
+        'merchant': simulated_transaction['merchant'],
         'transacted_at': simulated_transaction['transacted_at'],
         'posted_at': simulated_transaction['posted_at'],
         'voided_at': None,

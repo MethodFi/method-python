@@ -9,6 +9,10 @@ AccountTransactionStatusLiterals = Literal[
     'voided',
 ]
 
+class AccountTransactionMerchant(TypedDict):
+    name: str
+    logo: Optional[str]
+
 class AccountTransaction(TypedDict):
     id: str
     account_id: str
@@ -20,6 +24,7 @@ class AccountTransaction(TypedDict):
     transaction_auth_amount: int
     transaction_currency_code: str
     merchant_category_code: str
+    merchant: Optional[AccountTransactionMerchant]
     status: AccountTransactionStatusLiterals
     transacted_at: str
     posted_at: Optional[str]
