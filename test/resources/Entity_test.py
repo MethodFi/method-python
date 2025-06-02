@@ -78,6 +78,7 @@ def test_create_entity():
                 'latest_verification_session': None,
                 'methods': [
                     'element',
+                    'opal',
                     'kba',
                 ],
             },
@@ -86,9 +87,10 @@ def test_create_entity():
                 'latest_verification_session': None,
                 'methods': [
                     'element',
+                    'opal',
                     'sna',
                     'sms',
-                    'byo_sms'
+                    'byo_sms',
                 ],
             },
           },
@@ -142,7 +144,8 @@ def test_retrieve_entity():
                 'latest_verification_session': None,
                 'methods': [
                     'element',
-                    'kba',
+                    'opal',
+                    'kba'
                 ],
             },
             'phone': {
@@ -150,9 +153,10 @@ def test_retrieve_entity():
                 'latest_verification_session': None,
                 'methods': [
                     'element',
+                    'opal',
                     'sna',
                     'sms',
-                    'byo_sms'
+                    'byo_sms',
                 ],
             },
           },
@@ -214,6 +218,7 @@ def test_update_entity():
                 'latest_verification_session': entities_update_response['verification']['identity']['latest_verification_session'],
                 'methods': [
                     'element',
+                    'opal',
                     'kba',
                 ],
             },
@@ -222,9 +227,10 @@ def test_update_entity():
                 'latest_verification_session': entities_update_response['verification']['identity']['latest_verification_session'],
                 'methods': [
                     'element',
+                    'opal',
                     'sna',
                     'sms',
-                    'byo_sms'
+                    'byo_sms',
                 ],
             },
           },

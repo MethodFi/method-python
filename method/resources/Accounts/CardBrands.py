@@ -20,6 +20,7 @@ class AccountCardBrand(TypedDict):
     brands: List[AccountCardBrandInfo]
     status: Literal['completed', 'failed']
     shared: bool
+    source: Optional[Literal['method', 'network']]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
