@@ -79,6 +79,7 @@ def test_create_entity():
                 'methods': [
                     'element',
                     'kba',
+                    'opal'
                 ],
             },
             'phone': {
@@ -88,7 +89,8 @@ def test_create_entity():
                     'element',
                     'sna',
                     'sms',
-                    'byo_sms'
+                    'byo_sms',
+                    'opal'
                 ],
             },
           },
@@ -143,6 +145,7 @@ def test_retrieve_entity():
                 'methods': [
                     'element',
                     'kba',
+                    'opal'
                 ],
             },
             'phone': {
@@ -152,7 +155,8 @@ def test_retrieve_entity():
                     'element',
                     'sna',
                     'sms',
-                    'byo_sms'
+                    'byo_sms',
+                    'opal'
                 ],
             },
           },
@@ -215,6 +219,7 @@ def test_update_entity():
                 'methods': [
                     'element',
                     'kba',
+                    'opal'
                 ],
             },
             'phone': {
@@ -224,7 +229,8 @@ def test_update_entity():
                     'element',
                     'sna',
                     'sms',
-                    'byo_sms'
+                    'byo_sms',
+                    'opal'
                 ],
             },
           },
