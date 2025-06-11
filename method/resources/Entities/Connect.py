@@ -52,6 +52,13 @@ class ConnectExpandOpts(TypedDict):
 class ConnectResourceListOpts(ResourceListOpts, ConnectExpandOpts):
     pass
 
+class ConnectCreateOpts(TypedDict):
+    products: Optional[List[AccountProductsEligibleForAutomaticExecutionLiteral]],
+    subscriptions: Optional[List[AccountSubscriptionsEligibleForAutomaticExecutionLiteral]]
+
+
+
+
 class EntityConnectResource(Resource):
     def __init__(self, config: Configuration):
         super(EntityConnectResource, self).__init__(config.add_path("connect"))
@@ -63,17 +70,11 @@ class EntityConnectResource(Resource):
         self, opts: Optional[ConnectResourceListOpts] = None
     ) -> MethodResponse[List[EntityConnect]]:
         return super(EntityConnectResource, self)._list(opts)
-
+    
     def create(
         self,
-        products: Optional[List[AccountProductsEligibleForAutomaticExecutionLiteral]] = None,
-        subscriptions: Optional[List[AccountSubscriptionsEligibleForAutomaticExecutionLiteral]] = None,
-        opts: Optional[ConnectExpandOpts] = None
+        opts: ConnectCreateOpts = {},
+        params: Optional[ConnectExpandOpts] = None
     ) -> MethodResponse[EntityConnect]:
-        data = {}
-        if products:
-            data["products"] = products
-        if subscriptions:
-            data["subscriptions"] = subscriptions
-        return super(EntityConnectResource, self)._create(data=data, params=opts)
+        return super(EntityConnectResource, self)._create(data=opts, params=params)
  
