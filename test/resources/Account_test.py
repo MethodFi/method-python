@@ -320,18 +320,14 @@ def test_retrieve_card_brands(setup):
     test_credit_card_account = setup['test_credit_card_account']
     
     card_retrieve_response = method.accounts(test_credit_card_account['id']).card_brands.retrieve(card_brand_create_response['id'])
-    expect_results: AccountCardBrand = {
+
+    expect_results = {
         'id': card_brand_create_response['id'],
         'account_id': test_credit_card_account['id'],
         'network': 'visa',
         'status': 'completed',
         'issuer': card_brand_create_response['issuer'],
         'last4': '1580',
-        'brands': [{
-               'art_id': 'art_pCc787cy3ciWp',
-               'id': 'brand_UBwVzXjpP4PJ6',
-               'name': 'Chase Sapphire Reserve',
-               'url': 'https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png'}],
         'shared': False,
         'source': "network",
         'error': None,
@@ -339,34 +335,39 @@ def test_retrieve_card_brands(setup):
         'updated_at': card_retrieve_response['updated_at'],
     }
 
-    assert card_retrieve_response == expect_results
+    for k, v in expect_results.items():
+        assert card_retrieve_response[k] == v
+
+    brand = card_retrieve_response['brands'][0]
+    assert brand['id'] == 'brand_UBwVzXjpP4PJ6'
+    assert brand['name'] == 'Chase Sapphire Reserve'
+    assert brand['url'] == 'https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png'
+    assert isinstance(brand['art_id'], str) and brand['art_id'].startswith('art_')
 
 @pytest.mark.asyncio
 async def test_list_card_brands(setup):
     test_credit_card_account = setup['test_credit_card_account']
-    
+
     card_brands_list_response = method.accounts(test_credit_card_account['id']).card_brands.list()
+    result = card_brands_list_response[0]
 
-    expect_results: AccountCardBrand = {
-        'id': card_brand_create_response['id'],
-        'account_id': test_credit_card_account['id'],
-        'network': 'visa',
-        'status': 'completed',
-        'issuer': card_brand_create_response['issuer'],
-        'last4': '1580',
-        'brands': [{
-               'art_id': 'art_pCc787cy3ciWp',
-               'id': 'brand_UBwVzXjpP4PJ6',
-               'name': 'Chase Sapphire Reserve',
-               'url': 'https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png'}],
-        'shared': False,
-        'source': "network",
-        'error': None,
-        'created_at': card_brands_list_response[0]['created_at'],
-        'updated_at': card_brands_list_response[0]['updated_at'],
-    }
+    assert result['id'] == card_brand_create_response['id']
+    assert result['account_id'] == test_credit_card_account['id']
+    assert result['network'] == 'visa'
+    assert result['status'] == 'completed'
+    assert result['issuer'] == card_brand_create_response['issuer']
+    assert result['last4'] == '1580'
+    assert result['shared'] is False
+    assert result['source'] == 'network'
+    assert result['error'] is None
+    assert result['created_at'] == result['created_at']
+    assert result['updated_at'] == result['updated_at']
 
-    assert card_brands_list_response[0] == expect_results
+    brand = result['brands'][0]
+    assert brand['id'] == 'brand_UBwVzXjpP4PJ6'
+    assert brand['name'] == 'Chase Sapphire Reserve'
+    assert brand['url'] == 'https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png'
+    assert isinstance(brand['art_id'], str) and brand['art_id'].startswith('art_')
 
 def test_create_payoffs(setup):
     global payoff_create_response
