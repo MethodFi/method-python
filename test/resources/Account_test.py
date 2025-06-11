@@ -1,6 +1,7 @@
 import os
 from typing import List
 import pytest
+import time
 from method import Method
 from dotenv import load_dotenv 
 from utils import await_results
@@ -311,13 +312,14 @@ def test_create_card_brands(setup):
         'updated_at': card_brand_create_response['updated_at'],
     }
 
+    time.sleep(5)
     assert card_brand_create_response == expect_results
 
 
 def test_retrieve_card_brands(setup):
     test_credit_card_account = setup['test_credit_card_account']
+    
     card_retrieve_response = method.accounts(test_credit_card_account['id']).card_brands.retrieve(card_brand_create_response['id'])
-
     expect_results: AccountCardBrand = {
         'id': card_brand_create_response['id'],
         'account_id': test_credit_card_account['id'],
