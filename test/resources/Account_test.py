@@ -358,7 +358,7 @@ async def test_list_card_brands(setup):
   +             'name': 'Chase Sapphire Reserve',
   +             'url': 'https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png'}],
         'shared': False,
-        'source': "network"
+        'source': "network",
         'error': None,
         'created_at': card_brands_list_response[0]['created_at'],
         'updated_at': card_brands_list_response[0]['updated_at'],
