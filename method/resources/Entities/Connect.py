@@ -53,7 +53,7 @@ class ConnectResourceListOpts(ResourceListOpts, ConnectExpandOpts):
     pass
 
 class ConnectCreateOpts(TypedDict):
-    products: Optional[List[AccountProductsEligibleForAutomaticExecutionLiteral]],
+    products: Optional[List[AccountProductsEligibleForAutomaticExecutionLiteral]]
     subscriptions: Optional[List[AccountSubscriptionsEligibleForAutomaticExecutionLiteral]]
 
 
