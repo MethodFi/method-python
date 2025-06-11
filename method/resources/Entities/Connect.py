@@ -56,24 +56,24 @@ class EntityConnectResource(Resource):
     def __init__(self, config: Configuration):
         super(EntityConnectResource, self).__init__(config.add_path("connect"))
 
-    def retrieve(self, cxn_id: str, params: Optional[ConnectExpandOpts] = None) -> MethodResponse[EntityConnect]:
-        return super(EntityConnectResource, self)._get_with_sub_path_and_params(cxn_id, params=params)
+    def retrieve(self, cxn_id: str, opts: Optional[ConnectExpandOpts] = None) -> MethodResponse[EntityConnect]:
+        return super(EntityConnectResource, self)._get_with_sub_path_and_params(cxn_id, params=opts)
 
     def list(
-        self, params: Optional[ConnectResourceListOpts] = None
+        self, opts: Optional[ConnectResourceListOpts] = None
     ) -> MethodResponse[List[EntityConnect]]:
-        return super(EntityConnectResource, self)._list(params)
+        return super(EntityConnectResource, self)._list(opts)
 
     def create(
         self,
         products: Optional[List[AccountProductsEligibleForAutomaticExecutionLiteral]] = None,
         subscriptions: Optional[List[AccountSubscriptionsEligibleForAutomaticExecutionLiteral]] = None,
-        params: Optional[ConnectExpandOpts] = None
+        opts: Optional[ConnectExpandOpts] = None
     ) -> MethodResponse[EntityConnect]:
         data = {}
         if products:
             data["products"] = products
         if subscriptions:
             data["subscriptions"] = subscriptions
-        return super(EntityConnectResource, self)._create(data=data, params=params)
+        return super(EntityConnectResource, self)._create(data=data, params=opts)
  
