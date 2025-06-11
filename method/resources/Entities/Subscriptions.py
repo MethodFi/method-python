@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, Literal, Dict, Any
+from typing import TypedDict, Optional, Literal, Dict, Any, Union
 
 from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
@@ -54,7 +54,7 @@ class EntitySubscriptionsResource(Resource):
     def list(self) -> MethodResponse[EntitySubscriptionListResponse]:
         return super(EntitySubscriptionsResource, self)._list()
 
-    def create(self, opts: EntitySubscriptionCreateOpts | EntitySubscriptionNamesLiterals) -> MethodResponse[EntitySubscriptionResponseOpts]:
+    def create(self, opts: Union[EntitySubscriptionCreateOpts, EntitySubscriptionNamesLiterals]) -> MethodResponse[EntitySubscriptionResponseOpts]:
         if isinstance(opts, str):
             opts = {'enroll': opts}
         return super(EntitySubscriptionsResource, self)._create(opts)

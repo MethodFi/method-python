@@ -25,7 +25,7 @@ def test_create_report():
         "type": "payments.created.current",
         "url": f"https://dev.methodfi.com/reports/{report_create_response['id']}/download",
         "status": "completed",
-        "metadata": None,
+        "metadata": report_create_response["metadata"],
         "created_at": report_create_response["created_at"],
         "updated_at": report_create_response["updated_at"],
     }
@@ -43,7 +43,7 @@ def test_retrieve_report():
         "type": "payments.created.current",
         "url": f"https://dev.methodfi.com/reports/{report_create_response['id']}/download",
         "status": "completed",
-        "metadata": None,
+        "metadata": report_create_response["metadata"],
         "created_at": report_retrieve_response["created_at"],
         "updated_at": report_retrieve_response["updated_at"],
     }
