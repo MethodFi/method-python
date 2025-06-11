@@ -27,7 +27,7 @@ class Configuration:
 
     def __init__(self, opts: ConfigurationOpts):
         url = 'https://{env}.methodfi.com'
-        
+
         self.__validate(opts)
         self.api_key = opts.get('api_key', '')
         self.url = url.format(env=opts.get('env', 'dev'))
