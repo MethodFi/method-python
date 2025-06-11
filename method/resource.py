@@ -160,8 +160,17 @@ class Resource():
         options = {}
         if data:
             options['data'] = json.dumps(data)
+        # Note (Reza): Automatically appends '[]' to list-type query params (e.g., 'expand') 
+        # so users can pass them naturally without needing to format keys manually.
         if params:
-            options['params'] = params
+            fixed = {}
+            for k, v in params.items():
+                if isinstance(v, list):
+                    fixed[f"{k}[]"] = v
+                else:
+                    fixed[k] = v
+            options['params'] = fixed
+
         if headers:
             options['headers'] = headers
 
@@ -211,11 +220,11 @@ class Resource():
         return self._make_request('GET', params=params)
 
     @MethodError.catch
-    def _create(self, data: Dict, request_opts: Optional[RequestOpts] = None) -> MethodResponse[T]:
+    def _create(self, data: Dict, params: Optional[Dict] = None, request_opts: Optional[RequestOpts] = None) -> MethodResponse[T]:
         headers = {}
         if request_opts and request_opts.get('idempotency_key'):
             headers['Idempotency-Key'] = request_opts.get('idempotency_key')
-        return self._make_request('POST', data=data, headers=headers)
+        return self._make_request('POST', data=data, headers=headers, params=params)
 
     @MethodError.catch
     def _create_with_sub_path(self, path: str, data: Dict) -> MethodResponse[T]:
