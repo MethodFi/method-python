@@ -23,7 +23,7 @@ AccountConnectResponseExpandLiterals = Literal[
 ]
 
 AccountProductsEligibleForAutomaticExecutionLiteral = Literal[
-    "account_attribute",
+    "attribute",
     "balance",
     "card_brand",
     "update",
