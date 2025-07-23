@@ -84,6 +84,7 @@ class WebhookCreateOpts(TypedDict):
     type: WebhookTypesLiterals
     url: str
     auth_token: Optional[str]
+    hmac_secret: Optional[str]
     metadata: Optional[Dict[str, Any]]
     expand_event: Optional[bool]
 
