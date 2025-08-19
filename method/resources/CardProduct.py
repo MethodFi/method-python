@@ -31,9 +31,9 @@ class CardProduct(TypedDict):
 
 class CardProductResource(Resource):
   def __init__(self, config: Configuration):
-    super(CardProduct, self).__init__(config.add_path('card_product'))
+    super(CardProductResource, self).__init__(config.add_path('card_product'))
 
 
   def retrieve(self, prt_id: str) -> MethodResponse[CardProduct]:
-    return super(CardProduct, self)._get_with_id(prt_id)
+    return super(CardProductResource, self)._get_with_id(prt_id)
 
