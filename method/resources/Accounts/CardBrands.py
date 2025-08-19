@@ -6,19 +6,21 @@ from method.errors import ResourceError
 
 
 class AccountCardBrandInfo(TypedDict):
-    art_id: str
-    url: str
-    name: str
+  id: str
+  card_product_id: str
+  description: str
+  name: str
+  issuer: str
+  network: str
+  type: Literal['specific', 'generic', 'in_review']
+  url: str
 
 
 class AccountCardBrand(TypedDict):
     id: str
     account_id: str
-    network: str
-    issuer: str
-    last4: str
     brands: List[AccountCardBrandInfo]
-    status: Literal['completed', 'failed']
+    status: Literal['completed', 'in_progress', 'failed']
     shared: bool
     source: Optional[Literal['method', 'network']]
     error: Optional[ResourceError]
