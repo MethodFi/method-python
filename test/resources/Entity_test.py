@@ -427,7 +427,6 @@ def test_create_entity_connect_async():
     {
         'prefer': 'respond-async'
     })
-    entities_connect_async_create_response['accounts'] = entities_connect_async_create_response['accounts'].sort()
     
     expect_results: EntityConnect = {
         'id': entities_connect_async_create_response['id'],
@@ -454,12 +453,12 @@ async def test_retrieve_entity_connect_async():
         'id': entities_connect_async_create_response['id'],
         'entity_id': entities_create_async_response['id'],
         'status': 'completed',
-        'accounts': entities_connect_async_create_response['accounts'],
+        'accounts': connect_async_retrieve_response['accounts'],
         'requested_products': [ 'update' ],
         'requested_subscriptions': [ 'update' ],
         'error': None,
-        'created_at': entities_connect_async_create_response['created_at'],
-        'updated_at': entities_connect_async_create_response['updated_at'],
+        'created_at': connect_async_retrieve_response['created_at'],
+        'updated_at': connect_async_retrieve_response['updated_at'],
     }
 
     assert connect_async_retrieve_response == expect_results

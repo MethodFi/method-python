@@ -36,8 +36,8 @@ def test_retrieve_card_product():
           }
         ],
         "error": None,
-        "created_at": card_product_retrieve_response['created_at'],
-        "updated_at": card_product_retrieve_response['updated_at'],
+        "created_at": card_product_retrieve_response.get('created_at', ''),
+        "updated_at": card_product_retrieve_response.get('updated_at', ''),
       }
 
     assert card_product_retrieve_response == expect_results
