@@ -21,11 +21,14 @@ API_KEY = os.getenv('API_KEY')
 method = Method(env='dev', api_key=API_KEY)
 
 entities_create_response = None
+entities_create_async_response = None
 entitiy_with_identity_cap = None
 entities_retrieve_response = None
 entities_update_response = None
+entities_update_async_response = None
 entities_list_response = None
 entities_connect_create_response = None
+entities_connect_async_create_response = None
 entities_account_list_response = None
 entities_account_ids = None
 entities_create_credit_score_response = None
@@ -44,7 +47,13 @@ entities_create_phone_verification_response = None
 
 def test_create_entity():
     global entities_create_response
+    global entities_create_async_response
     entities_create_response = method.entities.create({
+        'type': 'individual',
+        'individual': {},
+        'metadata': {}
+    })
+    entities_create_async_response = method.entities.create({
         'type': 'individual',
         'individual': {},
         'metadata': {}
@@ -181,7 +190,16 @@ def test_retrieve_entity():
 
 def test_update_entity():
     global entities_update_response
+    global entities_update_async_response
     entities_update_response = method.entities.update(entities_create_response['id'], {
+        'individual': {
+            'first_name': 'John',
+            'last_name': 'Doe',
+            'phone': '+15121231111'
+        }
+    })
+
+    entities_update_async_response = method.entities.update(entities_create_async_response['id'], {
         'individual': {
             'first_name': 'John',
             'last_name': 'Doe',
@@ -273,6 +291,14 @@ def test_create_entity_phone_verification():
         }
     })
 
+    method.entities(entities_create_async_response['id']).verification_sessions.create({
+        'type': 'phone',
+        'method': 'byo_sms',
+        'byo_sms': {
+            'timestamp': '2021-09-01T00:00:00.000Z',
+        }
+    })
+
     expect_results: EntityVerificationSession = {
         'id': entities_create_phone_verification_response['id'],
         'entity_id': entities_create_response['id'],
@@ -293,6 +319,12 @@ def test_create_entity_phone_verification():
 def test_create_entity_individual_verification():
     global entities_create_individual_verification_response
     entities_create_individual_verification_response = method.entities(entities_create_response['id']).verification_sessions.create({
+        'type': 'identity',
+        'method': 'kba',
+        'kba': {}
+    })
+
+    method.entities(entities_create_async_response['id']).verification_sessions.create({
         'type': 'identity',
         'method': 'kba',
         'kba': {}
@@ -339,6 +371,8 @@ def test_create_entity_connect():
         'entity_id': entities_create_response['id'],
         'status': 'completed',
         'accounts': entities_account_ids,
+        'requested_products': [],
+        'requested_subscriptions': [],
         'error': None,
         'created_at': entities_connect_create_response['created_at'],
         'updated_at': entities_connect_create_response['updated_at'],
@@ -356,6 +390,8 @@ def test_retrieve_entity_connect():
         'entity_id': entities_create_response['id'],
         'status': 'completed',
         'accounts': entities_account_ids,
+        'requested_products': [],
+        'requested_subscriptions': [],
         'error': None,
         'created_at': entities_connect_create_response['created_at'],
         'updated_at': entities_connect_create_response['updated_at'],
@@ -372,12 +408,61 @@ async def test_list_entity_connect():
         'entity_id': entities_create_response['id'],
         'status': 'completed',
         'accounts': entities_account_ids,
+        'requested_products': [],
+        'requested_subscriptions': [],
         'error': None,
         'created_at': entities_connect_create_response['created_at'],
         'updated_at': entities_connect_create_response['updated_at'],
     }
 
     assert connect_list_response[0] == expect_results
+
+def test_create_entity_connect_async():
+    global entities_connect_async_create_response
+    entities_connect_async_create_response = method.entities(entities_create_async_response['id']).connect.create({
+        'products': [ 'update' ],
+        'subscriptions': [ 'update' ]
+    }, 
+    {}, 
+    {
+        'prefer': 'respond-async'
+    })
+    entities_connect_async_create_response['accounts'] = entities_connect_async_create_response['accounts'].sort()
+    
+    expect_results: EntityConnect = {
+        'id': entities_connect_async_create_response['id'],
+        'entity_id': entities_create_async_response['id'],
+        'status': 'pending',
+        'accounts': [],
+        'requested_products': [ 'update' ],
+        'requested_subscriptions': [ 'update' ],
+        'error': None,
+        'created_at': entities_connect_async_create_response['created_at'],
+        'updated_at': entities_connect_async_create_response['updated_at'],
+    }
+
+    assert entities_connect_async_create_response == expect_results
+
+@pytest.mark.asyncio
+async def test_retrieve_entity_connect_async():
+    def get_connect():
+        return method.entities(entities_create_async_response['id']).connect.retrieve(entities_connect_async_create_response['id'])
+    
+    connect_async_retrieve_response = await await_results(get_connect)
+
+    expect_results: EntityConnect = {
+        'id': entities_connect_async_create_response['id'],
+        'entity_id': entities_create_async_response['id'],
+        'status': 'completed',
+        'accounts': entities_connect_async_create_response['accounts'],
+        'requested_products': [ 'update' ],
+        'requested_subscriptions': [ 'update' ],
+        'error': None,
+        'created_at': entities_connect_async_create_response['created_at'],
+        'updated_at': entities_connect_async_create_response['updated_at'],
+    }
+
+    assert connect_async_retrieve_response == expect_results
 
 # ENTITY CREDIT SCORE TESTS
 

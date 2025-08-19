@@ -340,7 +340,7 @@ def test_retrieve_card_brands(setup):
     assert brand['card_product_id'] == 'pdt_15'
     assert brand['type'] == 'specific'
     assert brand['network'] == 'visa'
-    assert brand['issuer'] == 'chase'
+    assert brand['issuer'] == 'Chase'
     assert brand['description'] == 'Chase Sapphire Reserve'
 
 @pytest.mark.asyncio
@@ -366,7 +366,7 @@ async def test_list_card_brands(setup):
     assert brand['card_product_id'] == 'pdt_15'
     assert brand['type'] == 'specific'
     assert brand['network'] == 'visa'
-    assert brand['issuer'] == 'chase'
+    assert brand['issuer'] == 'Chase'
     assert brand['description'] == 'Chase Sapphire Reserve'
 
 def test_create_payoffs(setup):

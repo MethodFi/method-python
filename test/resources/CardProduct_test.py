@@ -14,7 +14,7 @@ card_product_retrieve_response = None
 def test_retrieve_card_product():
     global card_product_retrieve_response
 
-    card_product_retrieve_response = method.card_products.retrieve('pdt_15')
+    card_product_retrieve_response = method.card_products.retrieve('pdt_17')
 
     expect_results = {
         "id": "pdt_17",
