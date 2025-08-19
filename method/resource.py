@@ -147,7 +147,7 @@ class Resource():
             'Authorization': 'Bearer {token}'.format(token=config.api_key),
             'Content-Type': 'application/json',
             'User-Agent': 'Method-Python/v{version}'.format(version=version('method-python')),
-            'method-version': '2024-04-04'
+            'method-version': '2025-07-04'
         })
     
     def _make_request(self, method: str, path: Optional[str] = None, data: Optional[Dict] = None, params: Optional[Dict] = None, headers: Optional[Dict] = None, raw: bool = False, download: bool = False) -> Union[MethodResponse[T], str]:
