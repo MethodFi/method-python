@@ -126,6 +126,7 @@ class MethodResponse(Generic[T]):
 
 class RequestOpts(TypedDict):
     idempotency_key: Optional[str]
+    prefer: Optional[str]
 
 
 class ResourceListOpts(TypedDict):
@@ -224,6 +225,8 @@ class Resource():
         headers = {}
         if request_opts and request_opts.get('idempotency_key'):
             headers['Idempotency-Key'] = request_opts.get('idempotency_key')
+        if request_opts and request_opts.get('prefer'):
+            headers['Prefer'] = request_opts.get('prefer')
         return self._make_request('POST', data=data, headers=headers, params=params)
 
     @MethodError.catch

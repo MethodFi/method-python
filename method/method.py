@@ -10,6 +10,7 @@ from method.resources.Webhook import WebhookResource
 from method.resources.HealthCheck import PingResponse, HealthCheckResource
 from method.resources.Simulate import SimulateResource
 from method.resources.Events import EventResource
+from method.resources.CardProduct import CardProductResource
 
 class Method:
     accounts: AccountResource
@@ -22,6 +23,7 @@ class Method:
     webhooks: WebhookResource
     healthcheck: HealthCheckResource
     simulate: SimulateResource
+    card_products: CardProductResource
 
     def __init__(self, opts: ConfigurationOpts = None, **kwargs: ConfigurationOpts):
         _opts: ConfigurationOpts = {**(opts or {}), **kwargs}  # type: ignore
@@ -37,6 +39,7 @@ class Method:
         self.webhooks = WebhookResource(config)
         self.healthcheck = HealthCheckResource(config)
         self.simulate = SimulateResource(config)
-
+        self.card_products = CardProductResource(config)
+        
     def ping(self) -> MethodResponse[PingResponse]:
         return self.healthcheck.retrieve()
