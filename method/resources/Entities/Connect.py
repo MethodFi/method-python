@@ -40,6 +40,8 @@ class EntityConnect(TypedDict):
     id: str
     status: EntityConnectResponseStatusLiterals
     accounts: Optional[List[str]]
+    requested_products: Optional[List[str]]
+    requested_subscriptions: Optional[List[str]]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str

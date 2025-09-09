@@ -13,11 +13,11 @@ EntityProductTypeStatusLiterals = Literal[
 
 
 class EntityProduct(TypedDict):
-    id: str
     name: str
     status: EntityProductTypeStatusLiterals
     status_error: Optional[ResourceError]
     latest_request_id: str
+    latest_successful_request_id: str
     is_subscribable: bool
     created_at: str
     updated_at: str

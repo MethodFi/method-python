@@ -13,11 +13,11 @@ AccountProductTypeStatusLiterals = Literal[
 
 
 class AccountProduct(TypedDict):
-    id: str
     name: str
     status: AccountProductTypeStatusLiterals
     status_error: Optional[ResourceError]
     latest_request_id: str
+    latest_successful_request_id: str
     is_subscribable: bool
     created_at: str
     updated_at: str

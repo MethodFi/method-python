@@ -339,6 +339,8 @@ def test_create_entity_connect():
         'entity_id': entities_create_response['id'],
         'status': 'completed',
         'accounts': entities_account_ids,
+        'requested_products': [],
+        'requested_subscriptions': [],
         'error': None,
         'created_at': entities_connect_create_response['created_at'],
         'updated_at': entities_connect_create_response['updated_at'],
@@ -356,6 +358,8 @@ def test_retrieve_entity_connect():
         'entity_id': entities_create_response['id'],
         'status': 'completed',
         'accounts': entities_account_ids,
+        'requested_products': [],
+        'requested_subscriptions': [],
         'error': None,
         'created_at': entities_connect_create_response['created_at'],
         'updated_at': entities_connect_create_response['updated_at'],
@@ -372,6 +376,8 @@ async def test_list_entity_connect():
         'entity_id': entities_create_response['id'],
         'status': 'completed',
         'accounts': entities_account_ids,
+        'requested_products': [],
+        'requested_subscriptions': [],
         'error': None,
         'created_at': entities_connect_create_response['created_at'],
         'updated_at': entities_connect_create_response['updated_at'],
@@ -739,61 +745,61 @@ def test_retrieve_entity_product_list():
 
     expect_results: EntityProductListResponse = {
         'connect': {
-            'id': entities_retrieve_product_list_response.get('connect', {}).get('id', ''),
             'name': 'connect',
             'status': 'available',
             'status_error': None,
             'latest_request_id': entities_retrieve_product_list_response.get('connect', {}).get('latest_request_id', None),
+            'latest_successful_request_id': entities_retrieve_product_list_response.get('connect', {}).get('latest_successful_request_id', None),
             'is_subscribable': True,
             'created_at': entities_retrieve_product_list_response.get('connect', {}).get('created_at', ''),
             'updated_at': entities_retrieve_product_list_response.get('connect', {}).get('updated_at', ''),
         },
         'credit_score': {
-            'id': entities_retrieve_product_list_response.get('credit_score', {}).get('id', ''),
             'name': 'credit_score',
             'status': 'available',
             'status_error': None,
             'latest_request_id': entities_retrieve_product_list_response.get('credit_score', {}).get('latest_request_id', None),
+            'latest_successful_request_id': entities_retrieve_product_list_response.get('credit_score', {}).get('latest_successful_request_id', None),
             'is_subscribable': True,
             'created_at': entities_retrieve_product_list_response.get('credit_score', {}).get('created_at', ''),
             'updated_at': entities_retrieve_product_list_response.get('credit_score', {}).get('updated_at', ''),
         },
         'identity': {
-            'id': entities_retrieve_product_list_response.get('identity', {}).get('id', ''),
             'name': 'identity',
             'status': 'available',
             'status_error': None,
             'latest_request_id': entities_retrieve_product_list_response.get('identity', {}).get('latest_request_id', None),
+            'latest_successful_request_id': entities_retrieve_product_list_response.get('identity', {}).get('latest_successful_request_id', None),
             'is_subscribable': False,
             'created_at': entities_retrieve_product_list_response.get('identity', {}).get('created_at', ''),
             'updated_at': entities_retrieve_product_list_response.get('identity', {}).get('updated_at', ''),
         },
         'attribute': {
-            'id': entities_retrieve_product_list_response.get('attribute', {}).get('id', ''),
             'name': 'attribute',
             'status': 'available',
             'status_error': None,
             'latest_request_id': entities_retrieve_product_list_response.get('attribute', {}).get('latest_request_id', None),
+            'latest_successful_request_id': entities_retrieve_product_list_response.get('attribute', {}).get('latest_successful_request_id', None),
             'is_subscribable': True,
             'created_at': entities_retrieve_product_list_response.get('attribute', {}).get('created_at', ''),
             'updated_at': entities_retrieve_product_list_response.get('attribute', {}).get('updated_at', ''),
         },
         'vehicle': {
-            'id': entities_retrieve_product_list_response.get('vehicle', {}).get('id', ''),
             'name': 'vehicle',
             'status': 'available',
             'status_error': None,
             'latest_request_id': entities_retrieve_product_list_response.get('vehicle', {}).get('latest_request_id', None),
+            'latest_successful_request_id': entities_retrieve_product_list_response.get('vehicle', {}).get('latest_successful_request_id', None),
             'is_subscribable': False,
             'created_at': entities_retrieve_product_list_response.get('vehicle', {}).get('created_at', ''),
             'updated_at': entities_retrieve_product_list_response.get('vehicle', {}).get('updated_at', ''),
         },
         'manual_connect': {
-            'id': entities_retrieve_product_list_response.get('manual_connect', {}).get('id', ''),
             'name': 'manual_connect',
             'status': 'restricted',
             'status_error': entities_retrieve_product_list_response.get('manual_connect', {}).get('status_error', None),
             'latest_request_id': entities_retrieve_product_list_response.get('manual_connect', {}).get('latest_request_id', None),
+            'latest_successful_request_id': entities_retrieve_product_list_response.get('manual_connect', {}).get('latest_successful_request_id', None),
             'is_subscribable': False,
             'created_at': entities_retrieve_product_list_response.get('manual_connect', {}).get('created_at', ''),
             'updated_at': entities_retrieve_product_list_response.get('manual_connect', {}).get('updated_at', ''),
@@ -802,64 +808,6 @@ def test_retrieve_entity_product_list():
 
     assert entities_retrieve_product_list_response == expect_results
 
-
-def test_retrieve_entity_product():
-    entity_connect_product_id = entities_retrieve_product_list_response.get('connect', {}).get('id', '')
-    entity_credit_score_product_id = entities_retrieve_product_list_response.get('credit_score', {}).get('id', '')
-    entity_identity_product_id = entities_retrieve_product_list_response.get('identity', {}).get('id', '')
-    entity_attribute_product_id = entities_retrieve_product_list_response.get('attribute', {}).get('id', '')
-    entity_connect_product_response = method.entities(entities_create_response['id']).products.retrieve(entity_connect_product_id)
-    entity_credit_score_product_response = method.entities(entities_create_response['id']).products.retrieve(entity_credit_score_product_id)
-    entity_identity_product_response = method.entities(entities_create_response['id']).products.retrieve(entity_identity_product_id)
-    entity_attribute_product_response = method.entities(entities_create_response['id']).products.retrieve(entity_attribute_product_id)
-    expect_connect_results: EntityProduct = {
-        'id': entity_connect_product_id,
-        'name': 'connect',
-        'status': 'available',
-        'status_error': None,
-        'latest_request_id': entity_connect_product_response['latest_request_id'],
-        'is_subscribable': True,
-        'created_at': entity_connect_product_response['created_at'],
-        'updated_at': entity_connect_product_response['updated_at']
-    }
-
-    expect_credit_score_results: EntityProduct = {
-        'id': entity_credit_score_product_id,
-        'name': 'credit_score',
-        'status': 'available',
-        'status_error': None,
-        'latest_request_id': entity_credit_score_product_response['latest_request_id'],
-        'is_subscribable': True,
-        'created_at': entity_credit_score_product_response['created_at'],
-        'updated_at': entity_credit_score_product_response['updated_at']
-    }
-
-    expect_attribute_results: EntityProduct = {
-        'id': entities_retrieve_product_list_response.get('attribute', {}).get('id', ''),
-        'name': 'attribute',
-        'status': 'available',
-        'status_error': None,
-        'latest_request_id': entities_retrieve_product_list_response.get('attribute', {}).get('latest_request_id', None),
-        'is_subscribable': True,
-        'created_at': entities_retrieve_product_list_response.get('attribute', {}).get('created_at', ''),
-        'updated_at': entities_retrieve_product_list_response.get('attribute', {}).get('updated_at', ''),
-    }
-
-    expect_identity_results: EntityProduct = {
-        'id': entity_identity_product_id,
-        'name': 'identity',
-        'status': 'available',
-        'status_error': None,
-        'latest_request_id': entity_identity_product_response['latest_request_id'],
-        'is_subscribable': False,
-        'created_at': entity_identity_product_response['created_at'],
-        'updated_at': entity_identity_product_response['updated_at']
-    }
-
-    assert entity_connect_product_response == expect_connect_results
-    assert entity_credit_score_product_response == expect_credit_score_results
-    assert entity_identity_product_response == expect_identity_results
-    assert entity_attribute_product_response == expect_attribute_results
 # ENTITY SUBSCRIPTION TESTS
 
 def test_create_entity_connect_subscription():
