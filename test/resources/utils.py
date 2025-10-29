@@ -5,7 +5,7 @@ async def sleep(ms: int):
 
 async def await_results(fn):
     result = None
-    retries = 10
+    retries = 20
     while retries > 0:
         try:
             result = fn()
@@ -16,5 +16,8 @@ async def await_results(fn):
             print('Error occurred while retrieving account balances:', error)
             raise error  # Rethrow the error to fail the test
         retries -= 1
+
+    if result['status'] not in ['completed', 'failed']:
+        raise Exception('Result status is not completed or failed')
 
     return result
