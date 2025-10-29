@@ -20,19 +20,56 @@ SkipPIILiterals = Literal[
 ]
 
 
+AccountFiltersAccountTypesLiterals = Literal[
+    'credit_card',
+    'auto_loan',
+    'mortgage',
+    'personal_loan',
+    'student_loan'
+]
+
+
+SelectionTypeLiterals = Literal['single', 'multiple', 'all']
+
+
+class OpalAccountFiltersInclude(TypedDict):
+    account_types: List[AccountFiltersAccountTypesLiterals]
+
+
+class OpalAccountFiltersExclude(TypedDict):
+    account_types: List[AccountFiltersAccountTypesLiterals]
+    mch_ids: List[str]
+    unverified_account_numbers: bool
+
+
+class ConnectAccountFilters(TypedDict):
+    include: OpalAccountFiltersInclude
+    exclude: OpalAccountFiltersExclude
+
+
+class CardConnectAccountFiltersExclude(TypedDict):
+    mch_ids: List[str]
+    unverified_account_numbers: bool
+
+
+class CardConnectAccountFilters(TypedDict):
+    exclude: CardConnectAccountFiltersExclude
+
+
 class OpalIdentityVerificationCreateOpts(TypedDict):
     skip_pii: List[SkipPIILiterals]
 
 
 class OpalConnectCreateOpts(TypedDict):
     skip_pii: List[SkipPIILiterals]
-    selection_type: Literal['single', 'multiple', 'all']
-    allowed_account_types: Literal['credit_card', 'auto_loan', 'mortgage', 'personal_loan', 'student_loan']
+    selection_type: SelectionTypeLiterals
+    account_filters: ConnectAccountFilters
 
 
 class OpalCardConnectCreateOpts(TypedDict):
     skip_pii: List[SkipPIILiterals]
-    selection_type: Literal['single', 'multiple', 'all']
+    selection_type: SelectionTypeLiterals
+    account_filters: CardConnectAccountFilters
 
 
 class OpalAccountVerificationCreateOpts(TypedDict):
