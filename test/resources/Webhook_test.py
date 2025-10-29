@@ -12,6 +12,7 @@ webhooks_create_response = None
 webhooks_retrieve_response = None
 webhooks_list_response = None
 webhooks_delete_response = None
+webhooks_update_response = None
 
 def test_create_webhooks():
     global webhooks_create_response
@@ -64,6 +65,16 @@ def test_list_webhooks():
     webhook_ids = [webhook['id'] for webhook in webhooks_list_response]
 
     assert webhooks_create_response['id'] in webhook_ids
+
+
+def test_update_webhook():
+    global webhooks_update_response
+
+    webhooks_update_response = method.webhooks.update(webhooks_create_response['id'], {
+        'status': 'disabled'
+    })
+
+    assert webhooks_update_response['status'] == 'disabled'
 
 
 def test_delete_webhook():

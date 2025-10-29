@@ -170,6 +170,7 @@ def test_create_liability_account(setup):
         'card_brand': None,
         'payoff': None,
         'payment_instrument': None,
+        'payoff': None,
         'products': accounts_create_liability_response['products'],
         'restricted_products': accounts_create_liability_response['restricted_products'],
         'subscriptions': accounts_create_liability_response['subscriptions'],

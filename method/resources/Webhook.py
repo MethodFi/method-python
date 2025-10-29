@@ -93,6 +93,10 @@ class WebhookCreateOpts(TypedDict):
     expand_event: Optional[bool]
 
 
+class WebhookUpdateOpts(TypedDict):
+    status: Optional[str]
+
+
 class WebhookResource(Resource):
     def __init__(self, config: Configuration):
         super(WebhookResource, self).__init__(config.add_path('webhooks'))
@@ -109,3 +113,6 @@ class WebhookResource(Resource):
 
     def create(self, opts: WebhookCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Webhook]:
         return super(WebhookResource, self)._create(opts, request_opts)
+    
+    def update(self, _id: str, opts: WebhookUpdateOpts) -> MethodResponse[Webhook]:
+        return super(WebhookResource, self)._patch_with_id(_id, opts)

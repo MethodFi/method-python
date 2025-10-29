@@ -242,6 +242,10 @@ class Resource():
         return self._make_request('PUT', data=data)
 
     @MethodError.catch
+    def _patch_with_id(self, _id: str, data: Dict) -> MethodResponse[T]:
+        return self._make_request('PATCH', path=_id, data=data)
+
+    @MethodError.catch
     def _update_with_sub_path(self, path: str, data: Dict) -> MethodResponse[T]:
         return self._make_request('PUT', path=path, data=data)
 
