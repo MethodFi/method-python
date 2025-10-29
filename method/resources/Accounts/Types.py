@@ -193,6 +193,21 @@ class AccountLiabilityStudentLoans(AccountLiabilityBase):
     original_loan_amount: Optional[int]
     term_length: Optional[int]
 
+AccountLiabilitySubTypesLiterals = Literal[    
+    'business',
+    'unsecured',
+    'lease',
+    'loan',
+    'heloc',
+    'charge',
+    'flexible_spending',
+    'secured',
+    'purchase',
+    'note',
+    'private',
+    'federal',
+    'rent'
+]
 
 class AccountLiability(TypedDict):
     mch_id: str
@@ -200,6 +215,7 @@ class AccountLiability(TypedDict):
     ownership: Optional[AccountOwnershipLiterals]
     fingerprint: Optional[str]
     type: Optional[AccountLiabilityTypesLiterals]
+    sub_type: Optional[AccountLiabilitySubTypesLiterals]
     name: Optional[str]
 
 

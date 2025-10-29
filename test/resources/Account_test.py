@@ -162,6 +162,7 @@ def test_create_liability_account(setup):
             'ownership': 'unknown',
             'type': 'credit_card',
             'name': 'Chase Sapphire Reserve',
+            'sub_type': 'flexible_spending',
         },
         'latest_verification_session': accounts_create_liability_response['latest_verification_session'],
         'balance': None,
