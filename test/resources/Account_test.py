@@ -505,11 +505,8 @@ def test_update_account_verification_sessions(setup):
 @pytest.mark.asyncio
 async def test_retrieve_account_verification_session(setup):
     test_credit_card_account = setup['test_credit_card_account']
-
-    def get_verification_session():
-        return method.accounts(test_credit_card_account['id']).verification_sessions.retrieve(verification_session_update['id'])
     
-    verification_session_retrieve_response = await await_results(get_verification_session)
+    verification_session_retrieve_response = method.accounts(test_credit_card_account['id']).verification_sessions.retrieve(verification_session_update['id'])
 
     expect_results: AccountVerificationSession = {
         'id': verification_session_update['id'],

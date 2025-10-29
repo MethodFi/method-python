@@ -432,7 +432,7 @@ def test_create_entity_connect_async():
         'id': entities_connect_async_create_response['id'],
         'entity_id': entities_create_async_response['id'],
         'status': 'pending',
-        'accounts': [],
+        'accounts': None,
         'requested_products': [ 'update' ],
         'requested_subscriptions': [ 'update' ],
         'error': None,
