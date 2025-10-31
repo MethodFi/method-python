@@ -56,6 +56,7 @@ def test_simulate_account_opened(setup):
     })
     
     max_retries = 3
+    events_list_response = None
     for _ in range(max_retries):
         sleep(10)  
         events_list_response = method.events.list({
@@ -63,6 +64,8 @@ def test_simulate_account_opened(setup):
         })
         if events_list_response and len(events_list_response) > 0:
             break
+    
+    assert events_list_response is not None and len(events_list_response) > 0, "No events returned for 'account.opened'"
     
     event_response = events_list_response[0]
     event_retrieve_response = method.events.retrieve(event_response['id'])
