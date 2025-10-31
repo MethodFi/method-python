@@ -62,7 +62,7 @@ def test_simulate_account_opened(setup):
         events_list_response = method.events.list({
             'type': 'account.opened'
         })
-        if events_list_response and len(events_list_response) > 0:
+        if events_list_response is not None and len(events_list_response) > 0:
             break
     
     assert events_list_response is not None and len(events_list_response) > 0, "No events returned for 'account.opened'"
