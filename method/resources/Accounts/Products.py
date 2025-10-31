@@ -17,7 +17,7 @@ class AccountProduct(TypedDict):
     status: AccountProductTypeStatusLiterals
     status_error: Optional[ResourceError]
     latest_request_id: str
-    latest_successful_request_id: str
+    latest_successful_request_id: Optional[str]
     is_subscribable: bool
     created_at: str
     updated_at: str
@@ -37,9 +37,6 @@ class AccountProductListResponse(TypedDict):
 class AccountProductResource(Resource):
     def __init__(self, config: Configuration):
         super(AccountProductResource, self).__init__(config.add_path('products'))
-
-    def retrieve(self, prd_id: str) -> MethodResponse[AccountProduct]:
-        return super(AccountProductResource, self)._get_with_id(prd_id)
 
     def list(self) -> MethodResponse[AccountProductListResponse]:
         return super(AccountProductResource, self)._list()

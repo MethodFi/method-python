@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal, List
 
-from method.resource import MethodResponse, Resource, ResourceListOpts
+from method.resource import MethodResponse, RequestOpts, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -40,8 +40,8 @@ class EntityConnect(TypedDict):
     id: str
     status: EntityConnectResponseStatusLiterals
     accounts: Optional[List[str]]
-    requested_products: Optional[List[str]]
-    requested_subscriptions: Optional[List[str]]
+    requested_products: List[AccountProductsEligibleForAutomaticExecutionLiteral]
+    requested_subscriptions: List[AccountSubscriptionsEligibleForAutomaticExecutionLiteral]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
@@ -76,7 +76,8 @@ class EntityConnectResource(Resource):
     def create(
         self,
         opts: ConnectCreateOpts = {},
-        params: Optional[ConnectExpandOpts] = None
+        params: Optional[ConnectExpandOpts] = None,
+        request_opts: Optional[RequestOpts] = None
     ) -> MethodResponse[EntityConnect]:
-        return super(EntityConnectResource, self)._create(data=opts, params=params)
+        return super(EntityConnectResource, self)._create(data=opts, params=params, request_opts=request_opts)
  

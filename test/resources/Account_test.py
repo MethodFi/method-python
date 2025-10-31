@@ -161,13 +161,15 @@ def test_create_liability_account(setup):
             'mask': '8721',
             'ownership': 'unknown',
             'type': 'credit_card',
-            'name': 'Chase Credit Card',
+            'name': 'Chase Sapphire Reserve',
+            'sub_type': 'flexible_spending',
         },
         'latest_verification_session': accounts_create_liability_response['latest_verification_session'],
         'balance': None,
         'update': accounts_create_liability_response['update'],
         'attribute': accounts_create_liability_response['attribute'],
         'card_brand': None,
+        'payoff': None,
         'payment_instrument': None,
         'payoff': None,
         'products': accounts_create_liability_response['products'],
@@ -301,10 +303,7 @@ def test_create_card_brands(setup):
     expect_results: AccountCardBrand = {
         'id': card_brand_create_response['id'],
         'account_id': test_credit_card_account['id'],
-        'network': 'visa',
         'status': 'in_progress',
-        'issuer': card_brand_create_response['issuer'],
-        'last4': '1580',
         'brands': card_brand_create_response['brands'],
         'shared': False,
         'source': card_brand_create_response['source'],
@@ -325,10 +324,7 @@ def test_retrieve_card_brands(setup):
     expect_results = {
         'id': card_brand_create_response['id'],
         'account_id': test_credit_card_account['id'],
-        'network': 'visa',
         'status': 'completed',
-        'issuer': card_brand_create_response['issuer'],
-        'last4': '1580',
         'shared': False,
         'source': "network",
         'error': None,
@@ -343,7 +339,11 @@ def test_retrieve_card_brands(setup):
     assert brand['id'] == 'pdt_15_brd_1'
     assert brand['name'] == 'Chase Sapphire Reserve'
     assert brand['url'] == 'https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png'
-    assert isinstance(brand['art_id'], str) and brand['art_id'].startswith('art_')
+    assert brand['card_product_id'] == 'pdt_15'
+    assert brand['type'] == 'specific'
+    assert brand['network'] == 'visa'
+    assert brand['issuer'] == 'Chase'
+    assert brand['description'] == 'Chase Sapphire Reserve'
 
 @pytest.mark.asyncio
 async def test_list_card_brands(setup):
@@ -354,10 +354,7 @@ async def test_list_card_brands(setup):
 
     assert result['id'] == card_brand_create_response['id']
     assert result['account_id'] == test_credit_card_account['id']
-    assert result['network'] == 'visa'
     assert result['status'] == 'completed'
-    assert result['issuer'] == card_brand_create_response['issuer']
-    assert result['last4'] == '1580'
     assert result['shared'] is False
     assert result['source'] == 'network'
     assert result['error'] is None
@@ -368,7 +365,11 @@ async def test_list_card_brands(setup):
     assert brand['id'] == 'pdt_15_brd_1'
     assert brand['name'] == 'Chase Sapphire Reserve'
     assert brand['url'] == 'https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png'
-    assert isinstance(brand['art_id'], str) and brand['art_id'].startswith('art_')
+    assert brand['card_product_id'] == 'pdt_15'
+    assert brand['type'] == 'specific'
+    assert brand['network'] == 'visa'
+    assert brand['issuer'] == 'Chase'
+    assert brand['description'] == 'Chase Sapphire Reserve'
 
 def test_create_payoffs(setup):
     global payoff_create_response
@@ -505,11 +506,8 @@ def test_update_account_verification_sessions(setup):
 @pytest.mark.asyncio
 async def test_retrieve_account_verification_session(setup):
     test_credit_card_account = setup['test_credit_card_account']
-
-    def get_verification_session():
-        return method.accounts(test_credit_card_account['id']).verification_sessions.retrieve(verification_session_update['id'])
     
-    verification_session_retrieve_response = await await_results(get_verification_session)
+    verification_session_retrieve_response = method.accounts(test_credit_card_account['id']).verification_sessions.retrieve(verification_session_update['id'])
 
     expect_results: AccountVerificationSession = {
         'id': verification_session_update['id'],

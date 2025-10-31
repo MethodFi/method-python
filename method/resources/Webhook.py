@@ -33,6 +33,7 @@ WebhookTypesLiterals = Literal[
     'entity_verification_session.update',
     'connect.create',
     'connect.update',
+    'connect.available',
     'balance.create',
     'balance.update',
     'identity.create',
@@ -41,6 +42,7 @@ WebhookTypesLiterals = Literal[
     'account_verification_session.update',
     'card_brand.create',
     'card_brand.update',
+    'card_brand.available',
     'sensitive.create',
     'sensitive.update',
     'update.create',
@@ -65,6 +67,8 @@ WebhookTypesLiterals = Literal[
     'attribute.credit_health_payment_history.decreased',
     'attribute.credit_health_open_accounts.increased',
     'attribute.credit_health_open_accounts.decreased',
+    'method_jwk.create',
+    'method_jwk.update',
 ]
 
 

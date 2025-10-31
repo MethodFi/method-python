@@ -17,7 +17,7 @@ class EntityProduct(TypedDict):
     status: EntityProductTypeStatusLiterals
     status_error: Optional[ResourceError]
     latest_request_id: str
-    latest_successful_request_id: str
+    latest_successful_request_id: Optional[str]
     is_subscribable: bool
     created_at: str
     updated_at: str
@@ -34,9 +34,6 @@ class EntityProductListResponse(TypedDict):
 class EntityProductResource(Resource):
     def __init__(self, config: Configuration):
         super(EntityProductResource, self).__init__(config.add_path('products'))
-
-    def retrieve(self, prd_id: str) -> MethodResponse[EntityProduct]:
-        return super(EntityProductResource, self)._get_with_id(prd_id)
 
     def list(self) -> MethodResponse[EntityProductListResponse]:
         return super(EntityProductResource, self)._list()
