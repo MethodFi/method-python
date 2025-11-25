@@ -33,7 +33,6 @@ class MethodError(BaseException):
     def catch(fn):
         def wrapper(*args, **kwargs):
             res = fn(*args, **kwargs)
-            print(res)
             if (res is not None) and ('error' in res) and ('id' not in res):
                 raise MethodError.generate(res['error'])
             return res
@@ -49,7 +48,6 @@ class MethodError(BaseException):
             return MethodInvalidRequestError(opts)
         if error_type == 'API_ERROR':
             return MethodInternalError(opts)
-        return MethodError(opts)
 
 
 class MethodInternalError(MethodError):
