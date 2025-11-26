@@ -4,7 +4,7 @@ import json
 from typing import Generic, Optional, List, Dict, Any, TypeVar, TypedDict, Literal, Union
 from hammock import Hammock as Client  # type: ignore
 from method.configuration import Configuration
-from method.errors import MethodError
+from method.resources.exceptions import MethodError
 
 
 ResourceStatusLiterals = Literal[

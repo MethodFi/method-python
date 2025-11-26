@@ -2,7 +2,7 @@ from typing import TypedDict, Optional, List, Dict, Any, Literal
 
 from method.resource import MethodResponse, Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
-from method.errors import ResourceError
+from method.resources.exceptions import ResourceError
 from method.resources.Payments.Reversal import ReversalResource
 
 

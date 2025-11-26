@@ -2,7 +2,7 @@ from typing import List, TypedDict, Optional, Literal
 
 from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
-from method.errors import ResourceError
+from method.resources.exceptions import ResourceError
 
 
 AccountPayoffStatusesLiterals = Literal[

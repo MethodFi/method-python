@@ -2,7 +2,7 @@ from typing import TypedDict, Optional, List, Dict, Any
 
 from method.resource import MethodResponse, Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
-from method.errors import ResourceError
+from method.resources.exceptions import ResourceError
 from method.resources.Entities.Attributes import EntityAttributesResource
 from method.resources.Entities.Types import EntityTypesLiterals, EntityCapabilitiesLiterals, EntityStatusesLiterals, \
     CreditReportBureausLiterals, EntityIndividual, EntityCorporation, EntityAddress

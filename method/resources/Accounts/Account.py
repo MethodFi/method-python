@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Dict, List, Any, Literal, Union, TypeVar
 from method.resource import MethodResponse, Resource, RequestOpts
-from method.errors import ResourceError
+from method.resources.exceptions import ResourceError
 from method.configuration import Configuration
 from method.resources.Accounts.Types import AccountACH, AccountStatusesLiterals, AccountTypesLiterals, \
     AccountProductTypesLiterals, AccountSubscriptionTypesLiterals, AccountExpandableFieldsLiterals, \

@@ -1,4 +1,4 @@
 from method.method import Method
-from method.errors import MethodInternalError
-from method.errors import MethodAuthorizationError
-from method.errors import MethodInvalidRequestError
+from method.resources.exceptions import MethodInternalError
+from method.resources.exceptions import MethodAuthorizationError
+from method.resources.exceptions import MethodInvalidRequestError

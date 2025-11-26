@@ -2,7 +2,7 @@ from typing import TypedDict, Optional, Literal, List, Any
 
 from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
-from method.errors import ResourceError
+from method.resources.exceptions import ResourceError
 
 AccountPaymentInstrumentTypesLiterals = Literal[
     'card',

@@ -2,7 +2,7 @@ from typing import TypedDict, Optional, Literal, Dict, Any, Union
 
 from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
-from method.errors import ResourceError
+from method.resources.exceptions import ResourceError
 
 
 EntitySubscriptionNamesLiterals = Literal[

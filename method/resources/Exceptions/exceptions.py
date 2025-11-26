@@ -15,6 +15,7 @@ class MethodErrorOpts(TypedDict):
     code: str
 
 
+
 class MethodError(BaseException):
     type: MethodErrorTypesLiterals
     sub_type: str

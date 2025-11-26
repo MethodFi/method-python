@@ -2,7 +2,7 @@ from typing import TypedDict, Optional, List
 
 from method.resource import MethodResponse, Resource, ResourceListOpts, ResourceStatusLiterals
 from method.configuration import Configuration
-from method.errors import ResourceError
+from method.resources.exceptions import ResourceError
 from method.resources.Accounts.Types import AccountLiabilityTypesLiterals, AccountLiabilityAutoLoan, \
     AccountLiabilityCreditCard, AccountLiabilityMortgage, AccountLiabilityStudentLoans, AccountLiabilityPersonalLoan
 
