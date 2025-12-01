@@ -5,7 +5,7 @@ async def sleep(ms: int):
 
 async def await_results(fn):
     result = None
-    retries = 60  # Increased from 25 to 60 (5 minutes total)
+    retries = 120  # Increased to 120 (10 minutes total: 120 retries × 5 seconds)
     while retries > 0:
         try:
             result = fn()
@@ -18,6 +18,6 @@ async def await_results(fn):
         retries -= 1
 
     if result is None or result['status'] not in ['completed', 'failed']:
-        raise Exception(f'Result status is not completed or failed. Current status: {result["status"] if result else "None"}. Retries exhausted.')
+        raise Exception(f'Result status is not completed or failed. Current status: {result["status"] if result else "None"}. Retries exhausted after {120 - retries} attempts.')
 
     return result
