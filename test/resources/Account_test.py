@@ -379,6 +379,27 @@ async def test_list_card_brands(setup):
     assert brand['issuer'] == 'Chase'
     assert brand['description'] == 'Chase Sapphire Reserve'
 
+def test_simulate_card_brand(setup):
+    test_credit_card_account = setup['test_credit_card_account']
+
+    simulated_card_brand = method.simulate.accounts(test_credit_card_account['id']).card_brands.create({
+        'brand_id': 'pdt_15_brd_1'
+    })
+
+    assert simulated_card_brand['id'] is not None
+    assert simulated_card_brand['account_id'] == test_credit_card_account['id']
+    assert simulated_card_brand['status'] in ['pending', 'in_progress', 'completed']
+    assert simulated_card_brand['brands'] is not None
+    assert len(simulated_card_brand['brands']) > 0
+    assert simulated_card_brand['error'] is None
+    assert simulated_card_brand['created_at'] is not None
+    assert simulated_card_brand['updated_at'] is not None
+
+    brand = simulated_card_brand['brands'][0]
+    assert brand['id'] == 'pdt_15_brd_1'
+    assert brand['name'] == 'Chase Sapphire Reserve'
+    assert brand['card_product_id'] == 'pdt_15'
+
 def test_create_payoffs(setup):
     global payoff_create_response
     test_auto_loan_account = setup['test_auto_loan_account']
