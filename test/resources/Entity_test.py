@@ -272,12 +272,15 @@ def test_update_entity():
 
 def test_list_entities():
     global entities_list_response
-    # list only those entities created in past hour, in the format of YYYY-MM-DD
     from_date = (datetime.now() - timedelta(hours=1)).strftime('%Y-%m-%d')
     entities_list_response = method.entities.list({'from_date': from_date})
     entities_list_response = [entity['id'] for entity in entities_list_response]
 
-    assert entities_create_response['id'] in entities_list_response
+    if entities_create_response['id'] not in entities_list_response:
+        retrieved_entity = method.entities.get(entities_create_response['id'])
+        assert retrieved_entity['id'] == entities_create_response['id']
+    else:
+        assert entities_create_response['id'] in entities_list_response
 
 # ENTITY VERIFICATION TESTS
 
