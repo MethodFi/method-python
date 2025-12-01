@@ -276,9 +276,13 @@ def test_list_entities():
     entities_list_response = method.entities.list({'from_date': from_date})
     entities_list_response = [entity['id'] for entity in entities_list_response]
 
+    # The entity might not appear immediately due to indexing delays
+    # Check if it's in the list, or verify we can retrieve it directly
     if entities_create_response['id'] not in entities_list_response:
-        retrieved_entity = method.entities.get(entities_create_response['id'])
+        # Verify the entity exists by retrieving it directly
+        retrieved_entity = method.entities.retrieve(entities_create_response['id'])
         assert retrieved_entity['id'] == entities_create_response['id']
+        # Entity exists but not in list yet - this is acceptable due to eventual consistency
     else:
         assert entities_create_response['id'] in entities_list_response
 
