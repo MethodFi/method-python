@@ -29,10 +29,10 @@ class AccountProductListResponse(TypedDict):
     payment: Optional[AccountProduct]
     sensitive: Optional[AccountProduct]
     update: Optional[AccountProduct]
-    transactions: Optional[AccountProduct]
+    transaction: Optional[AccountProduct]
     payoff: Optional[AccountProduct]
     card_brand: Optional[AccountProduct]
-    payment_instruments: Optional[AccountProduct]
+    payment_instrument: Optional[AccountProduct]
 
 class AccountProductResource(Resource):
     def __init__(self, config: Configuration):
