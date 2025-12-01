@@ -127,6 +127,9 @@ def test_create_ach_account(setup):
         'latest_verification_session': accounts_create_ach_response['latest_verification_session'],
         'products': ['payment'],
         'restricted_products': [],
+        'subscriptions': [],
+        'available_subscriptions': [],
+        'restricted_subscriptions': [],
         'status': 'active',
         'error': None,
         'metadata': None,
@@ -149,8 +152,6 @@ def test_create_liability_account(setup):
         },
     })
 
-    accounts_create_liability_response['products'] = accounts_create_liability_response['products'].sort()
-
     expect_results: Account = {
         'id': accounts_create_liability_response['id'],
         'holder_id': holder_1_response['id'],
@@ -171,7 +172,6 @@ def test_create_liability_account(setup):
         'card_brand': None,
         'payoff': None,
         'payment_instrument': None,
-        'payoff': None,
         'products': accounts_create_liability_response['products'],
         'restricted_products': accounts_create_liability_response['restricted_products'],
         'subscriptions': accounts_create_liability_response['subscriptions'],
@@ -202,6 +202,9 @@ def test_retrieve_account(setup):
         'latest_verification_session': accounts_create_ach_response['latest_verification_session'],
         'products': ['payment'],
         'restricted_products': [],
+        'subscriptions': [],
+        'available_subscriptions': [],
+        'restricted_subscriptions': [],
         'status': 'active',
         'error': None,
         'metadata': None,
@@ -279,7 +282,13 @@ async def test_retrieve_balance(setup):
 @pytest.mark.asyncio
 async def test_list_balances(setup):
     test_credit_card_account = setup['test_credit_card_account']
-    
+
+    def get_balance_list():
+        balances = method.accounts(test_credit_card_account['id']).balances.list()
+        return balances[0] if balances else None
+
+    balances_list_response_item = await await_results(get_balance_list)
+
     balances_list_response = method.accounts(test_credit_card_account['id']).balances.list()
 
     expect_results: AccountBalance = {
@@ -417,7 +426,13 @@ async def test_retrieve_payoffs(setup):
 @pytest.mark.asyncio
 async def test_list_payoffs(setup):
     test_auto_loan_account = setup['test_auto_loan_account']
-    
+
+    def get_payoff_list():
+        payoffs = method.accounts(test_auto_loan_account['id']).payoffs.list()
+        return payoffs[0] if payoffs else None
+
+    payoff_list_response_item = await await_results(get_payoff_list)
+
     payoff_list_response = method.accounts(test_auto_loan_account['id']).payoffs.list()
 
     expect_results: AccountPayoff = {
@@ -911,11 +926,17 @@ async def test_retrieve_updates(setup):
 
 
 
-def test_list_updates_for_account(setup):
+@pytest.mark.asyncio
+async def test_list_updates_for_account(setup):
     test_credit_card_account = setup['test_credit_card_account']
 
-    list_updates_response = method.accounts(test_credit_card_account['id']).updates.list()
+    def get_update_list():
+        updates = method.accounts(test_credit_card_account['id']).updates.list()
+        return next((update for update in updates if update['id'] == create_updates_response['id']), None)
 
+    update_to_check = await await_results(get_update_list)
+
+    list_updates_response = method.accounts(test_credit_card_account['id']).updates.list()
     update_to_check = next((update for update in list_updates_response if update['id'] == create_updates_response['id']), None)
 
     expect_results: AccountUpdate = {
@@ -1089,15 +1110,35 @@ def test_list_account_products(setup):
             'created_at': account_products_list_response.get('card_brand', {}).get('created_at', ''),
             'updated_at': account_products_list_response.get('card_brand', {}).get('updated_at', ''),
         },
-        'payment_instrument': {
-            'name': 'payment_instrument',
+        'payment_instrument.card': {
+            'name': 'payment_instrument.card',
             'status': 'restricted',
-            'status_error': account_products_list_response.get('payment_instrument', {}).get('status_error', None),
-            'latest_request_id': account_products_list_response.get('payment_instrument', {}).get('latest_request_id', None),
-            'latest_successful_request_id': account_products_list_response.get('payment_instrument', {}).get('latest_successful_request_id', None),
+            'status_error': account_products_list_response.get('payment_instrument.card', {}).get('status_error', None),
+            'latest_request_id': account_products_list_response.get('payment_instrument.card', {}).get('latest_request_id', None),
+            'latest_successful_request_id': account_products_list_response.get('payment_instrument.card', {}).get('latest_successful_request_id', None),
             'is_subscribable': True,
-            'created_at': account_products_list_response.get('payment_instrument', {}).get('created_at', ''),
-            'updated_at': account_products_list_response.get('payment_instrument', {}).get('updated_at', ''),
+            'created_at': account_products_list_response.get('payment_instrument.card', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('payment_instrument.card', {}).get('updated_at', ''),
+        },
+        'payment_instrument.inbound_achwire_payment': {
+            'name': 'payment_instrument.inbound_achwire_payment',
+            'status': 'restricted',
+            'status_error': account_products_list_response.get('payment_instrument.inbound_achwire_payment', {}).get('status_error', None),
+            'latest_request_id': account_products_list_response.get('payment_instrument.inbound_achwire_payment', {}).get('latest_request_id', None),
+            'latest_successful_request_id': account_products_list_response.get('payment_instrument.inbound_achwire_payment', {}).get('latest_successful_request_id', None),
+            'is_subscribable': False,
+            'created_at': account_products_list_response.get('payment_instrument.inbound_achwire_payment', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('payment_instrument.inbound_achwire_payment', {}).get('updated_at', ''),
+        },
+        'payment_instrument.network_token': {
+            'name': 'payment_instrument.network_token',
+            'status': 'restricted',
+            'status_error': account_products_list_response.get('payment_instrument.network_token', {}).get('status_error', None),
+            'latest_request_id': account_products_list_response.get('payment_instrument.network_token', {}).get('latest_request_id', None),
+            'latest_successful_request_id': account_products_list_response.get('payment_instrument.network_token', {}).get('latest_successful_request_id', None),
+            'is_subscribable': True,
+            'created_at': account_products_list_response.get('payment_instrument.network_token', {}).get('created_at', ''),
+            'updated_at': account_products_list_response.get('payment_instrument.network_token', {}).get('updated_at', ''),
         }
     }
 
