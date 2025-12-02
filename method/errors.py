@@ -49,6 +49,8 @@ class MethodError(BaseException):
         if error_type == 'API_ERROR':
             return MethodInternalError(opts)
 
+        return MethodError(opts)
+
 
 class MethodInternalError(MethodError):
     pass

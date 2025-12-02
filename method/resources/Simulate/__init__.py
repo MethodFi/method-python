@@ -1,3 +1,4 @@
 from method.resources.Simulate.Simulate import SimulateResource
 from method.resources.Simulate.Transactions import SimulateTransactionsResource
 from method.resources.Simulate.Payments import SimulatePaymentResource
+from method.resources.Simulate.CardBrand import SimulateCardBrandResource
