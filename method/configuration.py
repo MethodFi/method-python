@@ -18,6 +18,7 @@ Environments = [
 class ConfigurationOpts(TypedDict):
     api_key: str
     env: Optional[EnvironmentLiterals]
+    base_url: Optional[str]
 
 
 class Configuration:
@@ -26,7 +27,7 @@ class Configuration:
     env: EnvironmentLiterals
 
     def __init__(self, opts: ConfigurationOpts):
-        url = 'https://{env}.methodfi.com'
+        url = opts.get('base_url', 'https://{env}.methodfi.com')
 
         self.__validate(opts)
         self.api_key = opts.get('api_key', '')
