@@ -59,6 +59,7 @@ class PaymentFee(TypedDict):
 class Payment(TypedDict):
     id: str
     reversal_id: Optional[str]
+    reversal_account: str
     source_trace_id: Optional[str]
     destination_trace_id: Optional[str]
     source: str
@@ -89,6 +90,7 @@ class PaymentCreateOpts(TypedDict):
     metadata: Optional[Dict[str, Any]]
     fee: Optional[PaymentFee]
     dry_run: Optional[bool]
+    reversal_account: Optional[str]
 
 
 class PaymentListOpts(ResourceListOpts):
