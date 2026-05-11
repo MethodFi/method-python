@@ -25,7 +25,8 @@ AccountFiltersAccountTypesLiterals = Literal[
     'auto_loan',
     'mortgage',
     'personal_loan',
-    'student_loan'
+    'student_loan',
+    'student_loans'
 ]
 
 
