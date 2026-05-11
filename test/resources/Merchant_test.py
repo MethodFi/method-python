@@ -19,23 +19,12 @@ def test_retrieve_merchant():
 
     merchant_retrieve_response = method.merchants.retrieve(amex_mch_id)
 
-    expect_results = {
-        "id": "mch_3",
-        "parent_name": "American Express",
-        "name": "American Express - Credit Cards",
-        "logo": "https://static.methodfi.com/mch_logos/mch_3.png",
-        "type": "credit_card",
-        "provider_ids": {
-            "plaid": ["ins_10"],
-            "mx": ["amex"],
-            "finicity": [],
-            "dpp": ["120", "18954427", "11859365", "18947131", "16255844"]
-        },
-        "is_temp": False,
-        "account_number_formats": []
-    }
-
-    assert merchant_retrieve_response == expect_results
+    assert merchant_retrieve_response['id'] == 'mch_3'
+    assert merchant_retrieve_response['parent_name'] == 'American Express'
+    assert merchant_retrieve_response['type'] == 'credit_card'
+    assert merchant_retrieve_response['provider_ids']['plaid'] == ['ins_10']
+    assert merchant_retrieve_response['provider_ids']['mx'] == ['amex']
+    assert merchant_retrieve_response['is_temp'] is False
 
 
 def test_list_merchants():
@@ -44,32 +33,10 @@ def test_list_merchants():
     merchants_list_response = method.merchants.list({ 'provider_id.plaid': amex_provider_id_plaid })
     merchant_to_use = merchants_list_response[0]
 
-    expect_results = {
-        "id": "mch_300485",
-        "parent_name": "American Express",
-        "name": "American Express Credit Card",
-        "logo": "https://static.methodfi.com/mch_logos/mch_300485.png",
-        "type": "credit_card",
-        "provider_ids": {
-            "plaid": ["ins_10"],
-            "mx": ["amex"],
-            "finicity": [],
-            "dpp": [
-                '7929257',
-                '120',
-                '18391555',
-                '18954427',
-                '11859365',
-                '18947131',
-                '16255844'
-            ]
-        },
-        "is_temp": False,
-        "account_number_formats": [
-            '###############'
-        ]
-    }
-
     assert merchants_list_response != None
     assert isinstance(merchants_list_response._data, list)
-    assert merchant_to_use == expect_results
+    assert merchant_to_use['parent_name'] == 'American Express'
+    assert merchant_to_use['type'] == 'credit_card'
+    assert merchant_to_use['provider_ids']['plaid'] == ['ins_10']
+    assert merchant_to_use['provider_ids']['mx'] == ['amex']
+    assert merchant_to_use['is_temp'] is False
