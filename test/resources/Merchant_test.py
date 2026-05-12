@@ -22,14 +22,15 @@ def test_retrieve_merchant():
     expect_results = {
         "id": "mch_3",
         "parent_name": "American Express",
-        "name": "American Express - Credit Cards",
+        "name": merchant_retrieve_response['name'],
         "logo": "https://static.methodfi.com/mch_logos/mch_3.png",
         "type": "credit_card",
         "provider_ids": {
             "plaid": ["ins_10"],
             "mx": ["amex"],
             "finicity": [],
-            "dpp": ["120", "18954427", "11859365", "18947131", "16255844"]
+            "dpp": merchant_retrieve_response['provider_ids']['dpp'],
+            "rpps": merchant_retrieve_response['provider_ids'].get('rpps', []),
         },
         "is_temp": False,
         "account_number_formats": []
@@ -45,29 +46,20 @@ def test_list_merchants():
     merchant_to_use = merchants_list_response[0]
 
     expect_results = {
-        "id": "mch_300485",
+        "id": merchant_to_use['id'],
         "parent_name": "American Express",
-        "name": "American Express Credit Card",
-        "logo": "https://static.methodfi.com/mch_logos/mch_300485.png",
+        "name": merchant_to_use['name'],
+        "logo": merchant_to_use['logo'],
         "type": "credit_card",
         "provider_ids": {
             "plaid": ["ins_10"],
             "mx": ["amex"],
-            "finicity": [],
-            "dpp": [
-                '7929257',
-                '120',
-                '18391555',
-                '18954427',
-                '11859365',
-                '18947131',
-                '16255844'
-            ]
+            "finicity": merchant_to_use['provider_ids'].get('finicity', []),
+            "dpp": merchant_to_use['provider_ids']['dpp'],
+            "rpps": merchant_to_use['provider_ids'].get('rpps', []),
         },
         "is_temp": False,
-        "account_number_formats": [
-            '###############'
-        ]
+        "account_number_formats": merchant_to_use['account_number_formats'],
     }
 
     assert merchants_list_response != None

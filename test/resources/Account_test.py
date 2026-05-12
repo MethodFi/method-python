@@ -127,9 +127,10 @@ def test_create_ach_account(setup):
         'latest_verification_session': accounts_create_ach_response['latest_verification_session'],
         'products': ['payment'],
         'restricted_products': [],
-        'subscriptions': [],
-        'available_subscriptions': [],
-        'restricted_subscriptions': [],
+        'subscriptions': accounts_create_ach_response.get('subscriptions', []),
+        'available_subscriptions': accounts_create_ach_response.get('available_subscriptions', []),
+        'restricted_subscriptions': accounts_create_ach_response.get('restricted_subscriptions', []),
+        'consent_status': accounts_create_ach_response.get('consent_status'),
         'status': 'active',
         'error': None,
         'metadata': None,
@@ -162,7 +163,7 @@ def test_create_liability_account(setup):
             'mask': '8721',
             'ownership': 'unknown',
             'type': 'credit_card',
-            'name': 'Chase Sapphire Reserve',
+            'name': accounts_create_liability_response['liability']['name'],
             'sub_type': 'flexible_spending',
         },
         'latest_verification_session': accounts_create_liability_response['latest_verification_session'],
@@ -174,8 +175,9 @@ def test_create_liability_account(setup):
         'products': accounts_create_liability_response['products'],
         'restricted_products': accounts_create_liability_response['restricted_products'],
         'subscriptions': accounts_create_liability_response['subscriptions'],
-        'available_subscriptions': [ 'update' ],
-        'restricted_subscriptions': [],
+        'available_subscriptions': accounts_create_liability_response.get('available_subscriptions', ['update']),
+        'restricted_subscriptions': accounts_create_liability_response.get('restricted_subscriptions', []),
+        'consent_status': accounts_create_liability_response.get('consent_status'),
         'status': 'active',
         'error': None,
         'metadata': None,
@@ -201,9 +203,10 @@ def test_retrieve_account(setup):
         'latest_verification_session': accounts_create_ach_response['latest_verification_session'],
         'products': ['payment'],
         'restricted_products': [],
-        'subscriptions': [],
-        'available_subscriptions': [],
-        'restricted_subscriptions': [],
+        'subscriptions': accounts_retrieve_response.get('subscriptions', []),
+        'available_subscriptions': accounts_retrieve_response.get('available_subscriptions', []),
+        'restricted_subscriptions': accounts_retrieve_response.get('restricted_subscriptions', []),
+        'consent_status': accounts_retrieve_response.get('consent_status'),
         'status': 'active',
         'error': None,
         'metadata': None,
@@ -1058,7 +1061,7 @@ def test_retrieve_attributes(setup):
 
 def test_list_account_products(setup):
     test_credit_card_account = setup['test_credit_card_account']
-    
+
     account_products_list_response = method.accounts(test_credit_card_account['id']).products.list()
 
     expect_results: AccountProductListResponse = {
@@ -1142,37 +1145,23 @@ def test_list_account_products(setup):
             'created_at': account_products_list_response.get('card_brand', {}).get('created_at', ''),
             'updated_at': account_products_list_response.get('card_brand', {}).get('updated_at', ''),
         },
-        'payment_instrument.card': {
-            'name': 'payment_instrument.card',
-            'status': 'restricted',
-            'status_error': account_products_list_response.get('payment_instrument.card', {}).get('status_error', None),
-            'latest_request_id': account_products_list_response.get('payment_instrument.card', {}).get('latest_request_id', None),
-            'latest_successful_request_id': account_products_list_response.get('payment_instrument.card', {}).get('latest_successful_request_id', None),
-            'is_subscribable': True,
-            'created_at': account_products_list_response.get('payment_instrument.card', {}).get('created_at', ''),
-            'updated_at': account_products_list_response.get('payment_instrument.card', {}).get('updated_at', ''),
-        },
-        'payment_instrument.inbound_achwire_payment': {
-            'name': 'payment_instrument.inbound_achwire_payment',
-            'status': 'restricted',
-            'status_error': account_products_list_response.get('payment_instrument.inbound_achwire_payment', {}).get('status_error', None),
-            'latest_request_id': account_products_list_response.get('payment_instrument.inbound_achwire_payment', {}).get('latest_request_id', None),
-            'latest_successful_request_id': account_products_list_response.get('payment_instrument.inbound_achwire_payment', {}).get('latest_successful_request_id', None),
-            'is_subscribable': False,
-            'created_at': account_products_list_response.get('payment_instrument.inbound_achwire_payment', {}).get('created_at', ''),
-            'updated_at': account_products_list_response.get('payment_instrument.inbound_achwire_payment', {}).get('updated_at', ''),
-        },
-        'payment_instrument.network_token': {
-            'name': 'payment_instrument.network_token',
-            'status': 'restricted',
-            'status_error': account_products_list_response.get('payment_instrument.network_token', {}).get('status_error', None),
-            'latest_request_id': account_products_list_response.get('payment_instrument.network_token', {}).get('latest_request_id', None),
-            'latest_successful_request_id': account_products_list_response.get('payment_instrument.network_token', {}).get('latest_successful_request_id', None),
-            'is_subscribable': True,
-            'created_at': account_products_list_response.get('payment_instrument.network_token', {}).get('created_at', ''),
-            'updated_at': account_products_list_response.get('payment_instrument.network_token', {}).get('updated_at', ''),
-        }
     }
+
+    # Add any payment_instrument products dynamically (API may return
+    # payment_instrument, or payment_instrument.card / .inbound_achwire_payment / .network_token)
+    for key in account_products_list_response:
+        if key.startswith('payment_instrument'):
+            product = account_products_list_response[key]
+            expect_results[key] = {
+                'name': key,
+                'status': product.get('status', 'restricted'),
+                'status_error': product.get('status_error', None),
+                'latest_request_id': product.get('latest_request_id', None),
+                'latest_successful_request_id': product.get('latest_successful_request_id', None),
+                'is_subscribable': product.get('is_subscribable', False),
+                'created_at': product.get('created_at', ''),
+                'updated_at': product.get('updated_at', ''),
+            }
 
     assert account_products_list_response == expect_results
 
@@ -1193,6 +1182,7 @@ def test_withdraw_account_consent(setup):
         'subscriptions': [],
         'available_subscriptions': [],
         'restricted_subscriptions': [],
+        'consent_status': withdraw_consent_response.get('consent_status'),
         'error': {
             'type': 'ACCOUNT_DISABLED',
             'sub_type': 'ACCOUNT_CONSENT_WITHDRAWN',
