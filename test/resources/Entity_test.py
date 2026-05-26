@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from utils import await_results
 from method.resources.Entities.Entity import Entity
 from method.resources.Entities.Connect import EntityConnect
+from method.resources.Entities.ManualConnect import ManualConnectCreateOpts
 from method.resources.Entities.CreditScores import EntityCreditScores
 from method.resources.Entities.Identities import EntityIdentity
 from method.resources.Entities.Products import EntityProduct, EntityProductListResponse
@@ -29,6 +30,7 @@ entities_update_async_response = None
 entities_list_response = None
 entities_connect_create_response = None
 entities_connect_async_create_response = None
+entities_manual_connect_create_response = None
 entities_account_list_response = None
 entities_account_ids = None
 entities_create_credit_score_response = None
@@ -469,6 +471,53 @@ async def test_retrieve_entity_connect_async():
     }
 
     assert connect_async_retrieve_response == expect_results
+
+# ENTITY MANUAL CONNECT TESTS
+
+def test_create_entity_manual_connect():
+    global entities_manual_connect_create_response
+    entities_manual_connect_create_response = method.entities(entities_create_response['id']).manual_connect.create({
+        'bureau': 'equifax',
+        'tradelines': [
+            {
+                'type_code': '48',
+                'portfolio_type_code': 'R',
+                'designator_code': 'I',
+                'number': '1234567890',
+                'creditor_name': 'Test Creditor',
+                'creditor_code': 'TC001',
+                'balance': 100000,
+                'highest_balance': 150000,
+                'credit_limit': 200000,
+                'term': 12,
+                'next_payment_minimum_amount': 5000,
+                'last_payment_amount': 10000,
+                'payment_history': ['1', '1', '1'],
+                'past_due_amount': None,
+                'delinquency_charge_off_amount': None,
+                'opened_at': '2020-01-01',
+                'closed_at': None,
+                'last_activity_date': '2023-01-01',
+                'reported_date': '2023-01-01',
+                'next_payment_due_date': '2023-02-01',
+                'last_payment_date': '2023-01-15',
+                'delinquency_first_start_date': None,
+                'narrative_codes': [],
+                'external_id': 'ext_001',
+            }
+        ]
+    })
+
+    assert entities_manual_connect_create_response is not None
+    assert entities_manual_connect_create_response['id'] is not None
+
+
+def test_retrieve_entity_manual_connect():
+    manual_connect_retrieve_response = method.entities(entities_create_response['id']).manual_connect.retrieve(entities_manual_connect_create_response['id'])
+
+    assert manual_connect_retrieve_response is not None
+    assert manual_connect_retrieve_response['id'] == entities_manual_connect_create_response['id']
+
 
 # ENTITY CREDIT SCORE TESTS
 

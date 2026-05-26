@@ -14,6 +14,7 @@ from method.resources.Entities.Products import EntityProductResource
 from method.resources.Entities.Sensitive import EntitySensitiveResource
 from method.resources.Entities.Subscriptions import EntitySubscriptionsResource
 from method.resources.Entities.VerificationSessions import EntityVerificationSessionResource
+from method.resources.Entities.ManualConnect import EntityManualConnectResource
 
 
 class EntityCreateOpts(TypedDict):
@@ -111,6 +112,7 @@ class EntitySubResources:
     connect: EntityConnectResource
     credit_scores: EntityCreditScoresResource
     identities: EntityIdentityResource
+    manual_connect: EntityManualConnectResource
     vehicles: EntityVehiclesResource
     products: EntityProductResource
     sensitive: EntitySensitiveResource
@@ -122,6 +124,7 @@ class EntitySubResources:
         self.connect = EntityConnectResource(config.add_path(_id))
         self.credit_scores = EntityCreditScoresResource(config.add_path(_id))
         self.identities = EntityIdentityResource(config.add_path(_id))
+        self.manual_connect = EntityManualConnectResource(config.add_path(_id))
         self.vehicles = EntityVehiclesResource(config.add_path(_id))
         self.products = EntityProductResource(config.add_path(_id))
         self.sensitive = EntitySensitiveResource(config.add_path(_id))

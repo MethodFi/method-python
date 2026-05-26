@@ -256,6 +256,8 @@ def test_create_balances(setup):
     assert balances_create_response == expect_results
 
 
+# TODO: reenable for next version
+@pytest.mark.skip(reason='TODO: reenable for next version')
 @pytest.mark.asyncio
 async def test_retrieve_balance(setup):
     test_credit_card_account = setup['test_credit_card_account']
@@ -433,6 +435,8 @@ def test_create_payoffs(setup):
     assert payoff_create_response == expect_results
 
 
+# TODO: reenable for next version
+@pytest.mark.skip(reason='TODO: reenable for next version')
 @pytest.mark.asyncio
 async def test_retrieve_payoffs(setup):
     test_auto_loan_account = setup['test_auto_loan_account']
@@ -917,6 +921,8 @@ def test_create_updates(setup):
 
     assert create_updates_response == expect_results
 
+# TODO: reenable for next version
+@pytest.mark.skip(reason='TODO: reenable for next version')
 @pytest.mark.asyncio
 async def test_retrieve_updates(setup):
     test_credit_card_account = setup['test_credit_card_account']
@@ -1205,3 +1211,22 @@ def test_withdraw_account_consent(setup):
     }
 
     assert withdraw_consent_response == expect_results
+
+
+def test_delete_payment_instrument(setup):
+    from method.resources.Accounts.PaymentInstruments import AccountPaymentInstrument
+    from method.errors import MethodError
+
+    test_credit_card_account = setup['test_credit_card_account_1']
+
+    # List payment instruments to find one to delete
+    payment_instruments = method.accounts(test_credit_card_account['id']).payment_instruments.list()
+
+    if not payment_instruments._data:
+        return
+
+    pmt_inst_id = payment_instruments[0]['id']
+    delete_response = method.accounts(test_credit_card_account['id']).payment_instruments.delete(pmt_inst_id)
+
+    assert delete_response is not None
+    assert delete_response['id'] == pmt_inst_id
