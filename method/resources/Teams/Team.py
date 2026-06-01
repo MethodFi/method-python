@@ -80,7 +80,7 @@ class TeamPublicKeysResource(Resource):
         return super(TeamPublicKeysResource, self)._get_with_id(key_id)
 
     def create(self, opts: MLEPublicKeyCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[MLEPublicKey]:
-        return super(TeamPublicKeysResource, self)._create(opts, request_opts)
+        return super(TeamPublicKeysResource, self)._create(opts, request_opts=request_opts)
 
     def delete(self, key_id: str) -> MethodResponse[MLEPublicKey]:
         return super(TeamPublicKeysResource, self)._delete(key_id)
