@@ -12,18 +12,18 @@ TeamStatusesLiterals = Literal[
 ]
 
 
-class TeamProduct(TypedDict):
-    type: str
-    enabled: bool
+class TeamContact(TypedDict):
+    name: Optional[str]
+    email: Optional[str]
+    type: Optional[str]
 
 
-class TeamKey(TypedDict):
-    id: str
-    type: Literal['secret', 'public']
-    deleted: bool
-    created_at: str
-    updated_at: str
-    last_used_at: Optional[str]
+class TeamAddress(TypedDict):
+    line1: Optional[str]
+    city: Optional[str]
+    state: Optional[str]
+    zipcode: Optional[str]
+    country: Optional[str]
 
 
 class Team(TypedDict):
@@ -31,11 +31,11 @@ class Team(TypedDict):
     parent_id: Optional[str]
     name: str
     legal_name: str
-    logo: Optional[str]
-    api_version: str
+    ein: Optional[str]
+    contacts: List[TeamContact]
+    address: TeamAddress
     status: TeamStatusesLiterals
-    products: List[TeamProduct]
-    keys: List[TeamKey]
+    logo: Optional[str]
     created_at: str
     updated_at: str
 
@@ -48,15 +48,25 @@ class TeamEncryptionKeyOpts(TypedDict):
     key: str
 
 
+MLEPublicKeyTypesLiterals = Literal['direct', 'well_known']
+
+
 class MLEPublicKey(TypedDict):
     id: str
-    jwk: Dict[str, Any]
+    type: MLEPublicKeyTypesLiterals
+    jwk: Optional[Dict[str, Any]]
+    well_known_endpoint: Optional[str]
+    contact: str
+    status: str
     created_at: str
     updated_at: str
 
 
 class MLEPublicKeyCreateOpts(TypedDict):
-    jwk: Dict[str, Any]
+    type: MLEPublicKeyTypesLiterals
+    contact: str
+    jwk: Optional[Dict[str, Any]]
+    well_known_endpoint: Optional[str]
 
 
 class TeamPublicKeysResource(Resource):

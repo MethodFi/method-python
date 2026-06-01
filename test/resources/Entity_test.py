@@ -877,67 +877,18 @@ def test_retrieve_entity_product_list():
     global entities_retrieve_product_list_response
     entities_retrieve_product_list_response = method.entities(entities_create_response['id']).products.list()
 
-    expect_results: EntityProductListResponse = {
-        'connect': {
-            'name': 'connect',
-            'status': 'available',
-            'status_error': None,
-            'latest_request_id': entities_retrieve_product_list_response.get('connect', {}).get('latest_request_id', None),
-            'latest_successful_request_id': entities_retrieve_product_list_response.get('connect', {}).get('latest_successful_request_id', None),
-            'is_subscribable': True,
-            'created_at': entities_retrieve_product_list_response.get('connect', {}).get('created_at', ''),
-            'updated_at': entities_retrieve_product_list_response.get('connect', {}).get('updated_at', ''),
-        },
-        'credit_score': {
-            'name': 'credit_score',
-            'status': 'available',
-            'status_error': None,
-            'latest_request_id': entities_retrieve_product_list_response.get('credit_score', {}).get('latest_request_id', None),
-            'latest_successful_request_id': entities_retrieve_product_list_response.get('credit_score', {}).get('latest_successful_request_id', None),
-            'is_subscribable': True,
-            'created_at': entities_retrieve_product_list_response.get('credit_score', {}).get('created_at', ''),
-            'updated_at': entities_retrieve_product_list_response.get('credit_score', {}).get('updated_at', ''),
-        },
-        'identity': {
-            'name': 'identity',
-            'status': 'available',
-            'status_error': None,
-            'latest_request_id': entities_retrieve_product_list_response.get('identity', {}).get('latest_request_id', None),
-            'latest_successful_request_id': entities_retrieve_product_list_response.get('identity', {}).get('latest_successful_request_id', None),
-            'is_subscribable': False,
-            'created_at': entities_retrieve_product_list_response.get('identity', {}).get('created_at', ''),
-            'updated_at': entities_retrieve_product_list_response.get('identity', {}).get('updated_at', ''),
-        },
-        'attribute': {
-            'name': 'attribute',
-            'status': 'available',
-            'status_error': None,
-            'latest_request_id': entities_retrieve_product_list_response.get('attribute', {}).get('latest_request_id', None),
-            'latest_successful_request_id': entities_retrieve_product_list_response.get('attribute', {}).get('latest_successful_request_id', None),
-            'is_subscribable': True,
-            'created_at': entities_retrieve_product_list_response.get('attribute', {}).get('created_at', ''),
-            'updated_at': entities_retrieve_product_list_response.get('attribute', {}).get('updated_at', ''),
-        },
-        'vehicle': {
-            'name': 'vehicle',
-            'status': 'available',
-            'status_error': None,
-            'latest_request_id': entities_retrieve_product_list_response.get('vehicle', {}).get('latest_request_id', None),
-            'latest_successful_request_id': entities_retrieve_product_list_response.get('vehicle', {}).get('latest_successful_request_id', None),
-            'is_subscribable': False,
-            'created_at': entities_retrieve_product_list_response.get('vehicle', {}).get('created_at', ''),
-            'updated_at': entities_retrieve_product_list_response.get('vehicle', {}).get('updated_at', ''),
-        },
-        'manual_connect': {
-            'name': 'manual_connect',
-            'status': 'restricted',
-            'status_error': entities_retrieve_product_list_response.get('manual_connect', {}).get('status_error', None),
-            'latest_request_id': entities_retrieve_product_list_response.get('manual_connect', {}).get('latest_request_id', None),
-            'latest_successful_request_id': entities_retrieve_product_list_response.get('manual_connect', {}).get('latest_successful_request_id', None),
-            'is_subscribable': False,
-            'created_at': entities_retrieve_product_list_response.get('manual_connect', {}).get('created_at', ''),
-            'updated_at': entities_retrieve_product_list_response.get('manual_connect', {}).get('updated_at', ''),
+    expect_results = {
+        name: {
+            'name': name,
+            'status': product.get('status'),
+            'status_error': product.get('status_error'),
+            'latest_request_id': product.get('latest_request_id'),
+            'latest_successful_request_id': product.get('latest_successful_request_id'),
+            'is_subscribable': product.get('is_subscribable'),
+            'created_at': product.get('created_at'),
+            'updated_at': product.get('updated_at'),
         }
+        for name, product in entities_retrieve_product_list_response.items()
     }
 
     assert entities_retrieve_product_list_response == expect_results

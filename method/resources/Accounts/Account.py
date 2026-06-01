@@ -54,6 +54,7 @@ AccountListOpts = TypedDict('AccountListOpts', {
 class Account(TypedDict):
     id: str
     holder_id: str
+    consent_status: Optional[str]
     status: AccountStatusesLiterals
     type: AccountTypesLiterals
     ach: Optional[AccountACH]

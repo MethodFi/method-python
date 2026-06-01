@@ -24,8 +24,9 @@ def test_create_secret():
 
     expect_results = {
         'id': secret_create_response['id'],
-        'metadata': secret_create_response['metadata'],
         'status': 'active',
+        'error': secret_create_response['error'],
+        'metadata': secret_create_response['metadata'],
         'created_at': secret_create_response['created_at'],
         'updated_at': secret_create_response['updated_at'],
     }
@@ -40,8 +41,9 @@ def test_retrieve_secret():
 
     expect_results = {
         'id': secret_create_response['id'],
-        'metadata': secret_retrieve_response['metadata'],
         'status': 'active',
+        'error': secret_retrieve_response['error'],
+        'metadata': secret_retrieve_response['metadata'],
         'created_at': secret_retrieve_response['created_at'],
         'updated_at': secret_retrieve_response['updated_at'],
     }
