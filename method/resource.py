@@ -258,6 +258,10 @@ class Resource():
         return self._make_request('DELETE', path=path)
 
     @MethodError.catch
+    def _delete_with_params(self, params: Dict) -> MethodResponse[T]:
+        return self._make_request('DELETE', params=params)
+
+    @MethodError.catch
     def _download(self, _id: str) -> str:
         return self._make_request('GET', path=_id, download = True)
 

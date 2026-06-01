@@ -6,6 +6,7 @@ from method.resources.Elements import ElementResource
 from method.resources.Merchant import MerchantResource
 from method.resources.Payments import PaymentResource
 from method.resources.Report import ReportResource
+from method.resources.ReportSchedules.ReportSchedule import ReportScheduleResource
 from method.resources.Webhook import WebhookResource
 from method.resources.HealthCheck import PingResponse, HealthCheckResource
 from method.resources.Simulate import SimulateResource
@@ -21,6 +22,7 @@ class Method:
     merchants: MerchantResource
     payments: PaymentResource
     reports: ReportResource
+    report_schedules: ReportScheduleResource
     webhooks: WebhookResource
     healthcheck: HealthCheckResource
     simulate: SimulateResource
@@ -38,6 +40,7 @@ class Method:
         self.merchants = MerchantResource(config)
         self.payments = PaymentResource(config)
         self.reports = ReportResource(config)
+        self.report_schedules = ReportScheduleResource(config)
         self.webhooks = WebhookResource(config)
         self.healthcheck = HealthCheckResource(config)
         self.simulate = SimulateResource(config)
