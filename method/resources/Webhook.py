@@ -101,7 +101,7 @@ class Webhook(TypedDict):
     created_at: str
     updated_at: str
     expand_event: bool
-    status: Optional[WebhookStatusLiterals]
+    status: WebhookStatusLiterals
     error: Optional[object]
 
 
