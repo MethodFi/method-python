@@ -100,4 +100,4 @@ class TeamResource(Resource):
         return super(TeamResource, self)._create(opts, request_opts=request_opts)
 
     def update_encryption_key(self, opts: TeamEncryptionKeyOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Team]:
-        return super(TeamResource, self)._create_with_sub_path('default_encryption_key', opts)
+        return Resource(self.config.add_path('default_encryption_key'))._create(opts, request_opts=request_opts)
