@@ -69,6 +69,27 @@ WebhookTypesLiterals = Literal[
     'attribute.credit_health_open_accounts.decreased',
     'method_jwk.create',
     'method_jwk.update',
+    'manual_connect.create',
+    'manual_connect.update',
+    'payment_instrument.create',
+    'payment_instrument.update',
+    'credit_score.available',
+    'account.number.update',
+    'account.balance_increased',
+    'account.balance_decreased',
+    'account.credit_limit_increased',
+    'account.credit_limit_decreased',
+    'entity.new_accounts_pending_consent',
+    'entity_vehicle.create',
+    'entity_vehicle.update',
+]
+
+
+WebhookStatusLiterals = Literal[
+    'active',
+    'requires_attention',
+    'disabled',
+    'deleted'
 ]
 
 
@@ -80,7 +101,7 @@ class Webhook(TypedDict):
     created_at: str
     updated_at: str
     expand_event: bool
-    status: str
+    status: WebhookStatusLiterals
     error: Optional[object]
 
 

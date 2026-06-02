@@ -15,7 +15,9 @@ ReportTypesLiterals = Literal[
     'ach.pull.previous',
     'ach.pull.nightly',
     'ach.reversals.nightly',
-    'entities.created.previous_day'
+    'ach.debit.daily',
+    'entities.created.previous_day',
+    'reserve_fbo_balance.created.previous_day'
 ]
 
 

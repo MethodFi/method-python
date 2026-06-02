@@ -30,9 +30,14 @@ AccountProductTypesLiterals = Literal[
 AccountSubscriptionTypesLiterals = Literal[
     'card_brand',
     'payment_instrument',
+    'payment_instrument.card',
+    'payment_instrument.network_token',
     'transaction',
     'update',
-    'update.snapshot'
+    'update.snapshot',
+    'attribute',
+    'connect',
+    'credit_score'
 ]
 
 

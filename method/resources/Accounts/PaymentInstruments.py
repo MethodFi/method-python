@@ -52,3 +52,6 @@ class AccountPaymentInstrumentsResource(Resource):
 
     def create(self, data: AccountPaymentInstrumentCreateOpts) -> MethodResponse[AccountPaymentInstrument]:
         return super(AccountPaymentInstrumentsResource, self)._create(data)
+
+    def delete(self, pmt_inst_id: str) -> MethodResponse[AccountPaymentInstrument]:
+        return super(AccountPaymentInstrumentsResource, self)._delete(pmt_inst_id)
