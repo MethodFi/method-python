@@ -1,0 +1,1 @@
+from method.resources.ForwardingRequests.ForwardingRequest import ForwardingRequest, ForwardingRequestResource

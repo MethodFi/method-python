@@ -4,7 +4,7 @@ from method.resource import MethodResponse, Resource, RequestOpts, ResourceListO
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Entities.Attributes import EntityAttributesResource
-from method.resources.Entities.Types import EntityTypesLiterals, EntityCapabilitiesLiterals, EntityStatusesLiterals, \
+from method.resources.Entities.Types import EntityTypesLiterals, EntityStatusesLiterals, \
     CreditReportBureausLiterals, EntityIndividual, EntityCorporation, EntityAddress
 from method.resources.Entities.Connect import EntityConnectResource
 from method.resources.Entities.CreditScores import EntityCreditScoresResource
@@ -14,6 +14,7 @@ from method.resources.Entities.Products import EntityProductResource
 from method.resources.Entities.Sensitive import EntitySensitiveResource
 from method.resources.Entities.Subscriptions import EntitySubscriptionsResource
 from method.resources.Entities.VerificationSessions import EntityVerificationSessionResource
+from method.resources.Entities.ManualConnect import EntityManualConnectResource
 
 
 class EntityCreateOpts(TypedDict):
@@ -95,9 +96,12 @@ class Entity(TypedDict):
     type: EntityTypesLiterals
     individual: Optional[EntityIndividual]
     corporation: Optional[EntityCorporation]
-    capabilities: List[EntityCapabilitiesLiterals]
-    available_capabilities: List[EntityCapabilitiesLiterals]
-    pending_capabilities: List[EntityCapabilitiesLiterals]
+    products: Optional[List[str]]
+    restricted_products: Optional[List[str]]
+    subscriptions: Optional[List[str]]
+    available_subscriptions: Optional[List[str]]
+    restricted_subscriptions: Optional[List[str]]
+    verification: Optional[Dict[str, Any]]
     address: EntityAddress
     status: EntityStatusesLiterals
     error: Optional[ResourceError]
@@ -116,6 +120,7 @@ class EntitySubResources:
     sensitive: EntitySensitiveResource
     subscriptions: EntitySubscriptionsResource
     verification_sessions: EntityVerificationSessionResource
+    manual_connect: EntityManualConnectResource
 
     def __init__(self, _id: str, config: Configuration):
         self.attributes = EntityAttributesResource(config.add_path(_id))
@@ -127,6 +132,7 @@ class EntitySubResources:
         self.sensitive = EntitySensitiveResource(config.add_path(_id))
         self.subscriptions = EntitySubscriptionsResource(config.add_path(_id))
         self.verification_sessions = EntityVerificationSessionResource(config.add_path(_id))
+        self.manual_connect = EntityManualConnectResource(config.add_path(_id))
 
 
 class EntityResource(Resource):

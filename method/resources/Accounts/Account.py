@@ -5,6 +5,13 @@ from method.configuration import Configuration
 from method.resources.Accounts.Types import AccountACH, AccountStatusesLiterals, AccountTypesLiterals, \
     AccountProductTypesLiterals, AccountSubscriptionTypesLiterals, AccountExpandableFieldsLiterals, \
     AccountLiability
+
+
+AccountConsentStatusesLiterals = Literal[
+    'pending',
+    'withdrawn',
+    'approved'
+]
 from method.resources.Accounts.Balances import AccountBalance, AccountBalancesResource
 from method.resources.Accounts.CardBrands import AccountCardBrand, AccountCardBrandsResource
 from method.resources.Accounts.Payoffs import AccountPayoff, AccountPayoffsResource
@@ -73,6 +80,7 @@ class Account(TypedDict):
     update: Optional[Union[str, AccountUpdate]]
     latest_verification_session: Optional[Union[str, AccountVerificationSession]]
     error: Optional[ResourceError]
+    consent_status: Optional[AccountConsentStatusesLiterals]
     created_at: str
     updated_at: str
     metadata: Optional[Dict[str, str]]

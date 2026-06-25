@@ -29,7 +29,12 @@ PaymentFundStatusesLiterals = Literal[
     'failed',
     'sent',
     'posted',
-    'unknown'
+    'unknown',
+    'transmitting',
+    'transmitted',
+    'pending_consolidation',
+    'pending_clearing',
+    'cashed'
 ]
 
 
@@ -89,6 +94,7 @@ class PaymentCreateOpts(TypedDict):
     metadata: Optional[Dict[str, Any]]
     fee: Optional[PaymentFee]
     dry_run: Optional[bool]
+    reversal_account: Optional[str]
 
 
 class PaymentListOpts(ResourceListOpts):
