@@ -34,7 +34,7 @@ class SecretResource(Resource):
         return super(SecretResource, self)._list(params)
 
     def create(self, opts: SecretCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Secret]:
-        return super(SecretResource, self)._create(opts, request_opts)
+        return super(SecretResource, self)._create(opts, request_opts=request_opts)
 
     def delete(self, _id: str) -> MethodResponse[Secret]:
         return super(SecretResource, self)._delete(_id)

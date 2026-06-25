@@ -112,7 +112,7 @@ class WebhookResource(Resource):
         return super(WebhookResource, self)._list(None)
 
     def create(self, opts: WebhookCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Webhook]:
-        return super(WebhookResource, self)._create(opts, request_opts)
+        return super(WebhookResource, self)._create(opts, request_opts=request_opts)
     
     def update(self, _id: str, opts: WebhookUpdateOpts) -> MethodResponse[Webhook]:
         return super(WebhookResource, self)._patch_with_id(_id, opts)

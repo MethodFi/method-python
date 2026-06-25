@@ -70,7 +70,7 @@ class TeamPublicKeysResource(Resource):
         return super(TeamPublicKeysResource, self)._get_with_id(_id)
 
     def create(self, opts: MLEPublicKeyCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[MLEPublicKey]:
-        return super(TeamPublicKeysResource, self)._create(opts, request_opts)
+        return super(TeamPublicKeysResource, self)._create(opts, request_opts=request_opts)
 
     def delete(self, _id: str) -> MethodResponse[MLEPublicKey]:
         return super(TeamPublicKeysResource, self)._delete(_id)
@@ -88,7 +88,7 @@ class TeamResource(Resource):
         return super(TeamResource, self)._get()
 
     def create(self, opts: TeamCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Team]:
-        return super(TeamResource, self)._create(opts, request_opts)
+        return super(TeamResource, self)._create(opts, request_opts=request_opts)
 
     def update_encryption_key(self, opts: TeamEncryptionKeyOpts) -> MethodResponse[Team]:
         return super(TeamResource, self)._create_with_sub_path('default_encryption_key', opts)

@@ -65,4 +65,4 @@ class ForwardingRequestResource(Resource):
         return super(ForwardingRequestResource, self)._get_with_id(_id)
 
     def create(self, opts: ForwardingRequestCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[ForwardingRequest]:
-        return super(ForwardingRequestResource, self)._create(opts, request_opts)
+        return super(ForwardingRequestResource, self)._create(opts, request_opts=request_opts)

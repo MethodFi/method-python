@@ -143,7 +143,7 @@ class EntityResource(Resource):
         return EntitySubResources(_id, self.config)
 
     def create(self, opts: EntityCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Entity]:
-        return super(EntityResource, self)._create(opts, request_opts)
+        return super(EntityResource, self)._create(opts, request_opts=request_opts)
 
     def update(self, _id: str, opts: EntityCreateOpts) -> MethodResponse[Entity]:
         return super(EntityResource, self)._update_with_id(_id, opts)

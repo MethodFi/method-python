@@ -50,7 +50,7 @@ class ReportResource(Resource):
         return super(ReportResource, self)._get_with_id(_id)
 
     def create(self, opts: ReportCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Report]:
-        return super(ReportResource, self)._create(opts, request_opts)
+        return super(ReportResource, self)._create(opts, request_opts=request_opts)
 
     def download(self, _id: str) -> str:
         return super(ReportResource, self)._download(_id)

@@ -52,4 +52,4 @@ class EntityManualConnectResource(Resource):
         return super(EntityManualConnectResource, self)._get_with_id(_id)
 
     def create(self, opts: ManualConnectCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse:
-        return super(EntityManualConnectResource, self)._create(opts, request_opts)
+        return super(EntityManualConnectResource, self)._create(opts, request_opts=request_opts)

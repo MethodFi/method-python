@@ -130,7 +130,7 @@ class PaymentResource(Resource):
         return super(PaymentResource, self)._list(params)
 
     def create(self, opts: PaymentCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Payment]:
-        return super(PaymentResource, self)._create(opts, request_opts)
+        return super(PaymentResource, self)._create(opts, request_opts=request_opts)
 
     def delete(self, _id: str) -> MethodResponse[Payment]:
         return super(PaymentResource, self)._delete(_id)
