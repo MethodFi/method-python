@@ -77,6 +77,7 @@ def test_create_payment(setup):
 
     expect_results = {
         'id': payments_create_response['id'],
+        'idempotency_key': None,
         'source': setup['source_1_id'],
         'destination': setup['destination_1_id'],
         'amount': 5000,
@@ -88,16 +89,19 @@ def test_create_payment(setup):
         'source_status': 'pending',
         'destination_trace_id': None,
         'destination_settlement_date': payments_create_response['destination_settlement_date'],
+        'destination_posted_date': None,
         'destination_status': 'pending',
         'reversal_id': None,
+        'reversal_account': payments_create_response.get('reversal_account'),
+        'payment_instrument': None,
         'fee': None,
         'type': 'standard',
         'error': None,
         'metadata': None,
         'created_at': payments_create_response['created_at'],
         'updated_at': payments_create_response['updated_at'],
+        'destination_payment_method': payments_create_response.get('destination_payment_method'),
     }
-
 
     assert payments_create_response == expect_results
 
@@ -109,6 +113,7 @@ def test_retrieve_payment(setup):
 
     expect_results = {
         'id': payments_create_response['id'],
+        'idempotency_key': None,
         'source': setup['source_1_id'],
         'destination': setup['destination_1_id'],
         'amount': 5000,
@@ -120,14 +125,18 @@ def test_retrieve_payment(setup):
         'source_status': 'pending',
         'destination_trace_id': None,
         'destination_settlement_date': payments_create_response['destination_settlement_date'],
+        'destination_posted_date': None,
         'destination_status': 'pending',
         'reversal_id': None,
+        'reversal_account': payments_retrieve_response.get('reversal_account'),
+        'payment_instrument': None,
         'fee': None,
         'type': 'standard',
         'error': None,
         'metadata': None,
         'created_at': payments_retrieve_response['created_at'],
         'updated_at': payments_retrieve_response['updated_at'],
+        'destination_payment_method': payments_retrieve_response.get('destination_payment_method'),
         'fund_status': 'pending'
     }
 
@@ -150,6 +159,7 @@ def test_delete_payment(setup):
 
     expect_results = {
         'id': payments_create_response['id'],
+        'idempotency_key': None,
         'source': setup['source_1_id'],
         'destination': setup['destination_1_id'],
         'amount': 5000,
@@ -161,14 +171,18 @@ def test_delete_payment(setup):
         'source_status': 'canceled',
         'destination_trace_id': None,
         'destination_settlement_date': payments_create_response['destination_settlement_date'],
+        'destination_posted_date': None,
         'destination_status': 'canceled',
         'reversal_id': None,
+        'reversal_account': payments_delete_response.get('reversal_account'),
+        'payment_instrument': None,
         'fee': None,
         'type': 'standard',
         'error': None,
         'metadata': None,
         'created_at': payments_delete_response['created_at'],
         'updated_at': payments_delete_response['updated_at'],
+        'destination_payment_method': payments_delete_response.get('destination_payment_method'),
     }
-    
+
     assert payments_delete_response == expect_results
