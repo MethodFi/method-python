@@ -29,7 +29,12 @@ PaymentFundStatusesLiterals = Literal[
     'failed',
     'sent',
     'posted',
-    'unknown'
+    'unknown',
+    'transmitting',
+    'transmitted',
+    'pending_consolidation',
+    'pending_clearing',
+    'cashed'
 ]
 
 
@@ -59,6 +64,7 @@ class PaymentFee(TypedDict):
 class Payment(TypedDict):
     id: str
     reversal_id: Optional[str]
+    reversal_account: Optional[str]
     source_trace_id: Optional[str]
     destination_trace_id: Optional[str]
     source: str
@@ -89,6 +95,7 @@ class PaymentCreateOpts(TypedDict):
     metadata: Optional[Dict[str, Any]]
     fee: Optional[PaymentFee]
     dry_run: Optional[bool]
+    reversal_account: Optional[str]
 
 
 class PaymentListOpts(ResourceListOpts):
@@ -124,7 +131,7 @@ class PaymentResource(Resource):
         return super(PaymentResource, self)._list(params)
 
     def create(self, opts: PaymentCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Payment]:
-        return super(PaymentResource, self)._create(opts, request_opts)
+        return super(PaymentResource, self)._create(opts, request_opts=request_opts)
 
     def delete(self, _id: str) -> MethodResponse[Payment]:
         return super(PaymentResource, self)._delete(_id)

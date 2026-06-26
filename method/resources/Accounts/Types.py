@@ -3,14 +3,18 @@ from typing import Literal, Optional, TypedDict
 
 AccountTypesLiterals = Literal[
     'ach',
-    'liability'
+    'liability',
+    'clearing',
+    'debit_card'
 ]
 
 
 AccountStatusesLiterals = Literal[
     'active',
     'disabled',
-    'closed'
+    'closed',
+    'processing',
+    'pending_exchange'
 ]
 
 
