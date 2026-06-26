@@ -29,7 +29,8 @@ def test_retrieve_merchant():
             "plaid": ["ins_10"],
             "mx": ["amex"],
             "finicity": [],
-            "dpp": ["120", "18954427", "11859365", "18947131", "16255844"]
+            "dpp": ["120", "18954427", "11859365", "18947131", "16255844"],
+            "rpps": []
         },
         "is_temp": False,
         "account_number_formats": []
@@ -62,7 +63,8 @@ def test_list_merchants():
                 '11859365',
                 '18947131',
                 '16255844'
-            ]
+            ],
+            'rpps': []
         },
         "is_temp": False,
         "account_number_formats": [
