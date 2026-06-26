@@ -5,6 +5,13 @@ from method.configuration import Configuration
 from method.resources.Accounts.Types import AccountACH, AccountStatusesLiterals, AccountTypesLiterals, \
     AccountProductTypesLiterals, AccountSubscriptionTypesLiterals, AccountExpandableFieldsLiterals, \
     AccountLiability
+
+
+AccountConsentStatusesLiterals = Literal[
+    'pending',
+    'withdrawn',
+    'approved'
+]
 from method.resources.Accounts.Balances import AccountBalance, AccountBalancesResource
 from method.resources.Accounts.CardBrands import AccountCardBrand, AccountCardBrandsResource
 from method.resources.Accounts.Payoffs import AccountPayoff, AccountPayoffsResource
@@ -73,6 +80,7 @@ class Account(TypedDict):
     update: Optional[Union[str, AccountUpdate]]
     latest_verification_session: Optional[Union[str, AccountVerificationSession]]
     error: Optional[ResourceError]
+    consent_status: Optional[AccountConsentStatusesLiterals]
     created_at: str
     updated_at: str
     metadata: Optional[Dict[str, str]]
@@ -126,7 +134,7 @@ class AccountResource(Resource):
         return super(AccountResource, self)._list(params)
 
     def create(self, opts: Union[AccountACHCreateOpts, AccountLiabilityCreateOpts], request_opts: Optional[RequestOpts] = None) -> MethodResponse[Account]:
-        return super(AccountResource, self)._create(opts, request_opts)
+        return super(AccountResource, self)._create(opts, request_opts=request_opts)
 
     def withdraw_consent(self, acc_id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> MethodResponse[Account]: # pylint: disable=dangerous-default-value
         return super(AccountResource, self)._create_with_sub_path('{acc_id}/consent'.format(acc_id=acc_id), data)

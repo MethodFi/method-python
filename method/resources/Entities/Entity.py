@@ -4,7 +4,7 @@ from method.resource import MethodResponse, Resource, RequestOpts, ResourceListO
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Entities.Attributes import EntityAttributesResource
-from method.resources.Entities.Types import EntityTypesLiterals, EntityCapabilitiesLiterals, EntityStatusesLiterals, \
+from method.resources.Entities.Types import EntityTypesLiterals, EntityStatusesLiterals, \
     CreditReportBureausLiterals, EntityIndividual, EntityCorporation, EntityAddress
 from method.resources.Entities.Connect import EntityConnectResource
 from method.resources.Entities.CreditScores import EntityCreditScoresResource
@@ -95,9 +95,12 @@ class Entity(TypedDict):
     type: EntityTypesLiterals
     individual: Optional[EntityIndividual]
     corporation: Optional[EntityCorporation]
-    capabilities: List[EntityCapabilitiesLiterals]
-    available_capabilities: List[EntityCapabilitiesLiterals]
-    pending_capabilities: List[EntityCapabilitiesLiterals]
+    products: Optional[List[str]]
+    restricted_products: Optional[List[str]]
+    subscriptions: Optional[List[str]]
+    available_subscriptions: Optional[List[str]]
+    restricted_subscriptions: Optional[List[str]]
+    verification: Optional[Dict[str, Any]]
     address: EntityAddress
     status: EntityStatusesLiterals
     error: Optional[ResourceError]
@@ -137,7 +140,7 @@ class EntityResource(Resource):
         return EntitySubResources(_id, self.config)
 
     def create(self, opts: EntityCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Entity]:
-        return super(EntityResource, self)._create(opts, request_opts)
+        return super(EntityResource, self)._create(opts, request_opts=request_opts)
 
     def update(self, _id: str, opts: EntityCreateOpts) -> MethodResponse[Entity]:
         return super(EntityResource, self)._update_with_id(_id, opts)

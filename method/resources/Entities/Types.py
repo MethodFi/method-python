@@ -3,20 +3,12 @@ from typing import TypedDict, Optional, Literal, List
 
 EntityTypesLiterals = Literal[
     'individual',
+    'corporation',
     'c_corporation',
     's_corporation',
     'llc',
     'partnership',
-    'sole_proprietorship',
-    'receive_only'
-]
-
-
-EntityCapabilitiesLiterals = Literal[
-    'payments:send',
-    'payments:receive',
-    'payments:limited-send',
-    'data:retrieve'
+    'sole_proprietorship'
 ]
 
 
@@ -104,12 +96,6 @@ class EntityCorporation(TypedDict):
     dba: Optional[str]
     ein: Optional[str]
     owners: List[EntityCorporationOwner]
-
-
-class EntityReceiveOnly(TypedDict):
-    name: str
-    phone: Optional[str]
-    email: Optional[str]
 
 
 class EntityKYCAddressRecordData(TypedDict):
