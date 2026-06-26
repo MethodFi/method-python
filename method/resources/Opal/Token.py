@@ -102,3 +102,9 @@ class OpalTokenResource(Resource):
 
     def create(self, opts: OpalTokenCreateOpts) -> MethodResponse[OpalToken]:
         return super(OpalTokenResource, self)._create(opts)
+
+    def retrieve(self, _id: str) -> MethodResponse[OpalToken]:
+        return super(OpalTokenResource, self)._get_with_id(_id)
+
+    def deactivate(self, _id: str) -> MethodResponse[OpalToken]:
+        return super(OpalTokenResource, self)._delete(_id)
