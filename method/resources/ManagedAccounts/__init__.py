@@ -1,0 +1,1 @@
+from method.resources.ManagedAccounts.ManagedAccount import ManagedAccount, ManagedAccountResource
