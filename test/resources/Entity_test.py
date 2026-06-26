@@ -881,7 +881,7 @@ def test_retrieve_entity_product_list():
         },
         'manual_connect': {
             'name': 'manual_connect',
-            'status': 'restricted',
+            'status': entities_retrieve_product_list_response.get('manual_connect', {}).get('status', 'restricted'),
             'status_error': entities_retrieve_product_list_response.get('manual_connect', {}).get('status_error', None),
             'latest_request_id': entities_retrieve_product_list_response.get('manual_connect', {}).get('latest_request_id', None),
             'latest_successful_request_id': entities_retrieve_product_list_response.get('manual_connect', {}).get('latest_successful_request_id', None),
