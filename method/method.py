@@ -12,6 +12,9 @@ from method.resources.Simulate import SimulateResource
 from method.resources.Events import EventResource
 from method.resources.CardProduct import CardProductResource
 from method.resources.Opal import OpalResource
+from method.resources.Secrets import SecretResource
+from method.resources.ForwardingRequests import ForwardingRequestResource
+from method.resources.Teams import TeamResource
 
 class Method:
     accounts: AccountResource
@@ -26,6 +29,9 @@ class Method:
     simulate: SimulateResource
     card_products: CardProductResource
     opal: OpalResource
+    secrets: SecretResource
+    forwarding_requests: ForwardingRequestResource
+    teams: TeamResource
 
     def __init__(self, opts: ConfigurationOpts = None, **kwargs: ConfigurationOpts):
         _opts: ConfigurationOpts = {**(opts or {}), **kwargs}  # type: ignore
@@ -43,6 +49,9 @@ class Method:
         self.simulate = SimulateResource(config)
         self.card_products = CardProductResource(config)
         self.opal = OpalResource(config)
+        self.secrets = SecretResource(config)
+        self.forwarding_requests = ForwardingRequestResource(config)
+        self.teams = TeamResource(config)
         
     def ping(self) -> MethodResponse[PingResponse]:
         return self.healthcheck.retrieve()
