@@ -24,6 +24,7 @@ def test_create_secret():
         'id': secrets_create_response['id'],
         'metadata': None,
         'status': 'active',
+        'error': None,
         'created_at': secrets_create_response['created_at'],
         'updated_at': secrets_create_response['updated_at'],
     }
@@ -40,6 +41,7 @@ def test_retrieve_secret():
         'id': secrets_create_response['id'],
         'metadata': None,
         'status': 'active',
+        'error': None,
         'created_at': secrets_retrieve_response['created_at'],
         'updated_at': secrets_retrieve_response['updated_at'],
     }

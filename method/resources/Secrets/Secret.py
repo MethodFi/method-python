@@ -2,6 +2,7 @@ from typing import TypedDict, Optional, List, Dict, Any, Literal
 
 from method.resource import MethodResponse, Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
+from method.errors import ResourceError
 
 
 SecretStatusesLiterals = Literal[
@@ -14,6 +15,7 @@ class Secret(TypedDict):
     id: str
     metadata: Optional[Dict[str, Any]]
     status: SecretStatusesLiterals
+    error: Optional[ResourceError]
     created_at: str
     updated_at: str
 

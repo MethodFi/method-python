@@ -12,7 +12,7 @@ method = Method(env='dev', api_key=API_KEY)
 test_jwk = {
     'kid': str(uuid.uuid4()),
     'kty': 'RSA',
-    'alg': 'RS256',
+    'alg': 'RSA-OAEP-256',
     'use': 'enc',
     'n': 'x9hKPiAZKzHhAZx670NMvnvI0ZaEa1I92XsQklLORGVqqECy3oA7In8tkb0FEI2V2yJMZhMkf-4EbsTPZu_D7Hqo3E6fHR0FNd0gocpEy5fBf5at6o92ueVmYiDiXsgxFHZzhEo40a26diRBkzzxYpjxZNtvheQiM34n25kSqvJ3sacIguQs4erqgWl2YR8l1HYIX5_9n3wQ3cuU4a0fcHoLtVmD4fymZ1kiESUiU6qkw-XkYn0BZD3TwTbStQrkXDoFt9D7L7-PLCU5Nmqval5RtI2i4q_uks8t9Hg9YjrM3_FnulT18YiLJ0aGUTgx-qaNoJy5OLGfIg0cfhFrvQ',
     'e': 'AQAB'
