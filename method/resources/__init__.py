@@ -17,4 +17,7 @@ from method.resources.Webhook import Webhook, WebhookCreateOpts, WebhookResource
 from method.resources.Events.Event import Event, EventResource
 from method.resources.Secrets.Secret import Secret, SecretCreateOpts, SecretResource
 from method.resources.ForwardingRequests.ForwardingRequest import ForwardingRequest, ForwardingRequestCreateOpts, ForwardingRequestResource
-from method.resources.Teams.Team import MLEPublicKey, MLEPublicKeyCreateOpts, TeamResource, TeamMLEResource, TeamMLEPublicKeysResource
+from method.resources.Teams.Team import Team, TeamContact, TeamAddress, TeamCreateOpts, TeamEncryptionKeyOpts, MLEPublicKey, \
+    MLEPublicKeyCreateOpts, TeamResource, TeamMLEResource, TeamMLEPublicKeysResource
+from method.resources.ManagedAccounts.ManagedAccount import ManagedAccount, ManagedAccountTransaction, \
+    ManagedAccountTransactionListOpts, ManagedAccountResource

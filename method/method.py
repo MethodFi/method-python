@@ -15,6 +15,7 @@ from method.resources.Opal import OpalResource
 from method.resources.Secrets import SecretResource
 from method.resources.ForwardingRequests import ForwardingRequestResource
 from method.resources.Teams import TeamResource
+from method.resources.ManagedAccounts import ManagedAccountResource
 
 class Method:
     accounts: AccountResource
@@ -32,6 +33,7 @@ class Method:
     secrets: SecretResource
     forwarding_requests: ForwardingRequestResource
     teams: TeamResource
+    managed_accounts: ManagedAccountResource
 
     def __init__(self, opts: ConfigurationOpts = None, **kwargs: ConfigurationOpts):
         _opts: ConfigurationOpts = {**(opts or {}), **kwargs}  # type: ignore
@@ -52,6 +54,7 @@ class Method:
         self.secrets = SecretResource(config)
         self.forwarding_requests = ForwardingRequestResource(config)
         self.teams = TeamResource(config)
+        self.managed_accounts = ManagedAccountResource(config)
         
     def ping(self) -> MethodResponse[PingResponse]:
         return self.healthcheck.retrieve()

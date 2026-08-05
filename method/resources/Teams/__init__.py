@@ -1,1 +1,2 @@
-from method.resources.Teams.Team import MLEPublicKey, TeamResource, TeamMLEResource, TeamMLEPublicKeysResource
+from method.resources.Teams.Team import Team, TeamCreateOpts, TeamEncryptionKeyOpts, MLEPublicKey, TeamResource, TeamMLEResource, \
+    TeamMLEPublicKeysResource

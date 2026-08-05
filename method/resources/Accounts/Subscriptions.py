@@ -5,6 +5,11 @@ from method.configuration import Configuration
 
 
 AccountSubscriptionTypesLiterals = Literal[
+    'attribute',
+    'card_brand',
+    'payment_instrument',
+    'payment_instrument.card',
+    'payment_instrument.network_token',
     'transaction',
     'update',
     'update.snapshot'
@@ -21,6 +26,11 @@ class AccountSubscription(TypedDict):
 
 
 AccountSubscriptionsResponse = TypedDict('AccountSubscriptionsResponse', {
+    'attribute': Optional[AccountSubscription],
+    'card_brand': Optional[AccountSubscription],
+    'payment_instrument': Optional[AccountSubscription],
+    'payment_instrument.card': Optional[AccountSubscription],
+    'payment_instrument.network_token': Optional[AccountSubscription],
     'transaction': Optional[AccountSubscription],
     'update': Optional[AccountSubscription],
     'update.snapshot': Optional[AccountSubscription]

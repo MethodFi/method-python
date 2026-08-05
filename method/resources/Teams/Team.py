@@ -1,7 +1,72 @@
-from typing import TypedDict, Optional, List, Literal
+from typing import TypedDict, Optional, List, Literal, Union
 
 from method.resource import MethodResponse, Resource, RequestOpts
 from method.configuration import Configuration
+
+
+TeamStatusesLiterals = Literal[
+    'active',
+    'verified',
+    'disabled',
+    'pending_disablement'
+]
+
+
+TeamContactTypesLiterals = Literal[
+    'Admin',
+    'Billing',
+    'Technical'
+]
+
+
+class TeamContact(TypedDict):
+    name: str
+    email: str
+    type: TeamContactTypesLiterals
+
+
+class TeamAddress(TypedDict):
+    line1: str
+    line2: Optional[str]
+    city: str
+    state: str
+    zipcode: str
+    country: Optional[str]
+
+
+class Team(TypedDict):
+    id: str
+    parent_id: Optional[str]
+    name: str
+    legal_name: str
+    ein: str
+    contacts: List[TeamContact]
+    address: TeamAddress
+    status: TeamStatusesLiterals
+    logo: Optional[str]
+    created_at: str
+    updated_at: str
+
+
+class TeamCreateOpts(TypedDict):
+    name: str
+    legal_name: str
+    ein: str
+    contacts: List[TeamContact]
+    address: Optional[TeamAddress]
+
+
+class TeamEncryptionKeyRSAKey(TypedDict):
+    keyModulus: str
+    keyExponent: str
+
+
+class TeamEncryptionKeyCertificate(TypedDict):
+    certificate: str
+
+
+class TeamEncryptionKeyOpts(TypedDict):
+    encryption_key: Union[TeamEncryptionKeyRSAKey, TeamEncryptionKeyCertificate]
 
 
 MLEPublicKeyTypesLiterals = Literal[
@@ -76,3 +141,12 @@ class TeamResource(Resource):
         _config = config.add_path('teams')
         super(TeamResource, self).__init__(_config)
         self.mle = TeamMLEResource(_config)
+
+    def list(self) -> MethodResponse[List[Team]]:
+        return super(TeamResource, self)._list(None)
+
+    def create(self, opts: TeamCreateOpts, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Team]:
+        return super(TeamResource, self)._create(opts, request_opts=request_opts)
+
+    def update_encryption_key(self, opts: TeamEncryptionKeyOpts) -> MethodResponse[None]:
+        return super(TeamResource, self)._create_with_sub_path('default_encryption_key', opts)
