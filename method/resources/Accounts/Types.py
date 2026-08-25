@@ -23,7 +23,10 @@ AccountProductTypesLiterals = Literal[
     'update',
     'attribute',
     'transaction',
-    'payment_instrument'
+    'payment_instrument',
+    'payment_instrument.card',
+    'payment_instrument.inbound_achwire_payment',
+    'payment_instrument.network_token'
 ]
 
 
