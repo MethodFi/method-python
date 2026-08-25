@@ -7,6 +7,8 @@ load_dotenv()
 
 API_KEY = os.getenv('API_KEY')
 
+pytestmark = pytest.mark.skipif(not API_KEY, reason='API_KEY is not set; skipping live dev API tests.')
+
 # Managed accounts cannot be created via the public API; they are provisioned per-team by
 # Method. If the dev team has none, set MANAGED_ACCOUNT_ID to a macc_... id provisioned for
 # the team to exercise the retrieve and transactions tests.

@@ -1,10 +1,13 @@
 import os
+import pytest
 from method import Method
 from dotenv import load_dotenv
 
 load_dotenv()
 
 API_KEY = os.getenv('API_KEY')
+
+pytestmark = pytest.mark.skipif(not API_KEY, reason='API_KEY is not set; skipping live dev API tests.')
 
 method = Method(env='dev', api_key=API_KEY)
 
@@ -63,4 +66,4 @@ def test_delete_secret():
 
     secrets_delete_response = method.secrets.delete(secrets_create_response['id'])
 
-    assert secrets_delete_response == None
+    assert secrets_delete_response.to_dict() is None

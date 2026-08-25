@@ -7,6 +7,8 @@ load_dotenv()
 
 API_KEY = os.getenv('API_KEY')
 
+pytestmark = pytest.mark.skipif(not API_KEY, reason='API_KEY is not set; skipping live dev API tests.')
+
 method = Method(env='dev', api_key=API_KEY)
 
 # Forwarding requests are executed synchronously against a destination URL that must be
