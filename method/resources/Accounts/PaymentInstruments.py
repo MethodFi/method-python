@@ -6,7 +6,8 @@ from method.errors import ResourceError
 
 AccountPaymentInstrumentTypesLiterals = Literal[
     'card',
-    'network_token'
+    'network_token',
+    'inbound_achwire_payment'
 ]
 
 class AccountPaymentInstrumentCreateOpts(TypedDict):
@@ -20,11 +21,17 @@ class AccountPaymentInstrumentCard(TypedDict):
     exp_month: int
     exp_year: int
 
+class AccountPaymentInstrumentInboundACHWirePayment(TypedDict):
+    account_number: str
+    routing_number: str
+    reversal_account: Optional[str]
+
 AccountPaymentInstrumentStatusesLiterals = Literal[
     'completed',
     'in_progress',
     'pending',
-    'failed'
+    'failed',
+    'closed'
 ]
 
 class AccountPaymentInstrument(TypedDict):
@@ -33,6 +40,7 @@ class AccountPaymentInstrument(TypedDict):
     type: AccountPaymentInstrumentTypesLiterals
     network_token: Optional[AccountPaymentInstrumentNetworkToken]
     card: Optional[AccountPaymentInstrumentCard]
+    inbound_achwire_payment: Optional[AccountPaymentInstrumentInboundACHWirePayment]
     chargeable: bool
     status: AccountPaymentInstrumentStatusesLiterals
     error: Optional[ResourceError]
@@ -52,3 +60,7 @@ class AccountPaymentInstrumentsResource(Resource):
 
     def create(self, data: AccountPaymentInstrumentCreateOpts) -> MethodResponse[AccountPaymentInstrument]:
         return super(AccountPaymentInstrumentsResource, self)._create(data)
+
+    # Supported only for payment instruments of type inbound_achwire_payment; returns the closed instrument.
+    def delete(self, pmt_inst_id: str) -> MethodResponse[AccountPaymentInstrument]:
+        return super(AccountPaymentInstrumentsResource, self)._delete(pmt_inst_id)
