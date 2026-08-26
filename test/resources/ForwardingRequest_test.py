@@ -45,10 +45,13 @@ def setup():
         'value': 'test_secret_value'
     })
 
-    return {
+    yield {
         'holder_1_id': holder_1_response['id'],
         'secret_1_id': secret_1_response['id'],
     }
+
+    # Entities cannot be deleted via the public API, so only the secret is cleaned up.
+    method.secrets.delete(secret_1_response['id'])
 
 
 @pytest.mark.skip(reason=SKIP_REASON)
