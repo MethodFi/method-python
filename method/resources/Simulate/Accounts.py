@@ -2,15 +2,18 @@ from method.resource import Resource
 from method.configuration import Configuration
 from method.resources.Simulate.Transactions import SimulateTransactionsResource
 from method.resources.Simulate.CardBrand import SimulateCardBrandResource
+from method.resources.Simulate.VerificationSessions import SimulateVerificationSessionsResource
 
 
 class SimulateAccountSubResources:
     transactions: SimulateTransactionsResource
     card_brands: SimulateCardBrandResource
+    verification_sessions: SimulateVerificationSessionsResource
 
     def __init__(self, _id: str, config: Configuration):
         self.transactions = SimulateTransactionsResource(config.add_path(_id))
         self.card_brands = SimulateCardBrandResource(config.add_path(_id))
+        self.verification_sessions = SimulateVerificationSessionsResource(config.add_path(_id))
 
   
 class SimulateAccountResource(Resource):

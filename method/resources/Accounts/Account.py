@@ -128,5 +128,5 @@ class AccountResource(Resource):
     def create(self, opts: Union[AccountACHCreateOpts, AccountLiabilityCreateOpts], request_opts: Optional[RequestOpts] = None) -> MethodResponse[Account]:
         return super(AccountResource, self)._create(opts, request_opts)
 
-    def withdraw_consent(self, acc_id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }) -> MethodResponse[Account]: # pylint: disable=dangerous-default-value
-        return super(AccountResource, self)._create_with_sub_path('{acc_id}/consent'.format(acc_id=acc_id), data)
+    def withdraw_consent(self, acc_id: str, data: AccountWithdrawConsentOpts = { 'type': 'withdraw', 'reason': 'holder_withdrew_consent' }, request_opts: Optional[RequestOpts] = None) -> MethodResponse[Account]: # pylint: disable=dangerous-default-value
+        return super(AccountResource, self)._create_with_sub_path('{acc_id}/consent'.format(acc_id=acc_id), data, request_opts=request_opts)

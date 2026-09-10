@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, Literal, Dict, Any, Union
 
-from method.resource import MethodResponse, Resource
+from method.resource import MethodResponse, Resource, RequestOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
 
@@ -54,10 +54,10 @@ class EntitySubscriptionsResource(Resource):
     def list(self) -> MethodResponse[EntitySubscriptionListResponse]:
         return super(EntitySubscriptionsResource, self)._list()
 
-    def create(self, opts: Union[EntitySubscriptionCreateOpts, EntitySubscriptionNamesLiterals]) -> MethodResponse[EntitySubscriptionResponseOpts]:
+    def create(self, opts: Union[EntitySubscriptionCreateOpts, EntitySubscriptionNamesLiterals], request_opts: Optional[RequestOpts] = None) -> MethodResponse[EntitySubscriptionResponseOpts]:
         if isinstance(opts, str):
             opts = {'enroll': opts}
-        return super(EntitySubscriptionsResource, self)._create(opts)
+        return super(EntitySubscriptionsResource, self)._create(opts, request_opts=request_opts)
     
     def delete(self, sub_id: str) -> MethodResponse[EntitySubscriptionResponseOpts]:
         return super(EntitySubscriptionsResource, self)._delete(sub_id)

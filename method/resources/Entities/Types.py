@@ -27,6 +27,16 @@ EntityStatusesLiterals = Literal[
 ]
 
 
+EntityExpandableFieldsLiterals = Literal[
+    'connect',
+    'credit_score',
+    'attribute',
+    'vehicle',
+    'identity_latest_verification_session',
+    'phone_latest_verification_session'
+]
+
+
 CreditScoreStatusesLiterals = Literal[
     'completed',
     'in_progress',
