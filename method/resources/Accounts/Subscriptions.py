@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, Literal, Dict, Any
+from typing import TypedDict, Optional, Literal, List, Union
 
 from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
@@ -16,11 +16,20 @@ AccountSubscriptionTypesLiterals = Literal[
 ]
 
 
+class AccountSubscriptionPayloadAttributes(TypedDict):
+    requested_attributes: Optional[List[str]]
+    bundles: Optional[List[str]]
+
+
+class AccountSubscriptionPayload(TypedDict):
+    attributes: Optional[AccountSubscriptionPayloadAttributes]
+
+
 class AccountSubscription(TypedDict):
     id: str
     name: AccountSubscriptionTypesLiterals
     status: Literal['active']
-    payload: Optional[Dict[str, Any]]
+    payload: Optional[AccountSubscriptionPayload]
     latest_request_id: Optional[str]
     created_at: str
     updated_at: str
@@ -40,14 +49,17 @@ AccountSubscriptionsResponse = TypedDict('AccountSubscriptionsResponse', {
 
 class AccountSubscriptionCreateOpts(TypedDict):
     enroll: AccountSubscriptionTypesLiterals
+    payload: Optional[AccountSubscriptionPayload]
 
 
 class AccountSubscriptionsResource(Resource):
     def __init__(self, config: Configuration):
         super(AccountSubscriptionsResource, self).__init__(config.add_path('subscriptions'))
 
-    def create(self, sub_name: AccountSubscriptionCreateOpts) -> MethodResponse[AccountSubscription]:
-        return super(AccountSubscriptionsResource, self)._create({ 'enroll': sub_name })
+    def create(self, opts: Union[AccountSubscriptionCreateOpts, AccountSubscriptionTypesLiterals]) -> MethodResponse[AccountSubscription]:
+        if isinstance(opts, str):
+            opts = {'enroll': opts}
+        return super(AccountSubscriptionsResource, self)._create(opts)
     
     def list(self) -> MethodResponse[AccountSubscriptionsResponse]:
         return super(AccountSubscriptionsResource, self)._get()

@@ -1,12 +1,23 @@
-from typing import TypedDict, Optional, Literal, List
+from typing import TypedDict, Optional, Literal, List, Dict, Any, Union
 
 from method.resource import MethodResponse, RequestOpts, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
+from method.resources.Accounts.Account import Account
 
 
 EntityConnectResponseStatusLiterals = Literal[
     "completed", "in_progress", "pending", "failed"
+]
+
+EntityConnectArtifactTypesLiterals = Literal[
+    'raw_credit_report',
+    'credit_report_pdf'
+]
+
+EntityConnectFileBureausLiterals = Literal[
+    'equifax',
+    'transunion'
 ]
 
 AccountConnectResponseExpandLiterals = Literal[
@@ -36,19 +47,30 @@ AccountSubscriptionsEligibleForAutomaticExecutionLiteral = Literal[
 ]
 
 
+class EntityConnectFile(TypedDict):
+    id: str
+    type: EntityConnectArtifactTypesLiterals
+    bureau: EntityConnectFileBureausLiterals
+    mime_type: str
+
+
 class EntityConnect(TypedDict):
     id: str
+    entity_id: str
     status: EntityConnectResponseStatusLiterals
-    accounts: Optional[List[str]]
+    accounts: Optional[List[Union[str, Account]]]
     requested_products: List[AccountProductsEligibleForAutomaticExecutionLiteral]
     requested_subscriptions: List[AccountSubscriptionsEligibleForAutomaticExecutionLiteral]
+    files: List[EntityConnectFile]
+    credit_reports: Optional[Dict[str, Any]]
+    metadata: Optional[Dict[str, Any]]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str
 
 
 class ConnectExpandOpts(TypedDict):
-    expand: AccountConnectResponseExpandLiterals
+    expand: List[AccountConnectResponseExpandLiterals]
 
 
 class ConnectResourceListOpts(ResourceListOpts, ConnectExpandOpts):
@@ -57,6 +79,8 @@ class ConnectResourceListOpts(ResourceListOpts, ConnectExpandOpts):
 class ConnectCreateOpts(TypedDict):
     products: Optional[List[AccountProductsEligibleForAutomaticExecutionLiteral]]
     subscriptions: Optional[List[AccountSubscriptionsEligibleForAutomaticExecutionLiteral]]
+    artifacts: Optional[List[EntityConnectArtifactTypesLiterals]]
+    bureau: Optional[EntityConnectFileBureausLiterals]
 
 
 

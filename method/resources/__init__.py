@@ -25,3 +25,9 @@ from method.resources.Teams.Team import Team, TeamContact, TeamAddress, TeamCrea
     MLEPublicKeyCreateOpts, TeamResource, TeamMLEResource, TeamMLEPublicKeysResource
 from method.resources.ManagedAccounts.ManagedAccount import ManagedAccount, ManagedAccountTransaction, \
     ManagedAccountTransactionListOpts, ManagedAccountResource
+from method.resources.Accounts.CardBrands import AccountCardBrandDetails, AccountCardBrandRewards, \
+    AccountCardBrandPromotion
+from method.resources.Accounts.Subscriptions import AccountSubscriptionPayload, AccountSubscriptionPayloadAttributes
+from method.resources.Entities.Connect import EntityConnectFile
+from method.resources.Entities.Subscriptions import EntitySubscriptionPayload, EntitySubscriptionPayloadAttributes
+from method.resources.Entities.Types import EntityVerification

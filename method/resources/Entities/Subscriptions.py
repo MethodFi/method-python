@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, Literal, Dict, Any, Union
+from typing import TypedDict, Optional, Literal, List, Union
 
 from method.resource import MethodResponse, Resource, RequestOpts
 from method.configuration import Configuration
@@ -18,11 +18,21 @@ EntitySubscriptionStatusesLiterals = Literal[
 ]
 
 
+class EntitySubscriptionPayloadAttributes(TypedDict):
+    requested_attributes: Optional[List[str]]
+    bundles: Optional[List[str]]
+    version: Optional[Literal['v1', 'v2']]
+
+
+class EntitySubscriptionPayload(TypedDict):
+    attributes: Optional[EntitySubscriptionPayloadAttributes]
+
+
 class EntitySubscription(TypedDict):
     id: str
     name: EntitySubscriptionNamesLiterals
     status: EntitySubscriptionStatusesLiterals
-    payload: Optional[Dict[str, Any]]
+    payload: Optional[EntitySubscriptionPayload]
     latest_request_id: Optional[str]
     created_at: str
     updated_at: str
@@ -41,7 +51,7 @@ class EntitySubscriptionListResponse(TypedDict):
 
 class EntitySubscriptionCreateOpts(TypedDict):
     enroll: EntitySubscriptionNamesLiterals
-    payload: Optional[Dict[str, Any]]
+    payload: Optional[EntitySubscriptionPayload]
 
 
 class EntitySubscriptionsResource(Resource):

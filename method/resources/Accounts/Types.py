@@ -150,6 +150,7 @@ class AccountLiabilityBase(TypedDict):
     next_payment_due_date: Optional[str]
     next_payment_minimum_amount: Optional[int]
     opened_at: Optional[str]
+    past_due_status: Optional[bool]
 
 
 class AccountLiabilityLoanBase(AccountLiabilityBase):
@@ -176,7 +177,7 @@ class AccountLiabilityCreditCard(AccountLiabilityBase):
 
 
 class AccountLiabilityCollection(AccountLiabilityBase):
-    pass
+    sub_type: str
 
 
 class AccountLiabilityMortgage(AccountLiabilityLoanBase):
@@ -199,7 +200,28 @@ class AccountLiabilityStudentLoans(AccountLiabilityBase):
     original_loan_amount: Optional[int]
     term_length: Optional[int]
 
-AccountLiabilitySubTypesLiterals = Literal[    
+
+class AccountLiabilityCreditBuilder(AccountLiabilityBase):
+    sub_type: str
+
+
+class AccountLiabilityLoan(AccountLiabilityBase):
+    sub_type: str
+
+
+class AccountLiabilityInsurance(AccountLiabilityBase):
+    sub_type: str
+
+
+class AccountLiabilityMedical(AccountLiabilityBase):
+    sub_type: str
+
+
+class AccountLiabilityUtility(AccountLiabilityBase):
+    sub_type: str
+
+
+AccountLiabilitySubTypesLiterals = Literal[
     'business',
     'unsecured',
     'lease',
@@ -223,6 +245,7 @@ class AccountLiability(TypedDict):
     type: Optional[AccountLiabilityTypesLiterals]
     sub_type: Optional[AccountLiabilitySubTypesLiterals]
     name: Optional[str]
+    network: Optional[str]
 
 
 class AccountACH(TypedDict):

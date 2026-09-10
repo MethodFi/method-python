@@ -1,19 +1,20 @@
-from typing import TypedDict, Optional, List, Dict, Any, Literal
+from typing import TypedDict, Optional, List, Dict, Any, Literal, Union
 
 from method.resource import MethodResponse, Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Entities.Attributes import EntityAttributesResource
+from method.resources.Entities.Attributes import EntityAttributes, EntityAttributesResource
 from method.resources.Entities.Types import EntityTypesLiterals, EntityCapabilitiesLiterals, EntityStatusesLiterals, \
-    CreditReportBureausLiterals, EntityExpandableFieldsLiterals, EntityIndividual, EntityCorporation, EntityAddress
-from method.resources.Entities.Connect import EntityConnectResource
-from method.resources.Entities.CreditScores import EntityCreditScoresResource
+    CreditReportBureausLiterals, EntityExpandableFieldsLiterals, EntityIndividual, EntityCorporation, EntityAddress, \
+    EntityProductTypesLiterals, EntityVerification
+from method.resources.Entities.Connect import EntityConnect, EntityConnectResource
+from method.resources.Entities.CreditScores import EntityCreditScores, EntityCreditScoresResource
 from method.resources.Entities.Identities import EntityIdentityResource
 from method.resources.Entities.ManualConnect import EntityManualConnectResource
-from method.resources.Entities.Vehicles import EntityVehiclesResource
+from method.resources.Entities.Vehicles import EntityVehicles, EntityVehiclesResource
 from method.resources.Entities.Products import EntityProductResource
 from method.resources.Entities.Sensitive import EntitySensitiveResource
-from method.resources.Entities.Subscriptions import EntitySubscriptionsResource
+from method.resources.Entities.Subscriptions import EntitySubscriptionNamesLiterals, EntitySubscriptionsResource
 from method.resources.Entities.VerificationSessions import EntityVerificationSessionResource
 
 
@@ -109,6 +110,16 @@ class Entity(TypedDict):
     status: EntityStatusesLiterals
     error: Optional[ResourceError]
     metadata: Optional[Dict[str, Any]]
+    products: Optional[List[EntityProductTypesLiterals]]
+    restricted_products: Optional[List[EntityProductTypesLiterals]]
+    subscriptions: Optional[List[EntitySubscriptionNamesLiterals]]
+    available_subscriptions: Optional[List[EntitySubscriptionNamesLiterals]]
+    restricted_subscriptions: Optional[List[EntitySubscriptionNamesLiterals]]
+    verification: Optional[EntityVerification]
+    connect: Optional[Union[str, EntityConnect]]
+    credit_score: Optional[Union[str, EntityCreditScores]]
+    attribute: Optional[Union[str, EntityAttributes]]
+    vehicle: Optional[Union[str, EntityVehicles]]
     created_at: str
     updated_at: str
 

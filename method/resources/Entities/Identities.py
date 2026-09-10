@@ -16,6 +16,7 @@ EntityVerificationSessionStatusLiterals = Literal[
 
 class EntityIdentity(TypedDict):
     id: str
+    entity_id: str
     status: EntityVerificationSessionStatusLiterals
     identities: List[EntityIdentityType]
     error: Optional[ResourceError]

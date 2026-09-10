@@ -3,7 +3,6 @@ from typing import TypedDict, Optional, List, Dict, Any, Literal
 from method.resource import MethodResponse, Resource, RequestOpts, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Payments.Reversal import ReversalResource
 
 
 PaymentStatusesLiterals = Literal[
@@ -17,7 +16,21 @@ PaymentStatusesLiterals = Literal[
     'reversal_required',
     'reversal_processing',
     'settled',
-    'cashed'
+    'cashed',
+    'delivered',
+    'error',
+    'returned'
+]
+
+
+PaymentDirectionStatusesLiterals = Literal[
+    'pending',
+    'canceled',
+    'processing',
+    'sent',
+    'posted',
+    'cashed',
+    'returned'
 ]
 
 
@@ -29,7 +42,12 @@ PaymentFundStatusesLiterals = Literal[
     'failed',
     'sent',
     'posted',
-    'unknown'
+    'unknown',
+    'transmitting',
+    'transmitted',
+    'cashed',
+    'pending_consolidation',
+    'pending_clearing'
 ]
 
 
@@ -63,7 +81,7 @@ class Payment(TypedDict):
     source: str
     destination: str
     amount: int
-    description: str
+    description: Optional[str]
     status: PaymentStatusesLiterals
     fund_status: Optional[PaymentFundStatusesLiterals]
     error: Optional[ResourceError]
@@ -71,10 +89,14 @@ class Payment(TypedDict):
     estimated_completion_date: Optional[str]
     source_settlement_date: Optional[str]
     destination_settlement_date: Optional[str]
-    source_status: PaymentStatusesLiterals
-    destination_status: PaymentStatusesLiterals
+    destination_posted_date: Optional[str]
+    source_status: Optional[PaymentDirectionStatusesLiterals]
+    destination_status: Optional[PaymentDirectionStatusesLiterals]
     destination_payment_method: Optional[PaymentDestinationPaymentMethodsLiterals]
     fee: Optional[PaymentFee]
+    idempotency_key: Optional[str]
+    payment_instrument: Optional[str]
+    reversal_account: Optional[str]
     type: PaymentTypesLiterals
     created_at: str
     updated_at: str
@@ -88,6 +110,7 @@ class PaymentCreateOpts(TypedDict):
     metadata: Optional[Dict[str, Any]]
     fee: Optional[PaymentFee]
     dry_run: Optional[bool]
+    reversal_account: Optional[str]
 
 
 class PaymentListOpts(ResourceListOpts):
@@ -100,6 +123,9 @@ class PaymentListOpts(ResourceListOpts):
     destination_holder_id: Optional[str]
     acc_id: Optional[str]
     holder_id: Optional[str]
+
+
+from method.resources.Payments.Reversal import ReversalResource
 
 
 class PaymentSubResources:

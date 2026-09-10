@@ -3,6 +3,7 @@ from typing import TypedDict, Optional, Literal, List
 
 EntityTypesLiterals = Literal[
     'individual',
+    'corporation',
     'c_corporation',
     's_corporation',
     'llc',
@@ -68,6 +69,33 @@ CreditReportBureausLiterals = Literal[
 ]
 
 
+EntityProductTypesLiterals = Literal[
+    'connect',
+    'credit_score',
+    'identity',
+    'attribute',
+    'vehicle',
+    'manual_connect'
+]
+
+
+EntityVerificationIdentityMethodsLiterals = Literal[
+    'kba',
+    'byo_kyc',
+    'element',
+    'opal'
+]
+
+
+EntityVerificationPhoneMethodsLiterals = Literal[
+    'sms',
+    'sna',
+    'byo_sms',
+    'element',
+    'opal'
+]
+
+
 EntitySensitiveFieldsLiterals = Literal[
     'first_name',
     'last_name',
@@ -90,6 +118,8 @@ class EntityIndividual(TypedDict):
     phone: Optional[str]
     email: Optional[str]
     dob: Optional[str]
+    ssn: Optional[str]
+    ssn_4: Optional[str]
 
 
 class EntityAddress(TypedDict):
@@ -137,3 +167,21 @@ class EntityIdentityType(TypedDict):
     dob: Optional[str]
     address: Optional[EntityKYCAddressRecordData]
     ssn: Optional[str]
+
+
+class EntityVerificationIdentity(TypedDict):
+    verified: bool
+    matched: bool
+    latest_verification_session: Optional[str]
+    methods: List[EntityVerificationIdentityMethodsLiterals]
+
+
+class EntityVerificationPhone(TypedDict):
+    verified: bool
+    latest_verification_session: Optional[str]
+    methods: List[EntityVerificationPhoneMethodsLiterals]
+
+
+class EntityVerification(TypedDict):
+    identity: Optional[EntityVerificationIdentity]
+    phone: Optional[EntityVerificationPhone]

@@ -4,7 +4,7 @@ from method.errors import ResourceError
 from method.configuration import Configuration
 from method.resources.Accounts.Types import AccountACH, AccountStatusesLiterals, AccountTypesLiterals, \
     AccountProductTypesLiterals, AccountSubscriptionTypesLiterals, AccountExpandableFieldsLiterals, \
-    AccountLiability
+    AccountLiability, AccountLiabilityTypesLiterals, AccountOwnershipLiterals
 from method.resources.Accounts.Balances import AccountBalance, AccountBalancesResource
 from method.resources.Accounts.CardBrands import AccountCardBrand, AccountCardBrandsResource
 from method.resources.Accounts.Payoffs import AccountPayoff, AccountPayoffsResource
@@ -47,7 +47,8 @@ AccountListOpts = TypedDict('AccountListOpts', {
     'holder_id': Optional[str],
     'expand': Optional[List[AccountExpandableFieldsLiterals]],
     'liability.mch_id': Optional[str],
-    'liability.type': Optional[str]
+    'liability.type': Optional[AccountLiabilityTypesLiterals],
+    'liability.ownership': Optional[AccountOwnershipLiterals]
 })
 
 
@@ -55,6 +56,7 @@ class Account(TypedDict):
     id: str
     holder_id: str
     status: AccountStatusesLiterals
+    consent_status: Optional[str]
     type: AccountTypesLiterals
     ach: Optional[AccountACH]
     liability: Optional[AccountLiability]
