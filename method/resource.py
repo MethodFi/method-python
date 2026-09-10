@@ -147,7 +147,7 @@ class Resource():
             'Authorization': 'Bearer {token}'.format(token=config.api_key),
             'Content-Type': 'application/json',
             'User-Agent': 'Method-Python/v{version}'.format(version=version('method-python')),
-            'method-version': '2025-07-04'
+            'method-version': '2025-12-01'
         })
     
     def _make_request(self, method: str, path: Optional[str] = None, data: Optional[Dict] = None, params: Optional[Dict] = None, headers: Optional[Dict] = None, raw: bool = False, download: bool = False) -> Union[MethodResponse[T], str]:
@@ -220,18 +220,23 @@ class Resource():
     def _list(self, params: Optional[Dict] = None) -> MethodResponse[List[T]]:
         return self._make_request('GET', params=params)
 
-    @MethodError.catch
-    def _create(self, data: Dict, params: Optional[Dict] = None, request_opts: Optional[RequestOpts] = None) -> MethodResponse[T]:
+    def _build_request_opts_headers(self, request_opts: Optional[RequestOpts]) -> Dict[str, str]:
         headers = {}
         if request_opts and request_opts.get('idempotency_key'):
             headers['Idempotency-Key'] = request_opts.get('idempotency_key')
         if request_opts and request_opts.get('prefer'):
             headers['Prefer'] = request_opts.get('prefer')
+        return headers
+
+    @MethodError.catch
+    def _create(self, data: Dict, params: Optional[Dict] = None, request_opts: Optional[RequestOpts] = None) -> MethodResponse[T]:
+        headers = self._build_request_opts_headers(request_opts)
         return self._make_request('POST', data=data, headers=headers, params=params)
 
     @MethodError.catch
-    def _create_with_sub_path(self, path: str, data: Dict) -> MethodResponse[T]:
-        return self._make_request('POST', path=path, data=data)
+    def _create_with_sub_path(self, path: str, data: Dict, request_opts: Optional[RequestOpts] = None) -> MethodResponse[T]:
+        headers = self._build_request_opts_headers(request_opts)
+        return self._make_request('POST', path=path, data=data, headers=headers)
 
     @MethodError.catch
     def _update_with_id(self, _id: str, data: Dict) -> MethodResponse[T]:

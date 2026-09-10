@@ -23,16 +23,20 @@ class AccountProduct(TypedDict):
     updated_at: str
 
 
-class AccountProductListResponse(TypedDict):
-    attribute: Optional[AccountProduct]
-    balance: Optional[AccountProduct]
-    payment: Optional[AccountProduct]
-    sensitive: Optional[AccountProduct]
-    update: Optional[AccountProduct]
-    transactions: Optional[AccountProduct]
-    payoff: Optional[AccountProduct]
-    card_brand: Optional[AccountProduct]
-    payment_instruments: Optional[AccountProduct]
+AccountProductListResponse = TypedDict('AccountProductListResponse', {
+    'attribute': Optional[AccountProduct],
+    'balance': Optional[AccountProduct],
+    'payment': Optional[AccountProduct],
+    'sensitive': Optional[AccountProduct],
+    'update': Optional[AccountProduct],
+    'transaction': Optional[AccountProduct],
+    'payoff': Optional[AccountProduct],
+    'card_brand': Optional[AccountProduct],
+    'payment_instrument': Optional[AccountProduct],
+    'payment_instrument.card': Optional[AccountProduct],
+    'payment_instrument.inbound_achwire_payment': Optional[AccountProduct],
+    'payment_instrument.network_token': Optional[AccountProduct]
+})
 
 class AccountProductResource(Resource):
     def __init__(self, config: Configuration):

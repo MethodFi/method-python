@@ -4,19 +4,28 @@ from method.resource import MethodResponse, Resource, ResourceListOpts, Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
 from method.resources.Accounts.Types import AccountLiabilityTypesLiterals, AccountLiabilityAutoLoan, \
-    AccountLiabilityCreditCard, AccountLiabilityMortgage, AccountLiabilityStudentLoans, AccountLiabilityPersonalLoan
+    AccountLiabilityCreditCard, AccountLiabilityMortgage, AccountLiabilityStudentLoans, AccountLiabilityPersonalLoan, \
+    AccountLiabilityCollection, AccountLiabilityCreditBuilder, AccountLiabilityLoan, AccountLiabilityInsurance, \
+    AccountLiabilityMedical, AccountLiabilityUtility, AccountUpdateSourceLiterals
 
 
 class AccountUpdate(TypedDict):
     id: str
     status: ResourceStatusLiterals
     account_id: str
+    source: Optional[AccountUpdateSourceLiterals]
     type: AccountLiabilityTypesLiterals
     auto_loan: Optional[AccountLiabilityAutoLoan]
     credit_card: Optional[AccountLiabilityCreditCard]
+    collection: Optional[AccountLiabilityCollection]
     mortgage: Optional[AccountLiabilityMortgage]
     personal_loan: Optional[AccountLiabilityPersonalLoan]
     student_loans: Optional[AccountLiabilityStudentLoans]
+    credit_builder: Optional[AccountLiabilityCreditBuilder]
+    loan: Optional[AccountLiabilityLoan]
+    insurance: Optional[AccountLiabilityInsurance]
+    medical: Optional[AccountLiabilityMedical]
+    utility: Optional[AccountLiabilityUtility]
     data_as_of: Optional[str]
     error: Optional[ResourceError]
     created_at: str

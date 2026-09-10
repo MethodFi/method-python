@@ -3,6 +3,7 @@ from typing import TypedDict, List, Literal, Optional
 from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
 from method.errors import ResourceError
+from method.resources.Payments.Payment import PaymentFee
 
 
 ReversalStatusesLiterals = Literal[
@@ -10,7 +11,8 @@ ReversalStatusesLiterals = Literal[
     'pending',
     'processing',
     'sent',
-    'failed'
+    'failed',
+    'pending_settlement'
 ]
 
 
@@ -28,6 +30,7 @@ class Reversal(TypedDict):
     direction: ReversalDirectionsLiterals
     description: str
     amount: int
+    fee: Optional[PaymentFee]
     status: ReversalStatusesLiterals
     error: Optional[ResourceError]
     created_at: str
@@ -37,6 +40,7 @@ class Reversal(TypedDict):
 class ReversalUpdateOpts(TypedDict):
     status: ReversalStatusesLiterals
     description: Optional[str]
+    target_account: Optional[str]
 
 
 class ReversalResource(Resource):

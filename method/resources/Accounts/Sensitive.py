@@ -3,6 +3,7 @@ from typing import TypedDict, Optional, Literal, List
 from method.resource import MethodResponse, Resource, ResourceListOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
+from method.resources.Accounts.Types import AccountLiabilityTypesLiterals
 
 
 AccountSensitiveFieldsLiterals = Literal[
@@ -32,6 +33,7 @@ class AccountSensitiveCreditCard(TypedDict):
 class AccountSensitive(TypedDict):
     id: str
     account_id: str
+    type: AccountLiabilityTypesLiterals
     auto_loan: Optional[AccountSensitiveLoan]
     credit_card: Optional[AccountSensitiveCreditCard]
     mortgage: Optional[AccountSensitiveLoan]

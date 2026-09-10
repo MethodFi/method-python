@@ -10,7 +10,7 @@ AccountTransactionStatusLiterals = Literal[
 ]
 
 class AccountTransactionMerchant(TypedDict):
-    name: str
+    id: str
     logo: Optional[str]
 
 class AccountTransaction(TypedDict):

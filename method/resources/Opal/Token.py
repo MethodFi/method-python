@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, Literal, List, Dict
+from typing import TypedDict, Optional, Literal, List, Dict, Any
 
 from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
@@ -77,7 +77,7 @@ class OpalAccountVerificationCreateOpts(TypedDict):
 
 
 class OpalTransactionsCreateOpts(TypedDict):
-    transactions: Dict[str, any]
+    transactions: Dict[str, Any]
 
 
 class OpalTokenCreateOpts(TypedDict):

@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, Literal, List, Dict
+from typing import TypedDict, Optional, Literal, List, Dict, Any
 
 from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
@@ -80,8 +80,6 @@ ElementTypesLiterals = Literal[
 ElementProducts = Literal[
     'balance',
     'payoff',
-    'transactions',
-    'card_brand',
     'update',
     'sensitive',
     'payment'
@@ -106,7 +104,7 @@ ElementSelectionTypes = Literal[
 class ElementUserEvent(TypedDict):
     type: UserEventTypeLiterals
     timestamp: str
-    metadata: Optional[Dict[str, any]]
+    metadata: Optional[Dict[str, Any]]
 
 
 class IndividualOpts(TypedDict):
@@ -137,7 +135,7 @@ class ConnectElementCreateOpts(TypedDict):
 
 
 class BalanceTransferElementCreateOpts(TypedDict):
-    payment_mount_min: int
+    payout_amount_min: int
     minimum_loan_amount: int
     payout_residual_amount_max: int
     loan_details_requested_amount: int

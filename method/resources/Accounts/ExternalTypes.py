@@ -11,7 +11,7 @@ PlaidTransactionTypesLiterals = Literal[
 
 PlaidTransactionPaymentChannelTypesLiterals = Literal[
     'online',
-    'in_store',
+    'in store',
     'other'
 ]
 
@@ -44,10 +44,10 @@ PlaidCounterpartyTypeLiterals = Literal[
 
 
 class PlaidBalance(TypedDict):
-    available: Optional[int]
-    current: Optional[int]
+    available: Optional[float]
+    current: Optional[float]
     iso_currency_code: Optional[str]
-    limit: Optional[int]
+    limit: Optional[float]
     unofficial_currency_code: Optional[str]
 
 
@@ -57,8 +57,8 @@ class PlaidLocation(TypedDict):
     region: Optional[str]
     postal_code: Optional[str]
     country: Optional[str]
-    lat: Optional[int]
-    lon: Optional[int]
+    lat: Optional[float]
+    lon: Optional[float]
     store_number: Optional[str]
 
 
@@ -90,7 +90,7 @@ class PlaidTransactionCounterparty(TypedDict):
 
 class PlaidTransaction(TypedDict):
     account_id: str
-    amount: int
+    amount: float
     iso_currency_code: Optional[str]
     unofficial_currency_code: Optional[str]
     category: Optional[List[str]]
@@ -126,8 +126,8 @@ class MXAccount(TypedDict):
     annuity_policy_to_date: str
     annuity_provider: str
     annuity_term_year: int
-    apr: int
-    apy: int
+    apr: float
+    apy: float
     available_balance: int
     available_credit: int
     balance: int
@@ -142,7 +142,7 @@ class MXAccount(TypedDict):
     holdings_value: int
     id: str
     imported_at: str
-    interest_rate: int
+    interest_rate: float
     institution_code: str
     insured_name: str
     is_closed: bool
@@ -172,7 +172,7 @@ class MXAccount(TypedDict):
     started_on: str
     subtype: str
     today_ugl_amount: int
-    today_ugl_percentage: int
+    today_ugl_percentage: float
     total_account_value: int
     type: str
     updated_at: str
@@ -232,10 +232,10 @@ class TellerLinks(TypedDict):
 
 
 class TellerBalance(TypedDict):
-    ledger: int
+    ledger: float
     links: TellerLinks
     account_id: str
-    available: int
+    available: float
 
 
 class TellerTransactionCounterparty(TypedDict):
@@ -250,13 +250,13 @@ class TellerTransactionDetails(TypedDict):
 
 
 class TellerTransaction(TypedDict):
-    running_balance: Optional[int]
+    running_balance: Optional[float]
     details: TellerTransactionDetails
     description: str
     account_id: str
     date: str
     id: str
     links: TellerLinks
-    amount: int
+    amount: float
     type: str
     status: str

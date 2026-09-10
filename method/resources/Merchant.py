@@ -1,61 +1,38 @@
-from typing import TypedDict, Optional, List, Literal, Union
+from typing import TypedDict, Optional, List, Union
 
 from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
-
-
-MerchantTypesLiterals = Literal[
-    'auto_loan',
-    'business_loan',
-    'credit_card',
-    'electric_utility',
-    'home_loan',
-    'insurance',
-    'internet_utility',
-    'loan',
-    'medical',
-    'personal_loan',
-    'student_loan',
-    'telephone_utility',
-    'television_utility',
-    'water_utility',
-    'bank',
-    'home_equity_loan',
-    'mortgage',
-    'utility',
-    'waste_utility',
-    'collection'
-    'credit_builder',
-]
+from method.resources.Accounts.Types import AccountLiabilityTypesLiterals
 
 
 class MerchantProviderIds(TypedDict):
     plaid: List[str]
     mx: List[str]
     finicity: List[str]
+    dpp: List[str]
+    rpps: List[str]
 
 
 class Merchant(TypedDict):
-    mch_id: str
+    id: str
     parent_name: str
     name: str
     logo: str
-    description: Optional[str]
-    note: Optional[str]
-    types: List[MerchantTypesLiterals]
-    account_prefixes: List[str]
+    type: AccountLiabilityTypesLiterals
     provider_ids: MerchantProviderIds
-    customized_auth: bool
     is_temp: bool
+    account_number_formats: List[str]
 
 MerchantListOpts = TypedDict('MerchantListOpts', {
     'page': Optional[Union[str, int]],
     'page_limit': Optional[Union[str, int]],
-    'type': Optional[MerchantTypesLiterals],
+    'type': Optional[AccountLiabilityTypesLiterals],
     'name': Optional[str],
+    'creditor_name': Optional[str],
     'provider_id.plaid': Optional[str],
     'provider_id.mx': Optional[str],
-    'provider_id.finicity': Optional[str]
+    'provider_id.finicity': Optional[str],
+    'provider_id.dpp': Optional[str]
 })
 
 

@@ -82,7 +82,7 @@ class EntityVerificationSessionUpdateOpts(TypedDict):
     type: EntityVerificationSessionTypeLiterals
     method: EntityVerificationSessionMethodsLiterals
     sms: Optional[EntityPhoneSmsVerificationUpdate]
-    sma: Optional[object]
+    sna: Optional[object]
     kba: Optional[EntityKbaVerificationAnswerUpdate]
 
 
