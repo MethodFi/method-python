@@ -23,7 +23,7 @@ class EntitySubscription(TypedDict):
     name: EntitySubscriptionNamesLiterals
     status: EntitySubscriptionStatusesLiterals
     payload: Optional[Dict[str, Any]]
-    last_request_id: Optional[str]
+    latest_request_id: Optional[str]
     created_at: str
     updated_at: str
 

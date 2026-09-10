@@ -29,7 +29,7 @@ class AccountAttributes(TypedDict):
     account_id: str
     status: AccountAttributesStatusesLiterals
     payload: Optional[Dict[str, Any]]
-    attributes: Optional[List[AccountAttributesType]]
+    attributes: Optional[AccountAttributesType]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str

@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, Literal, List
+from typing import TypedDict, Optional, Literal, Dict, Any
 
 from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
@@ -20,7 +20,8 @@ class AccountSubscription(TypedDict):
     id: str
     name: AccountSubscriptionTypesLiterals
     status: Literal['active']
-    latest_transaction_id: str
+    payload: Optional[Dict[str, Any]]
+    latest_request_id: Optional[str]
     created_at: str
     updated_at: str
 
@@ -48,10 +49,10 @@ class AccountSubscriptionsResource(Resource):
     def create(self, sub_name: AccountSubscriptionCreateOpts) -> MethodResponse[AccountSubscription]:
         return super(AccountSubscriptionsResource, self)._create({ 'enroll': sub_name })
     
-    def list(self) -> MethodResponse[List[AccountSubscription]]:
+    def list(self) -> MethodResponse[AccountSubscriptionsResponse]:
         return super(AccountSubscriptionsResource, self)._get()
-    
-    def retrieve(self, sub_id: str) -> MethodResponse[AccountSubscriptionsResponse]:
+
+    def retrieve(self, sub_id: str) -> MethodResponse[AccountSubscription]:
         return super(AccountSubscriptionsResource, self)._get_with_id(sub_id)
     
     def delete(self, sub_id: str) -> MethodResponse[AccountSubscription]:

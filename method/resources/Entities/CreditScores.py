@@ -1,9 +1,9 @@
 from typing import TypedDict, Optional, List, Literal
 
-from method.resource import MethodResponse, Resource, ResourceListOpts
+from method.resource import MethodResponse, Resource, ResourceListOpts, ResourceStatusLiterals
 from method.configuration import Configuration
 from method.errors import ResourceError
-from method.resources.Entities.Types import EntityStatusesLiterals, CreditReportBureausLiterals
+from method.resources.Entities.Types import CreditReportBureausLiterals
 
 
 CreditScoresModelLiterals = Literal[
@@ -23,14 +23,13 @@ class EntityCreditScoresType(TypedDict):
     model: CreditScoresModelLiterals
     factors: List[EntityCreditScoresFactorsType]
     created_at: str
-    factors: EntityCreditScoresFactorsType
-    created_at: str
 
 
 class EntityCreditScores(TypedDict):
     id: str
-    status: EntityStatusesLiterals
-    credit_scores: Optional[List[EntityCreditScoresType]]
+    entity_id: str
+    status: ResourceStatusLiterals
+    scores: Optional[List[EntityCreditScoresType]]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str

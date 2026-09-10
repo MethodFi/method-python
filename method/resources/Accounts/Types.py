@@ -1,4 +1,4 @@
-from typing import Literal, Optional, TypedDict
+from typing import Literal, Optional, List, TypedDict
 
 
 AccountTypesLiterals = Literal[
@@ -194,7 +194,7 @@ class AccountLiabilityStudentLoansDisbursement(AccountLiabilityLoanBase):
 
 
 class AccountLiabilityStudentLoans(AccountLiabilityBase):
-    disbursements: Optional[AccountLiabilityStudentLoansDisbursement]
+    disbursements: Optional[List[AccountLiabilityStudentLoansDisbursement]]
     sub_type: Optional[AccountLiabilityStudentLoanSubTypesLiterals]
     original_loan_amount: Optional[int]
     term_length: Optional[int]
@@ -226,6 +226,6 @@ class AccountLiability(TypedDict):
 
 
 class AccountACH(TypedDict):
-    routing: int
-    number: int
+    routing: str
+    number: str
     type: AchAccountSubTypesLiterals

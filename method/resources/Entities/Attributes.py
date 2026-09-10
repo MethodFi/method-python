@@ -42,7 +42,7 @@ class EntityAttributes(TypedDict):
     id: str
     entity_id: str
     status: EntityAttributesResponseStatusLiterals
-    attributes: Optional[List[EntityAttributesType]]
+    attributes: Optional[EntityAttributesType]
     error: Optional[ResourceError]
     created_at: str
     updated_at: str

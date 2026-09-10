@@ -40,8 +40,7 @@ PaymentTypesLiterals = Literal[
 
 
 PaymentFeeTypesLiterals = Literal[
-    'total',
-    'markup'
+    'total'
 ]
 
 
