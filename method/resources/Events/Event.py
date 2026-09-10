@@ -7,6 +7,8 @@ EventResourceTypesLiterals = Literal[
     'account',
     'credit_score',
     'attribute',
+    'entity_attribute',
+    'account_attribute',
     'connect'
 ]
 

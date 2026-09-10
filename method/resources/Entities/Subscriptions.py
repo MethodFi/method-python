@@ -3,6 +3,7 @@ from typing import TypedDict, Optional, Literal, List, Union
 from method.resource import MethodResponse, Resource, RequestOpts
 from method.configuration import Configuration
 from method.errors import ResourceError
+from method.resources.Entities.Attributes import EntityAttributeNamesLiterals, EntityAttributeBundlesLiterals
 
 
 EntitySubscriptionNamesLiterals = Literal[
@@ -19,8 +20,8 @@ EntitySubscriptionStatusesLiterals = Literal[
 
 
 class EntitySubscriptionPayloadAttributes(TypedDict):
-    requested_attributes: Optional[List[str]]
-    bundles: Optional[List[str]]
+    requested_attributes: Optional[List[EntityAttributeNamesLiterals]]
+    bundles: Optional[List[EntityAttributeBundlesLiterals]]
     version: Optional[Literal['v1', 'v2']]
 
 

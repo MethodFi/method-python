@@ -15,7 +15,14 @@ ReportTypesLiterals = Literal[
     'ach.pull.previous',
     'ach.pull.nightly',
     'ach.reversals.nightly',
-    'entities.created.previous_day'
+    'entities.created.previous_day',
+    'reserve_fbo_balance.created.previous_day'
+]
+
+
+ReportRetrieveTypesLiterals = Literal[
+    ReportTypesLiterals,
+    'ach.debit.daily'
 ]
 
 
@@ -27,7 +34,7 @@ ReportStatusesLiterals = Literal[
 
 class Report(TypedDict):
     id: str
-    type: ReportTypesLiterals
+    type: ReportRetrieveTypesLiterals
     url: str
     status: ReportStatusesLiterals
     metadata: Optional[Dict[str, Any]]

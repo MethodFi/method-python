@@ -2,6 +2,7 @@ from typing import TypedDict, Optional, Literal, List, Union
 
 from method.resource import MethodResponse, Resource
 from method.configuration import Configuration
+from method.resources.Accounts.Attributes import AccountRequestableAttributeNamesLiterals, AccountAttributeBundlesLiterals
 
 
 AccountSubscriptionTypesLiterals = Literal[
@@ -17,8 +18,8 @@ AccountSubscriptionTypesLiterals = Literal[
 
 
 class AccountSubscriptionPayloadAttributes(TypedDict):
-    requested_attributes: Optional[List[str]]
-    bundles: Optional[List[str]]
+    requested_attributes: Optional[List[AccountRequestableAttributeNamesLiterals]]
+    bundles: Optional[List[AccountAttributeBundlesLiterals]]
 
 
 class AccountSubscriptionPayload(TypedDict):
@@ -28,7 +29,7 @@ class AccountSubscriptionPayload(TypedDict):
 class AccountSubscription(TypedDict):
     id: str
     name: AccountSubscriptionTypesLiterals
-    status: Literal['active']
+    status: Literal['active', 'inactive']
     payload: Optional[AccountSubscriptionPayload]
     latest_request_id: Optional[str]
     created_at: str

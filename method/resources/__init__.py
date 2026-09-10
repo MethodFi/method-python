@@ -16,8 +16,8 @@ from method.resources.Simulate.PaymentInstruments import SimulatePaymentInstrume
 from method.resources.Simulate.VerificationSessions import SimulateVerificationSessionAmounts, SimulateVerificationSessionsResource
 from method.resources.HealthCheck import PingResponse, HealthCheckResource
 from method.resources.Merchant import Merchant, MerchantProviderIds, MerchantResource
-from method.resources.Report import Report, ReportCreateOpts, ReportResource
-from method.resources.Webhook import Webhook, WebhookCreateOpts, WebhookResource
+from method.resources.Report import Report, ReportCreateOpts, ReportRetrieveTypesLiterals, ReportResource
+from method.resources.Webhook import Webhook, WebhookCreateOpts, WebhookUpdateOpts, WebhookStatusesLiterals, WebhookResource
 from method.resources.Events.Event import Event, EventResource
 from method.resources.Secrets.Secret import Secret, SecretCreateOpts, SecretResource
 from method.resources.ForwardingRequests.ForwardingRequest import ForwardingRequest, ForwardingRequestCreateOpts, ForwardingRequestResource
@@ -31,3 +31,7 @@ from method.resources.Accounts.Subscriptions import AccountSubscriptionPayload, 
 from method.resources.Entities.Connect import EntityConnectFile
 from method.resources.Entities.Subscriptions import EntitySubscriptionPayload, EntitySubscriptionPayloadAttributes
 from method.resources.Entities.Types import EntityVerification
+from method.resources.Accounts.Attributes import AccountAttribute, AccountAttributesType, AccountAttributesCreateOpts, \
+    AccountAttributeNamesLiterals, AccountRequestableAttributeNamesLiterals, AccountAttributeBundlesLiterals
+from method.resources.Entities.Attributes import EntityAttribute, CreditHealthAttribute, EntityAttributesType, \
+    EntityAttributesCreateOpts, EntityAttributeNamesLiterals, EntityRequestableAttributeNamesLiterals, EntityAttributeBundlesLiterals
