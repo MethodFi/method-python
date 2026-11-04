@@ -2,6 +2,7 @@ from typing import TypedDict, Optional, List, Dict, Any, Literal
 
 from method.resource import MethodResponse, Resource, RequestOpts
 from method.configuration import Configuration
+from method.webhook_signature import construct_webhook_event
 
 
 WebhookTypesLiterals = Literal[
@@ -116,3 +117,12 @@ class WebhookResource(Resource):
     
     def update(self, _id: str, opts: WebhookUpdateOpts) -> MethodResponse[Webhook]:
         return super(WebhookResource, self)._patch_with_id(_id, opts)
+
+    def construct_event(self, payload, headers, hmac_secret: Optional[str] = None, auth_token: Optional[str] = None,
+                        tolerance_seconds: int = 300, now: Optional[float] = None) -> Dict[str, Any]:
+        """Verify an incoming webhook request and return the parsed event. Does not call the API.
+
+        See method.webhook_signature.construct_webhook_event.
+        """
+        return construct_webhook_event(payload, headers, hmac_secret=hmac_secret, auth_token=auth_token,
+                                       tolerance_seconds=tolerance_seconds, now=now)

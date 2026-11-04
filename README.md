@@ -955,6 +955,37 @@ webhook = method.webhooks.delete("whk_cSGjA6d9N8y8R");
 webhooks = method.webhooks.list();
 ```
 
+#### Verify a Webhook Request
+
+`construct_event` checks the `Authorization` header (when you pass `auth_token`), the `method-webhook-signature` HMAC (when you pass `hmac_secret`) and that `method-webhook-timestamp` is within 5 minutes, then returns the parsed event. It does not call the API. Pass the raw request body: the signature is computed over the exact bytes Method sent.
+
+```python
+import os
+from flask import Flask, request
+from method import Method, MethodWebhookVerificationError
+
+method = Method(env='production', api_key=os.environ['METHOD_API_KEY'])
+app = Flask(__name__)
+
+@app.post('/webhook')
+def webhook():
+    try:
+        event = method.webhooks.construct_event(
+            request.get_data(),  # raw body
+            request.headers,
+            hmac_secret=os.environ['METHOD_WEBHOOK_HMAC_SECRET'],
+            auth_token=os.environ['METHOD_WEBHOOK_AUTH_TOKEN'],
+        )
+    except MethodWebhookVerificationError as error:
+        return error.code, 401
+
+    # event['payload']: { webhook_id, id, type, op, path, event, refs }
+    # event['delivery_id']: the method-webhook-delivery-id header, stable across retries; use it to deduplicate.
+    return '', 200
+```
+
+Set `tolerance_seconds` to change the 5 minute window, or `0` to skip it. `construct_webhook_event` and `compute_webhook_signature` are also importable from `method` for use without a client.
+
 ## Reports
 
 Reports provide a filtered snapshot view of a specific resource. Method provides a fixed set of filters (Report Types) which include the following:
