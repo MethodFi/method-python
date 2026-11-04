@@ -113,6 +113,9 @@ def test_missing_headers_and_secrets():
 def test_bad_timestamp_and_non_json_body():
     assert_code('invalid_timestamp', payload=PAYLOAD, headers=signed_headers(method_webhook_timestamp='2024-10-01T00:00:00Z'),
                 hmac_secret=HMAC_SECRET, now=NOW)
+    for bad in ('\u00b2', '\u0661\u0662', '-5', '12.5', '1' * 5000):
+        assert_code('invalid_timestamp', payload=PAYLOAD, headers=signed_headers(method_webhook_timestamp=bad),
+                    hmac_secret=HMAC_SECRET, now=NOW)
     body = 'not json'
     assert_code('invalid_payload', payload=body, headers=signed_headers(method_webhook_signature=docs_signature(body, NOW, HMAC_SECRET)),
                 hmac_secret=HMAC_SECRET, now=NOW)

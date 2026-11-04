@@ -6,6 +6,7 @@ import base64
 import hashlib
 import hmac
 import json
+import re
 import time
 from typing import Any, Dict, Mapping, Optional, Union
 
@@ -14,6 +15,7 @@ WEBHOOK_SIGNATURE_HEADER = 'method-webhook-signature'
 WEBHOOK_TIMESTAMP_HEADER = 'method-webhook-timestamp'
 WEBHOOK_DELIVERY_ID_HEADER = 'method-webhook-delivery-id'
 DEFAULT_WEBHOOK_TOLERANCE_SECONDS = 300
+_TIMESTAMP_RE = re.compile(r'[0-9]{1,12}')
 
 
 class MethodWebhookVerificationError(ValueError):
@@ -71,7 +73,9 @@ def construct_webhook_event(
     if raw_timestamp is None:
         raise MethodWebhookVerificationError('missing_header', 'Missing %s header.' % WEBHOOK_TIMESTAMP_HEADER)
     raw_timestamp = raw_timestamp.strip()
-    if not raw_timestamp.isdigit():
+    # ASCII digits only, bounded: str.isdigit() accepts characters like '\u00b2' that int() rejects,
+    # and very long digit strings hit Python's int conversion limit.
+    if not _TIMESTAMP_RE.fullmatch(raw_timestamp):
         raise MethodWebhookVerificationError(
             'invalid_timestamp', '%s must be a UNIX timestamp in seconds.' % WEBHOOK_TIMESTAMP_HEADER)
     timestamp = int(raw_timestamp)
